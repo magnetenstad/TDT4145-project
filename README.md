@@ -44,12 +44,21 @@ Oppfyller også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av a
 Funksjonelle avhengigheter:
 - ID $\rightarrow$ Innhøstingsår, KaffegårdNavn, ForedlingsmetodeNavn
 
+Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat)-nøkkel. 
+Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av ander ikke-nøkkelattributter.
+
 ### FerdigbrentKaffe
 Funksjonelle avhengigheter:
 - Navn, Dato $\rightarrow$ Brenningsgrad, Kilopris, KaffebrenneriNavn, KaffepartiID
 
+Kan kanskje hevde at dato --> kaffepartiID?
+
+
 ### Kaffebrenneri
 Funksjonelle avhengigheter:
+- Ingen, kun ett attributt
+
+4NF fordi det kun er ett attributt, nøkkelattributtet.
 
 ### Bruker
 Funksjonelle avhengigheter:
