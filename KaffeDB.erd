@@ -40,7 +40,7 @@
 <attribute is_hidden="false" is_key="true" name="Art" type=""/>
 </attributes>
 </entity>
-<entity id="13" is_weak="false" name="Kaffegård" x="251" y="52">
+<entity id="13" is_weak="false" name="Kaffegård" x="247" y="100">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="Navn" type=""/>
 <attribute is_hidden="false" is_key="false" name="HøydeOverHavet" type=""/>
@@ -60,10 +60,10 @@
 <diamond id="7" is_weak="true" name="BrentAv" x="675" y="162">
 <attributes/>
 </diamond>
-<diamond id="14" is_weak="false" name="DyrketAv" x="136" y="87">
+<diamond id="14" is_weak="false" name="DyrketAv" x="134" y="141">
 <attributes/>
 </diamond>
-<diamond id="17" is_weak="false" name="ProdusertAv" x="396" y="90">
+<diamond id="17" is_weak="false" name="ProdusertAv" x="396" y="140">
 <attributes/>
 </diamond>
 <diamond id="20" is_weak="false" name="KaffeSmaking" x="670" y="389">
@@ -79,7 +79,7 @@
 <diamond id="26" is_weak="false" name="ForedletMed" x="393" y="361">
 <attributes/>
 </diamond>
-<diamond id="29" is_weak="false" name="FremstillesAv" x="504" y="266">
+<diamond id="29" is_weak="false" name="FremstiltAv" x="504" y="266">
 <attributes/>
 </diamond>
 <circle id="37" name="D" x="137" y="342"/>
@@ -93,19 +93,19 @@
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="15" is_weak="false" role="" style="0" turned="false">
 <connection connection_side="1" direction="1" object_id="12" relation_point_x="152" relation_point_y="258"/>
-<connection connection_side="1" direction="1" object_id="14" relation_point_x="152" relation_point_y="87"/>
+<connection connection_side="1" direction="1" object_id="14" relation_point_x="150" relation_point_y="141"/>
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="16" is_weak="false" role="" style="0" turned="false">
-<connection connection_side="0" direction="0" object_id="13" relation_point_x="251" relation_point_y="95"/>
-<connection connection_side="2" direction="0" object_id="14" relation_point_x="168" relation_point_y="103"/>
+<connection connection_side="0" direction="0" object_id="13" relation_point_x="247" relation_point_y="143"/>
+<connection connection_side="2" direction="0" object_id="14" relation_point_x="166" relation_point_y="157"/>
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="18" is_weak="false" role="" style="0" turned="false">
-<connection connection_side="2" direction="0" object_id="13" relation_point_x="354" relation_point_y="95"/>
-<connection connection_side="0" direction="0" object_id="17" relation_point_x="396" relation_point_y="106"/>
+<connection connection_side="2" direction="0" object_id="13" relation_point_x="350" relation_point_y="143"/>
+<connection connection_side="0" direction="0" object_id="17" relation_point_x="396" relation_point_y="156"/>
 </line>
 <line cardinality_string="(1,1)" has_u="false" id="19" is_weak="false" role="" style="0" turned="false">
 <connection connection_side="1" direction="1" object_id="10" relation_point_x="416" relation_point_y="245"/>
-<connection connection_side="3" direction="1" object_id="17" relation_point_x="412" relation_point_y="122"/>
+<connection connection_side="3" direction="1" object_id="17" relation_point_x="412" relation_point_y="172"/>
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="21" is_weak="false" role="" style="0" turned="false">
 <connection connection_side="2" direction="0" object_id="0" relation_point_x="605" relation_point_y="414"/>
@@ -147,15 +147,15 @@
 <connection connection_side="3" direction="1" object_id="12" relation_point_x="152" relation_point_y="302"/>
 <connection connection_side="1" direction="1" object_id="37" relation_point_x="152" relation_point_y="342"/>
 </line>
-<line cardinality_string="" has_u="true" id="39" is_weak="false" role="Coffea arabica" style="1" turned="false">
+<line cardinality_string="" has_u="true" id="39" is_weak="false" role="'Coffea arabica'" style="1" turned="false">
 <connection connection_side="1" direction="1" object_id="34" relation_point_x="62" relation_point_y="433"/>
 <connection connection_side="3" direction="1" object_id="37" relation_point_x="152" relation_point_y="372"/>
 </line>
-<line cardinality_string="" has_u="true" id="40" is_weak="false" role="Coffea liberica" style="1" turned="false">
+<line cardinality_string="" has_u="true" id="40" is_weak="false" role="'Coffea liberica'" style="1" turned="false">
 <connection connection_side="1" direction="1" object_id="36" relation_point_x="152" relation_point_y="479"/>
 <connection connection_side="3" direction="1" object_id="37" relation_point_x="152" relation_point_y="372"/>
 </line>
-<line cardinality_string="" has_u="true" id="41" is_weak="false" role="Coffea robusta" style="1" turned="false">
+<line cardinality_string="" has_u="true" id="41" is_weak="false" role="'Coffea robusta'" style="1" turned="false">
 <connection connection_side="1" direction="1" object_id="35" relation_point_x="268" relation_point_y="432"/>
 <connection connection_side="3" direction="1" object_id="37" relation_point_x="152" relation_point_y="372"/>
 </line>
