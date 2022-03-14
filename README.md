@@ -19,7 +19,7 @@ brukes i hvilke brukerhistorier. Inneholder tabellene all nødvendig informasjon
 ### Antakelser
 - Forskjellige kaffegårder kan ikke ha samme navn.
 - Forskjellige kaffebrennerier kan ikke ha samme navn.
-- FerdigbrentKaffe: Flere kaffebrennerier kan navngi kaffen sin likt, derfor er FerdigBrentKaffe en svak klasse.
+- Kaffe: Flere kaffebrennerier kan navngi kaffen sin likt, derfor er Kaffe en svak klasse.
 
 ## Relasjonsdatabasemodeller
 - **Kaffebønne** (<ins>Art</ins>) 
@@ -33,8 +33,8 @@ brukes i hvilke brukerhistorier. Inneholder tabellene all nødvendig informasjon
   *ID er nøkkel til Kaffeparti, og velges unikt når et kaffeparti opprettes.*
   *KaffegårdNavn er fremmednøkkel mot Kaffegård (ProdusertAv).*
   *ForedlingsmetodeNavn er fremmednøkkel mot Foredlingsmetode (ForedletMed).*
-- **FerdigbrentKaffe** (<ins>Navn</ins>, <ins>Dato</ins>, Brenningsgrad, Beskrivelse, Kilopris, KaffebrenneriNavn, KaffepartiID)
-  *Navn og Dato er svake nøkler for FerdigbrentKaffe.*
+- **Kaffe** (<ins>Navn</ins>, <ins>Dato</ins>, Brenningsgrad, Beskrivelse, Kilopris, KaffebrenneriNavn, KaffepartiID)
+  *Navn og Dato er svake nøkler for Kaffe.*
   *Kaffebrennerinavn er identifiserende fremmednøkkel mot Kaffebrenneri (BrentAv).*
   *KaffepartiID er fremmednøkkel mot Kaffeparti (FremstillesAv).*
 - **Kaffebrenneri** (<ins>Navn</ins>)
@@ -43,10 +43,10 @@ brukes i hvilke brukerhistorier. Inneholder tabellene all nødvendig informasjon
   *Epost er nøkkel til bruker.*
 - **Foredlingsmetode**(<ins>Navn</ins>, Beskrivelse)
   *Navn på foredlingsmetode er nøkkel til Foredlingsmetode.*
-- **Kaffesmaking** (<ins>Epost</ins>, <ins>KaffebrenneriNavn</ins>, <ins>FerdigbrentNavn</ins>, <ins>FerdigbrentDato</ins>, Smaksnotater, Poeng, Dato)
-  *KaffebrenneriNavn, FerdigbrentNavn og FerdigbrentDato er fremmednøkler mot FerdigbrentKaffe.*
+- **Kaffesmaking** (<ins>Epost</ins>, <ins>KaffebrenneriNavn</ins>, <ins>KaffeNavn</ins>, <ins>KaffeDato</ins>, Smaksnotater, Poeng, Dato)
+  *KaffebrenneriNavn, KaffeNavn og KaffeDato er fremmednøkler mot Kaffe.*
   *Epost er fremmednøkkel mot Bruker.*
-  *Epost, KaffebrenneriNavn, FerdigbrentNavn og FerdigbrentDato utgjør nøkkelen til Kaffesmaking.*
+  *Epost, KaffebrenneriNavn, KaffeNavn og KaffeDato utgjør nøkkelen til Kaffesmaking.*
 - **DyrketAv** (<ins>KaffebønneArt</ins>, <ins>KaffegårdNavn</ins>)
   *KaffebønneArt er fremmednøkkel mot Kaffebønne.*
   *KaffegårdNavn er fremmednøkkel mot Kaffegård.*
@@ -91,7 +91,7 @@ Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avheng
 
 *Konklusjon: Tabellen er på 4NF.*
 
-### FerdigbrentKaffe
+### Kaffe
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 - KaffebrenneriNavn, Navn, Dato $\rightarrow$ Brenningsgrad, Beskrivelse, Kilopris, KaffepartiID
 
@@ -125,11 +125,11 @@ Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kan
 
 ### Kaffesmaking
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- Epost, Kaffebrenneri, FerdigbrentNavn, FerdigbrentDato $\rightarrow$ Smaksnotater, Poeng
+- Epost, Kaffebrenneri, KaffeNavn, KaffeDato $\rightarrow$ Smaksnotater, Poeng
 
-> DATO???
+> TODO: DATO
 
-Supernøkler: (Epost, FerdigbrentNavn)
+Supernøkler: (Epost, KaffeNavn)
 
 Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle fler-verdi-avhengigheter.
 
@@ -157,7 +157,7 @@ Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kan
 
 ### Brukerhistorie 1 kan implementeres slik i systemet:
 
-**FerdigbrentKaffe** ('Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600kr, 'Jacobsen & Svart', 1)
+**Kaffe** ('Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600kr, 'Jacobsen & Svart', 1)
   TODO: Pris og valuta?
 
 **Kaffebrenneri** ('Jacobsen & Svart')
@@ -183,9 +183,10 @@ Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kan
 Her er hele brukerhistorien lagt til i tabellene våre. Vi kan da se at modellen vår tilfredsstiller brukerhistorie 1.
 
 ### Brukerhistorie 2
-I systemet vårt kan man få en liste over hvilke brukere som har smakt flest unike kaffer så langt i år ved å gruppere kaffesmakinger etter bruker-epost, hvor dato er i 2022. Deretter sjekker man hvor mange smakinger de har på unike ferdigbrente kaffer ved å telle unike fremmednøkler til FerdigbrentKaffe. Til slutt sorterer du på antall synkende, og returnerer brukerens fulle navn og antallet kaffer de har smakt.
+I systemet vårt kan man få en liste over hvilke brukere som har smakt flest unike kaffer så langt i år ved å gruppere kaffesmakinger etter bruker-epost, hvor dato er i 2022. Deretter sjekker man hvor mange smakinger de har på unike kaffer ved å telle unike fremmednøkler til Kaffe. Til slutt sorterer du på antall synkende, og returnerer brukerens fulle navn og antallet kaffer de har smakt.
+> TODO: er COUNT(*) riktig?
 ```sql
-SELECT FulltNavn, COUNT(*) AS Antall -- TODO: er stjerne riktig?
+SELECT FulltNavn, COUNT(*) AS Antall
 FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
 WHERE Dato LIKE '%2022'
 GROUP BY Epost
@@ -195,26 +196,26 @@ ORDER BY Antall DESC
 ### Brukerhistorie 3
 > TODO: Gjøre ferdig denne
 
-Vi joiner Kaffesmaking med FerdigbrentKaffe naturlig (på FerdigbrentKaffes nøkkelattributter). Deretter finner vi gjennomsnitt av Poeng i KaffeSmaking (og kaller dette gjennomsnittsscore), gruppert utifra ulike ferdigbrente kaffer. Returnerer KaffebrenneriNavn, FerdigbrentKaffe navn, pris og gjennomsnittsscore.
+Vi joiner Kaffesmaking med Kaffe naturlig (på Kaffes nøkkelattributter). Deretter finner vi gjennomsnitt av Poeng i KaffeSmaking (og kaller dette gjennomsnittsscore), gruppert utifra ulike kaffer. Returnerer KaffebrenneriNavn, Kaffe navn, pris og gjennomsnittsscore.
 ```sql
-SELECT Kaffebrenneri.Navn, FerdigbrentKaffe.KaffebrenneriNavn, FerdigbrentKaffe.Kilopris, AvgScore
-FROM Kaffesmaking NATURAL JOIN FerdigbrentKaffe
-GROUP BY ???
+SELECT Kaffe.KaffebrenneriNavn,
+Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
+FROM Kaffesmaking NATURAL JOIN Kaffe AS K
+GROUP BY K.KaffebrenneriNavn, K.Navn
 ```
 
-
 ### Brukerhistorie 4
-Vi joiner FerdigbrentKaffe og Kaffesmaking naturlig. Deretter velger vi ut alle kaffer hvor beskrivelsen inneholder 'floral' eller smaksnotater inneholder 'floral'. Returnerer FerdigbrentKaffe.KaffebrenneriNavn og FerdigbrentKaffe.Navn.
+Vi joiner Kaffe og Kaffesmaking naturlig. Deretter velger vi ut alle kaffer hvor beskrivelsen inneholder 'floral' eller smaksnotater inneholder 'floral'. Returnerer Kaffe.KaffebrenneriNavn og Kaffe.Navn.
 ```sql
-SELECT FerdigbrentKaffe.KaffebrenneriNavn, FerdigbrentKaffe.Navn
-FROM FerdigbrentKaffe NATURAL JOIN Kaffesmaking
-WHERE FerdigbrentKaffe.Beskrivelse='floral' OR Kaffesmaking.Smaksnotater='floral'
+SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn
+FROM Kaffe NATURAL JOIN Kaffesmaking
+WHERE Kaffe.Beskrivelse='floral' OR Kaffesmaking.Smaksnotater='floral'
 ```
 
 ### Brukerhistorie 5
-Vi joiner FerdigbrentKaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegård der Kaffeparti.KaffegårdNavn = Kaffegård.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti.ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med FerdigbrentKaffe og returnerer FerdigbrentKaffe.Navn og KaffebrenneriNavn.
+Vi joiner Kaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegård der Kaffeparti.KaffegårdNavn = Kaffegård.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti.ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med Kaffe og returnerer Kaffe.Navn og KaffebrenneriNavn.
 ```sql
-SELECT FerdigbrentKaffe.Navn, FerigbrentKaffe.KaffebrenneriNavn
-FROM (FerdigbrentKaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
-WHERE (FerdigbrentKaffe.KaffepartiID=Kaffeparti.ID AND Kaffeparti.KaffegårdNavn=Kaffegård.Navn) AND (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') AND Kaffeparti.ForedlingsmetodeNavn!='vasket'
+SELECT Kaffe.Navn, FerigbrentKaffe.KaffebrenneriNavn
+FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
+WHERE (Kaffe.KaffepartiID=Kaffeparti.ID AND Kaffeparti.KaffegårdNavn=Kaffegård.Navn) AND (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') AND Kaffeparti.ForedlingsmetodeNavn!='vasket'
 ```

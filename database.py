@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect(":memory:")
+connection = sqlite3.connect(':memory:')
 cursor = connection.cursor()
 
 with open('tables.sql', 'r') as file:
