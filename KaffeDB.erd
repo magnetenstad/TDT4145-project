@@ -8,7 +8,7 @@
 <attribute is_hidden="false" is_key="false" name="Land" type=""/>
 </attributes>
 </entity>
-<entity id="2" is_weak="true" name="FerdigbrentKaffe" x="593" y="182">
+<entity id="2" is_weak="true" name="Kaffe" x="593" y="182">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="Navn" type=""/>
 <attribute is_hidden="false" is_key="true" name="Dato" type=""/>
@@ -74,7 +74,7 @@
 <attributes/>
 </diamond>
 <line cardinality_string="(1,1)" has_u="false" id="8" is_weak="false" role="" style="0" turned="false">
-<connection connection_side="1" direction="1" object_id="2" relation_point_x="681" relation_point_y="182"/>
+<connection connection_side="1" direction="1" object_id="2" relation_point_x="659" relation_point_y="182"/>
 <connection connection_side="3" direction="1" object_id="7" relation_point_x="650" relation_point_y="147"/>
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="9" is_weak="false" role="" style="0" turned="false">
@@ -126,11 +126,11 @@
 <connection connection_side="0" direction="0" object_id="29" relation_point_x="463" relation_point_y="235"/>
 </line>
 <line cardinality_string="(0,n)" has_u="false" id="32" is_weak="false" role="" style="0" turned="false">
-<connection connection_side="3" direction="1" object_id="2" relation_point_x="660" relation_point_y="290"/>
+<connection connection_side="3" direction="1" object_id="2" relation_point_x="642" relation_point_y="290"/>
 <connection connection_side="1" direction="1" object_id="20" relation_point_x="645" relation_point_y="342"/>
 </line>
 <line cardinality_string="" has_u="false" id="33" is_weak="false" role="" style="0" turned="false">
-<connection connection_side="1" direction="1" object_id="2" relation_point_x="637" relation_point_y="182"/>
+<connection connection_side="1" direction="1" object_id="2" relation_point_x="626" relation_point_y="182"/>
 <connection connection_side="3" direction="1" object_id="7" relation_point_x="650" relation_point_y="147"/>
 </line>
 </diagram>
