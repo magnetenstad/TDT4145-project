@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS Kaffebønne;
 DROP TABLE IF EXISTS Kaffegård;
 DROP TABLE IF EXISTS Kaffeparti;
-DROP TABLE IF EXISTS FerdigbrentKaffe;
+DROP TABLE IF EXISTS Kaffe;
 DROP TABLE IF EXISTS Kaffebrenneri;
 DROP TABLE IF EXISTS Bruker;
 DROP TABLE IF EXISTS Foredlingsmetode;
@@ -19,9 +19,9 @@ CREATE TABLE Kaffeparti
 (ID TEXT PRIMARY KEY, Innhøstingsår TEXT, Kilopris REAL, KaffegårdNavn TEXT, ForedlingsmetodeNavn TEXT,
 CONSTRAINT Foredlingsmetode_FK FOREIGN KEY (ForedlingsmetodeNavn) REFERENCES Foredlingsmetode(Navn));
 
-CREATE TABLE FerdigbrentKaffe
+CREATE TABLE Kaffe
 (KaffebrenneriNavn TEXT, Navn TEXT, Dato TEXT, Brenningsgrad TEXT, Kilopris REAL, KaffePartiID TEXT,
-CONSTRAINT FerdigbrentKaffe_PK PRIMARY KEY (KaffebrenneriNavn, Navn, Dato),
+CONSTRAINT Kaffe_PK PRIMARY KEY (KaffebrenneriNavn, Navn, Dato),
 CONSTRAINT Kaffebrenneri_FK FOREIGN KEY (KaffebrenneriNavn) REFERENCES Kaffebrenneri(Navn));
 
 CREATE TABLE Kaffebrenneri
@@ -34,9 +34,9 @@ CREATE TABLE Foredlingsmetode
 (Navn TEXT PRIMARY KEY, Beskrivelse TEXT);
 
 CREATE TABLE Kaffesmaking
-(Epost TEXT, KaffebrenneriNavn TEXT, FerdigbrentNavn TEXT, FerdigbrentDato TEXT, Smaksnotater TEXT, Poeng INTEGER, Dato TEXT,
-CONSTRAINT Kaffesmaking_PK PRIMARY KEY (Epost, KaffebrenneriNavn, FerdigbrentNavn, FerdigbrentDato),
-CONSTRAINT FerdigbrentKaffe_FK FOREIGN KEY (KaffebrenneriNavn, FerdigbrentNavn, FerdigbrentDato) REFERENCES FerdigbrentKaffe(KaffebrenneriNavn, Navn, Dato),
+(Epost TEXT, KaffebrenneriNavn TEXT, KaffeNavn TEXT, KaffeDato TEXT, Smaksnotater TEXT, Poeng INTEGER, Dato TEXT,
+CONSTRAINT Kaffesmaking_PK PRIMARY KEY (Epost, KaffebrenneriNavn, KaffeNavn, KaffeDato),
+CONSTRAINT Kaffe_FK FOREIGN KEY (KaffebrenneriNavn, KaffeNavn, KaffeDato) REFERENCES Kaffe(KaffebrenneriNavn, Navn, Dato),
 CONSTRAINT Bruker_FK FOREIGN KEY (Epost) REFERENCES Bruker(Epost));
 
 CREATE TABLE DyrketAv
