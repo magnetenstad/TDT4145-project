@@ -11,7 +11,7 @@
 <entity id="2" is_weak="true" name="Kaffe" x="593" y="182">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="Navn" type=""/>
-<attribute is_hidden="false" is_key="true" name="Dato" type=""/>
+<attribute is_hidden="false" is_key="false" name="Dato" type=""/>
 <attribute is_hidden="false" is_key="false" name="Brenningsgrad" type=""/>
 <attribute is_hidden="false" is_key="false" name="Beskrivelse" type=""/>
 <attribute is_hidden="false" is_key="false" name="Kilopris" type=""/>
