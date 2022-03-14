@@ -1,42 +1,35 @@
-# TDT4145-project
-
-## Kriterier (TODO: FJERN DETTE)
-DB1
-1. Bruk av entiteter, relasjoner og attributter. Disse konseptene skal anvendes på en 
-hensiktsmessig måte, og antallet entiteter og relasjoner skal være rimelig
-2. Bruk av nøkler, herunder naturlige og genererte.
-3. Bruk av restriksjoner, f.eks. kardinaliteter, i modellen. Er disse anvendt på korrekt vis?
-4. Oversetting til SQL-tabeller. Korrekt bruk av SQL, herunder attributtdomener, (fremmed-
-)nøkkelrestriksjoner og UNIQUE. Forståelse av normalformer, inkludert 4NF.
-5. Beskrivelsen av hvordan brukerhistoriene passer inn med tabellene, hvilke tabeller som 
-brukes i hvilke brukerhistorier. Inneholder tabellene all nødvendig informasjon?
-6. Dokumentene skal være konsise og figurene enkle å forstå.
+# TDT4145 - DB1 Gruppe 109
 
 ## ER-modell
-> TODO: må laste opp rett versjon av bildet:)
 ![](images/er.png)
 
 ### Antakelser
 - Forskjellige kaffegårder kan ikke ha samme navn.
 - Forskjellige kaffebrennerier kan ikke ha samme navn.
-- Kaffe: Flere kaffebrennerier kan navngi kaffen sin likt, derfor er Kaffe en svak klasse.
+- Flere kaffebrennerier kan navngi kaffen sin likt, derfor er Kaffe en svak klasse.
+- Alle kilopriser konverteres til samme valuta, NOK, før de lagres i databasen.
+  - For å sørge for at kaffer og kaffepartier kan sorteres riktig på pris.
+- En bruker kan ikke lagre flere anmeldelser av samme kaffe.
+- En kaffegård kan være en kaffegård uten å ha begynt å produsere kaffe ennå.
+- Kaffebrenneri kan være et kaffebrenneri før den har begynt å brenne kaffe.  
+- Det finnes bare tre kaffebønnearter: Coffea arabica, Coffea liberica og Coffea robusta.
+- Kaffeparti krever en generert nøkkel.
+
+<div style="page-break-after: always;"></div>
 
 ## Relasjonsdatabasemodeller
 - **Kaffebønne** (<ins>Art</ins>) 
-
   *Navn på arten er nøkkel til Kaffebønne. Hver art har et unikt navn.*
-> TODO: Skal vi lage total og disjunkt spesialisering med de tre typene?
 - **Kaffegård** (<ins>Navn</ins>, HøydeOverHavet, Land, Region)
   *Navn er nøkkel til Kaffegård, og vi antar dermed at ingen kaffegårder har samme navn.* 
-> TODO: Skal vi fjerne antakelser når vi har det med her, eller skal det med begge steder?
 - **Kaffeparti** (<ins>ID</ins>, Innhøstingsår, Kilopris, KaffegårdNavn, ForedlingsmetodeNavn)
-  *ID er nøkkel til Kaffeparti, og velges unikt når et kaffeparti opprettes.*
+  *ID er en generert nøkkel til Kaffeparti.*
   *KaffegårdNavn er fremmednøkkel mot Kaffegård (ProdusertAv).*
   *ForedlingsmetodeNavn er fremmednøkkel mot Foredlingsmetode (ForedletMed).*
 - **Kaffe** (<ins>Navn</ins>, <ins>Dato</ins>, Brenningsgrad, Beskrivelse, Kilopris, KaffebrenneriNavn, KaffepartiID)
   *Navn og Dato er svake nøkler for Kaffe.*
   *Kaffebrennerinavn er identifiserende fremmednøkkel mot Kaffebrenneri (BrentAv).*
-  *KaffepartiID er fremmednøkkel mot Kaffeparti (FremstillesAv).*
+  *KaffepartiID er fremmednøkkel mot Kaffeparti (FremstiltAv).*
 - **Kaffebrenneri** (<ins>Navn</ins>)
   *Navn er nøkkel til Kaffebrenneri, og det er antatt at ingen Kaffebrenneri har samme navn.*
 - **Bruker**(<ins>Epost</ins>, Passord, FulltNavn, Land)
@@ -56,6 +49,8 @@ brukes i hvilke brukerhistorier. Inneholder tabellene all nødvendig informasjon
   *KaffepartiID er fremmednøkkel mot Kaffeparti.*
   *Sammen utgjør de nøkkelen til PartiBestårAv.*
 
+<div style="page-break-after: always;"></div>
+
 ## Normalformer
 
 ### Kaffebønne
@@ -73,7 +68,7 @@ Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 
 Supernøkler: (Navn)
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. 
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. 
 Oppfyller også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter.
 Oppfyller ikke 4NF fordi Land ikke er en supernøkkel.
 
@@ -81,11 +76,11 @@ Oppfyller ikke 4NF fordi Land ikke er en supernøkkel.
 
 ### Kaffeparti
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- ID $\rightarrow$ Innhøstingsår, KaffegårdNavn, ForedlingsmetodeNavn
+- ID $\rightarrow$ Innhøstingsår, Kilopris, KaffegårdNavn, ForedlingsmetodeNavn
 
 Supernøkler: (ID)
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. 
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. 
 Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter.
 4NF oppfylles fordi det er ingen fler-verdi-avhengigheter.
 
@@ -93,11 +88,11 @@ Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avheng
 
 ### Kaffe
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- KaffebrenneriNavn, Navn, Dato $\rightarrow$ Brenningsgrad, Beskrivelse, Kilopris, KaffepartiID
+- KaffebrenneriNavn, Navn $\rightarrow$ Dato, Brenningsgrad, Beskrivelse, Kilopris, KaffepartiID
 
-Supernøkler: (KaffebrenneriNavn, Navn, Dato)
+Supernøkler: (KaffebrenneriNavn, Navn)
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. 
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. 
 Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter.
 4NF oppfylles fordi det er ingen fler-verdi-avhengigheter.
 
@@ -119,19 +114,17 @@ Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 
 Supernøkkel: (Epost)
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle fler-verdi-avhengigheter.
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle fler-verdi-avhengigheter.
 
 *Konklusjon: Tabellen er på 4NF.*
 
 ### Kaffesmaking
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- Epost, Kaffebrenneri, KaffeNavn, KaffeDato $\rightarrow$ Smaksnotater, Poeng
+- Epost, KaffebrenneriNavn, KaffeNavn $\rightarrow$ Smaksnotater, Poeng, Dato
 
-> TODO: DATO
+Supernøkler: (Epost, KaffebrenneriNavn, KaffeNavn)
 
-Supernøkler: (Epost, KaffeNavn)
-
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle fler-verdi-avhengigheter.
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle fler-verdi-avhengigheter.
 
 *Konklusjon: Tabellen er på 4NF.*
 
@@ -141,7 +134,7 @@ Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 
 Supernøkkel: (KaffebønneArt, KaffegårdNavn)
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
 
 *Konklusjon: Tabellen er på 4NF.*
 
@@ -149,21 +142,21 @@ Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kan
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 - Ingen funksjonelle avhengigheter.
 
-Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
+Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kandidat-)nøkkel. Videre oppfylles også 3NF og BCNF fordi ingen ikke-nøkkelattributter er avhengig av andre ikke-nøkkelattributter. Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
 
 *Konklusjon: Tabellen er på 4NF.*
+
+<div style="page-break-after: always;"></div>
 
 ## Hvordan brukerhistoriene tilfredsstilles
 
 ### Brukerhistorie 1 kan implementeres slik i systemet:
 
-**Kaffe** ('Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600kr, 'Jacobsen & Svart', 1)
-  TODO: Pris og valuta?
+**Kaffe** ('Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, 'Jacobsen & Svart', 1)
 
 **Kaffebrenneri** ('Jacobsen & Svart')
 
-**Kaffeparti** (1, 2021, 8 USD, 'Bærtørket')
-  TODO: Pris og valuta?
+**Kaffeparti** (1, 2021, 72, 'Bærtørket')
 
 **Kaffebønne** ('Coffea arabica')
 
@@ -172,19 +165,19 @@ Oppfyller 2NF fordi ingen ikke-nøkkel attributter er delvis avhengig av en (kan
 **Bruker** ('ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge')
 
 **Kaffesmaking** ('ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', '20.01.2022', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, null)
-  *Brukerhistorien sier ingenting om smaksdato --> null
+*Brukerhistorien sier ingenting om smaksdato --> null*
 
-**DyrketAv** ('Coffea arabica , 'Nombre de Dios')
+**DyrketAv** ('Coffea arabica', 'Nombre de Dios')
 
 **PartiBestårAv** ('Coffea arabica', 1)
 
 **Foredlingsmetode** ('Bærtørket', null)
 
-Her er hele brukerhistorien lagt til i tabellene våre. Vi kan da se at modellen vår tilfredsstiller brukerhistorie 1.
+Her er hele brukerhistorien lagt til i tabellene våre. Vi kan da se at modellen vår tilfredsstiller brukerhistorie 1. Merk at USD er konvertert til NOK.
 
 ### Brukerhistorie 2
+Informasjonen som trengs i denne brukerhistorien finnes i tabellene KaffeSmaking og Bruker.
 I systemet vårt kan man få en liste over hvilke brukere som har smakt flest unike kaffer så langt i år ved å gruppere kaffesmakinger etter bruker-epost, hvor dato er i 2022. Deretter sjekker man hvor mange smakinger de har på unike kaffer ved å telle unike fremmednøkler til Kaffe. Til slutt sorterer du på antall synkende, og returnerer brukerens fulle navn og antallet kaffer de har smakt.
-> TODO: er COUNT(*) riktig?
 ```sql
 SELECT FulltNavn, COUNT(*) AS Antall
 FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
@@ -194,28 +187,36 @@ ORDER BY Antall DESC
 ```
 
 ### Brukerhistorie 3
-> TODO: Gjøre ferdig denne
-
-Vi joiner Kaffesmaking med Kaffe naturlig (på Kaffes nøkkelattributter). Deretter finner vi gjennomsnitt av Poeng i KaffeSmaking (og kaller dette gjennomsnittsscore), gruppert utifra ulike kaffer. Returnerer KaffebrenneriNavn, Kaffe navn, pris og gjennomsnittsscore.
+Informasjonen som trengs i denne brukerhistorien finnes i tabellene KaffeSmaking og Kaffe.
+Vi joiner Kaffesmaking med Kaffe på Kaffes nøkkelattributter. Deretter finner vi gjennomsnitt av Poeng i KaffeSmaking (og kaller dette gjennomsnittspoeng), gruppert utifra ulike kaffer. Returnerer KaffebrenneriNavn, Kaffe navn, pris og gjennomsnittspoeng, sortert synkende etter gjennomsnittspoeng.
 ```sql
-SELECT Kaffe.KaffebrenneriNavn,
-Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
-FROM Kaffesmaking NATURAL JOIN Kaffe AS K
-GROUP BY K.KaffebrenneriNavn, K.Navn
+SELECT Kaffe.KaffebrenneriNavn, Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
+FROM Kaffe INNER JOIN Kaffesmaking
+ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
+  AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+GROUP BY Kaffe.KaffebrenneriNavn, Kaffe.Navn
+ORDER BY GjPoeng DESC
 ```
 
 ### Brukerhistorie 4
-Vi joiner Kaffe og Kaffesmaking naturlig. Deretter velger vi ut alle kaffer hvor beskrivelsen inneholder 'floral' eller smaksnotater inneholder 'floral'. Returnerer Kaffe.KaffebrenneriNavn og Kaffe.Navn.
+Informasjonen som trengs i denne brukerhistorien finnes i tabellene KaffeSmaking og Kaffe.
+Vi joiner Kaffe og Kaffesmaking på KaffebrenneriNavn og KaffeNavn. Deretter velger vi ut alle kaffer hvor beskrivelsen inneholder 'floral' eller smaksnotater inneholder 'floral'. Returnerer Kaffe.KaffebrenneriNavn og Kaffe.Navn.
 ```sql
 SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn
-FROM Kaffe NATURAL JOIN Kaffesmaking
-WHERE Kaffe.Beskrivelse='floral' OR Kaffesmaking.Smaksnotater='floral'
+FROM Kaffe INNER JOIN Kaffesmaking
+ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
+  AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+WHERE Kaffe.Beskrivelse LIKE '%floral%'
+  OR Kaffesmaking.Smaksnotater LIKE '%floral%'
 ```
 
 ### Brukerhistorie 5
+Informasjonen som trengs i denne brukerhistorien finnes i tabellene Kaffe, Kaffeparti og Kaffegård.
 Vi joiner Kaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegård der Kaffeparti.KaffegårdNavn = Kaffegård.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti.ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med Kaffe og returnerer Kaffe.Navn og KaffebrenneriNavn.
 ```sql
 SELECT Kaffe.Navn, FerigbrentKaffe.KaffebrenneriNavn
 FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
-WHERE (Kaffe.KaffepartiID=Kaffeparti.ID AND Kaffeparti.KaffegårdNavn=Kaffegård.Navn) AND (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') AND Kaffeparti.ForedlingsmetodeNavn!='vasket'
+ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegårdNavn = Kaffegård.Navn
+WHERE (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') 
+  AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
 ```
