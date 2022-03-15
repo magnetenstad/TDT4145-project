@@ -9,6 +9,8 @@
 ## ER-modell
 ![](images/er.png)
 
+<div style="page-break-after: always;"></div>
+
 ### Antakelser
 - Forskjellige kaffegårder kan ikke ha samme navn.
 - Forskjellige kaffebrennerier kan ikke ha samme navn.
