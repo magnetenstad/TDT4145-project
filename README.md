@@ -1,5 +1,11 @@
 # TDT4145 - DB1 Gruppe 109
 
+| Etternavn  | Fornavn                | E-post                |
+| ---------- | ---------------------- | --------------------- |
+| Lie        | Karin Sofie Syversveen | kslie@stud.ntnu.no    |
+| Stabell    | Karoline Ytreeide      | karoliys@stud.ntnu.no |
+| Tenstad    | Magne Erlendsønn       | magneet@stud.ntnu.no  |
+
 ## ER-modell
 ![](images/er.png)
 
