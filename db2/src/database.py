@@ -24,9 +24,9 @@ class Database:
   def insert_defaults(self):
     # oppretter alle Kaffeboennetypene
 
-    self.insert_kaffebonne(['Coffea arabica'])
-    self.insert_kaffebonne(['Coffea liberica'])
-    self.insert_kaffebonne(['Coffea robusta'])
+    self.insert_kaffeboenne(['Coffea arabica'])
+    self.insert_kaffeboenne(['Coffea liberica'])
+    self.insert_kaffeboenne(['Coffea robusta'])
 
     # oppretter to foredlingsmetoder, vasket og bærtørket
     
@@ -35,22 +35,22 @@ class Database:
     
     # Brukerhistorie 1:
 
-    self.insert_kaffegard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
+    self.insert_kaffegaard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
     self.insert_kaffeparti([1, 2021, 72, 'Nombre Dios', 'bærtørket'])
     self.insert_kaffe(['Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, 'Jacobsen & Svart', 1])
     self.insert_kaffebrenneri(['Jacobsen & Svart'])
     self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
     self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
     self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
-    self.insert_partiBestarAv(['Coffea arabica', 1])
+    self.insert_partiBestaarAv(['Coffea arabica', 1])
 
     # Brukerhistorie 4:
 
-    self.insert_kaffegard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
+    self.insert_kaffegaard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
     self.insert_kaffeparti([2, 2021, 72, 'Akageragården', 'bærtørket'])
     self.insert_kaffe(['Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400, 'Jacobsen & Svart', 2])
 
-    self.insert_kaffegard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
+    self.insert_kaffegaard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
     self.insert_kaffeparti([3, 2019, 10, 'Bogotagården', 'vasket'])
     self.insert_kaffe(['Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, 'Jacobsen & Svart', 2])
 
@@ -77,7 +77,7 @@ class Database:
       (?, ?, ?, ?, ?)
     ''', attributes)
     
-  def insert_kaffebonne(self, attributes):
+  def insert_kaffeboenne(self, attributes):
     self.cursor.execute('''
     INSERT INTO Kaffeboenne
       ('Art')
@@ -85,7 +85,7 @@ class Database:
       (?)
     ''', attributes)
 
-  def insert_kaffegard(self, attributes):
+  def insert_kaffegaard(self, attributes):
     self.cursor.execute('''
     INSERT INTO Kaffegaard
       (Navn, HoeydeOverHavet, Land, Region)
@@ -125,7 +125,7 @@ class Database:
       (?, ?)
     ''', attributes)
 
-  def insert_partiBestarAv(self, attributes):
+  def insert_partiBestaarAv(self, attributes):
     self.cursor.execute('''
     INSERT INTO PartiBestaarAv
       (KaffeboenneArt, KaffepartiId)
@@ -133,7 +133,7 @@ class Database:
       (?,?)
     ''', attributes)
 
-  ### Selects ###
+  ### Getters ###
 
   def get_kaffe(self):
     self.cursor.execute('''
@@ -141,7 +141,6 @@ class Database:
     ''')
     return self.cursor.fetchall()
   
-
   def get_unique_coffees_per_user(self):
     self.cursor.execute('''
     SELECT FulltNavn, COUNT(*) AS Antall

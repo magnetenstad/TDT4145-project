@@ -20,6 +20,7 @@ def App(state):
     if state.route(state) == Response.exit:
       break
 
+
 def Welcome(state):
   print('Velkommen til Kaffedatabasen 😊☕\n')
   options = {
@@ -28,6 +29,7 @@ def Welcome(state):
     'Avslutte': Exit
   }
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
+
 
 def Main(state):
   options = {
@@ -38,12 +40,15 @@ def Main(state):
   }
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
 
+
 def SignOut(state):
   state.user = None
   state.route = Welcome
 
+
 def Exit(_):
   return Response.exit
+
 
 def Login(state):
   print('Logg inn med epost og passord:\n')
@@ -56,6 +61,7 @@ def Login(state):
     print('\nUgyldig epost eller passord!')
     if ask_select('\nVil du prøve på nytt?', ['Ja', 'Nei']) == 'Nei':
       state.route = Welcome
+
 
 def Register(state):
   print('Registrer deg med epost, passord, navn og land:\n')
@@ -99,13 +105,13 @@ def Insert(state):
       attributes = ask(
         ['Art'], [str]
       )
-      state.db.insert_kaffebonne(attributes)
+      state.db.insert_kaffeboenne(attributes)
       
     case 'kaffegaard':
       attributes = ask(
         ['Navn', 'HoeydeOverHavet', 'Land', 'Region'],
         [str, str, str, str])
-      state.db.insert_kaffegard(attributes)
+      state.db.insert_kaffegaard(attributes)
       
     case 'bruker':
       attributes = ask(
@@ -130,7 +136,7 @@ def Insert(state):
       attributes = ask(
         ['KaffeboenneArt', 'KaffepartiID'],
         [str, str])
-      state.db.insert_partiBestarAv(attributes)
+      state.db.insert_partiBestaarAv(attributes)
   state.route = Main
 
 
