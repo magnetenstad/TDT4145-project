@@ -22,7 +22,7 @@ class Database:
       print('\nSuccessfully build tables!\n')
 
   def insert_defaults(self):
-    # oppretter alle kaffebønnetypene
+    # oppretter alle Kaffeboennetypene
 
     self.insert_kaffebonne(['Coffea arabica'])
     self.insert_kaffebonne(['Coffea liberica'])
@@ -72,14 +72,14 @@ class Database:
   def insert_kaffeparti(self, attributes):
     self.cursor.execute('''
     INSERT INTO Kaffeparti
-      (ID, Innhøstingsår, Kilopris, KaffegårdNavn, ForedlingsmetodeNavn)
+      (ID, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
     VALUES
       (?, ?, ?, ?, ?)
     ''', attributes)
     
   def insert_kaffebonne(self, attributes):
     self.cursor.execute('''
-    INSERT INTO Kaffebønne
+    INSERT INTO Kaffeboenne
       ('Art')
     VALUES
       (?)
@@ -87,8 +87,8 @@ class Database:
 
   def insert_kaffegard(self, attributes):
     self.cursor.execute('''
-    INSERT INTO Kaffegård
-      (Navn, HøydeOverHavet, Land, Region)
+    INSERT INTO Kaffegaard
+      (Navn, HoeydeOverHavet, Land, Region)
     VALUES
       (?, ?, ?, ?)
     ''', attributes)
@@ -120,15 +120,15 @@ class Database:
   def insert_dyrketAv(self, attributes):
     self.cursor.execute('''
     INSERT INTO DyrketAv
-      (KaffebønneArt, KaffegårdNavn)
+      (KaffeboenneArt, KaffegaardNavn)
     VALUES
       (?, ?)
     ''', attributes)
 
   def insert_partiBestarAv(self, attributes):
     self.cursor.execute('''
-    INSERT INTO PartiBestårAv
-      (KaffebønneArt, KaffepartiId)
+    INSERT INTO PartiBestaarAv
+      (KaffeboenneArt, KaffepartiId)
     VALUES
       (?,?)
     ''', attributes)
@@ -177,9 +177,9 @@ class Database:
   def get_not_washed_rwanda_colombia(self):
     self.cursor.execute('''
     SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
-    FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
-    ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegårdNavn = Kaffegård.Navn
-    WHERE (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') 
+    FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
+    ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegaardNavn = Kaffegaard.Navn
+    WHERE (Kaffegaard.Land='Rwanda' OR Kaffegaard.Land='Colombia') 
       AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
     ''')
     return self.cursor.fetchall()

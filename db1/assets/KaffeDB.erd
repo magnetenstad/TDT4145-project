@@ -25,7 +25,7 @@
 <entity id="10" is_weak="false" name="Kaffeparti" x="374" y="245">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="ID" type=""/>
-<attribute is_hidden="false" is_key="false" name="Innhøstingsår" type=""/>
+<attribute is_hidden="false" is_key="false" name="Innhoestingsaar" type=""/>
 <attribute is_hidden="false" is_key="false" name="Kilopris" type=""/>
 </attributes>
 </entity>
@@ -35,15 +35,15 @@
 <attribute is_hidden="false" is_key="false" name="Beskrivelse" type=""/>
 </attributes>
 </entity>
-<entity id="12" is_weak="false" name="Kaffebønne" x="107" y="258">
+<entity id="12" is_weak="false" name="Kaffeboenne" x="107" y="258">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="Art" type=""/>
 </attributes>
 </entity>
-<entity id="13" is_weak="false" name="Kaffegård" x="247" y="100">
+<entity id="13" is_weak="false" name="Kaffegaard" x="247" y="100">
 <attributes>
 <attribute is_hidden="false" is_key="true" name="Navn" type=""/>
-<attribute is_hidden="false" is_key="false" name="HøydeOverHavet" type=""/>
+<attribute is_hidden="false" is_key="false" name="HoeydeOverHavet" type=""/>
 <attribute is_hidden="false" is_key="false" name="Region" type=""/>
 <attribute is_hidden="false" is_key="false" name="Land" type=""/>
 </attributes>
@@ -73,7 +73,7 @@
 <attribute name="Poeng" type=""/>
 </attributes>
 </diamond>
-<diamond id="23" is_weak="false" name="PartiBestårAv" x="236" y="268">
+<diamond id="23" is_weak="false" name="PartiBestaarAv" x="236" y="268">
 <attributes/>
 </diamond>
 <diamond id="26" is_weak="false" name="ForedletMed" x="393" y="361">

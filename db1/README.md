@@ -13,27 +13,27 @@
 <div style="page-break-after: always;"></div>
 
 ### Antakelser
-- Forskjellige kaffegårder kan ikke ha samme navn.
+- Forskjellige Kaffegaarder kan ikke ha samme navn.
 - Forskjellige kaffebrennerier kan ikke ha samme navn.
 - Flere kaffebrennerier kan navngi kaffen sin likt, derfor er Kaffe en svak klasse.
 - Alle kilopriser konverteres til samme valuta, NOK, før de lagres i databasen.
   - For å sørge for at kaffer og kaffepartier kan sorteres riktig på pris.
 - En bruker kan ikke lagre flere anmeldelser av samme kaffe.
-- En kaffegård kan være en kaffegård uten å ha begynt å produsere kaffe ennå.
+- En Kaffegaard kan være en Kaffegaard uten å ha begynt å produsere kaffe ennå.
 - Kaffebrenneri kan være et kaffebrenneri før den har begynt å brenne kaffe.  
-- Det finnes bare tre kaffebønnearter: Coffea arabica, Coffea liberica og Coffea robusta.
+- Det finnes bare tre Kaffeboennearter: Coffea arabica, Coffea liberica og Coffea robusta.
 - Kaffeparti krever en generert nøkkel.
 
 <div style="page-break-after: always;"></div>
 
 ## Relasjonsdatabasemodeller
-- **Kaffebønne** (<ins>Art</ins>) 
-  *Navn på arten er nøkkel til Kaffebønne. Hver art har et unikt navn.*
-- **Kaffegård** (<ins>Navn</ins>, HøydeOverHavet, Land, Region)
-  *Navn er nøkkel til Kaffegård, og vi antar dermed at ingen kaffegårder har samme navn.* 
-- **Kaffeparti** (<ins>ID</ins>, Innhøstingsår, Kilopris, KaffegårdNavn, ForedlingsmetodeNavn)
+- **Kaffeboenne** (<ins>Art</ins>) 
+  *Navn på arten er nøkkel til Kaffeboenne. Hver art har et unikt navn.*
+- **Kaffegaard** (<ins>Navn</ins>, HoeydeOverHavet, Land, Region)
+  *Navn er nøkkel til Kaffegaard, og vi antar dermed at ingen Kaffegaarder har samme navn.* 
+- **Kaffeparti** (<ins>ID</ins>, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
   *ID er en generert nøkkel til Kaffeparti.*
-  *KaffegårdNavn er fremmednøkkel mot Kaffegård (ProdusertAv).*
+  *KaffegaardNavn er fremmednøkkel mot Kaffegaard (ProdusertAv).*
   *ForedlingsmetodeNavn er fremmednøkkel mot Foredlingsmetode (ForedletMed).*
 - **Kaffe** (<ins>Navn</ins>, Dato, Brenningsgrad, Beskrivelse, Kilopris, KaffebrenneriNavn, KaffepartiID)
   *Navn er delvis nøkkel for Kaffe.*
@@ -49,20 +49,20 @@
   *KaffebrenneriNavn og KaffeNavn er fremmednøkler mot Kaffe.*
   *Epost er fremmednøkkel mot Bruker.*
   *Epost, KaffebrenneriNavn og KaffeNavn utgjør nøkkelen til Kaffesmaking.*
-- **DyrketAv** (<ins>KaffebønneArt</ins>, <ins>KaffegårdNavn</ins>)
-  *KaffebønneArt er fremmednøkkel mot Kaffebønne.*
-  *KaffegårdNavn er fremmednøkkel mot Kaffegård.*
+- **DyrketAv** (<ins>KaffeboenneArt</ins>, <ins>KaffegaardNavn</ins>)
+  *KaffeboenneArt er fremmednøkkel mot Kaffeboenne.*
+  *KaffegaardNavn er fremmednøkkel mot Kaffegaard.*
   *Sammen utgjør de nøkkelen til DyrketAv.*
-- **PartiBestårAv** (<ins>KaffebønneArt</ins>, <ins>KaffepartiID</ins>)
-  *KaffebønneArt er fremmednøkkel mot Kaffebønne.*
+- **PartiBestaarAv** (<ins>KaffeboenneArt</ins>, <ins>KaffepartiID</ins>)
+  *KaffeboenneArt er fremmednøkkel mot Kaffeboenne.*
   *KaffepartiID er fremmednøkkel mot Kaffeparti.*
-  *Sammen utgjør de nøkkelen til PartiBestårAv.*
+  *Sammen utgjør de nøkkelen til PartiBestaarAv.*
 
 <div style="page-break-after: always;"></div>
 
 ## Normalformer
 
-### Kaffebønne
+### Kaffeboenne
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 - Ingen (kun ett attributt)
 
@@ -72,9 +72,9 @@ Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter e
 
 *Konklusjon: Tabellen er på 4NF.*
 
-### Kaffegård
+### Kaffegaard
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- Navn $\rightarrow$ HøydeOverHavet, Land, Region
+- Navn $\rightarrow$ HoeydeOverHavet, Land, Region
 
 (Navn) er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
 
@@ -84,7 +84,7 @@ Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kand
 
 ### Kaffeparti
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
-- ID $\rightarrow$ Innhøstingsår, Kilopris, KaffegårdNavn, ForedlingsmetodeNavn
+- ID $\rightarrow$ Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn
 
 (ID) er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
 
@@ -136,17 +136,17 @@ Oppfyller 2NF fordi ingen ikke-nøkkelattributter er delvis avhengig av en (kand
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 - Ingen.
 
-(KaffebønneArt, KaffegårdNavn)  er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
+(KaffeboenneArt, KaffegaardNavn)  er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
 
 Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
 
 *Konklusjon: Tabellen er på 4NF.*
 
-### PartiBestårAv
+### PartiBestaarAv
 Ikke-trivielle funksjonelle avhengigheter og fler-verdi-avhengigheter:
 - Ingen.
 
-(KaffebønneArt, KaffepartiID)  er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
+(KaffeboenneArt, KaffepartiID)  er den eneste kandidatnøkkelen og blir dermed primærnøkkelen.
 
 Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter eller fler-verdi-avhengigheter.
 
@@ -164,9 +164,9 @@ Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter e
 
 **Kaffeparti** (1, 2021, 72, 'Bærtørket')
 
-**Kaffebønne** ('Coffea arabica')
+**Kaffeboenne** ('Coffea arabica')
 
-**Kaffegård** ('Nombre Dios', 1500, 'Santa Ana', 'El Salvador')
+**Kaffegaard** ('Nombre Dios', 1500, 'Santa Ana', 'El Salvador')
 
 **Bruker** ('ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge')
 
@@ -175,7 +175,7 @@ Oppfyller 4NF fordi det ikke er noen ikke-trivielle funksjonelle avhengigheter e
 
 **DyrketAv** ('Coffea arabica', 'Nombre de Dios')
 
-**PartiBestårAv** ('Coffea arabica', 1)
+**PartiBestaarAv** ('Coffea arabica', 1)
 
 **Foredlingsmetode** ('Bærtørket', null)
 
@@ -217,12 +217,12 @@ WHERE Kaffe.Beskrivelse LIKE '%floral%'
 ```
 
 ### Brukerhistorie 5
-Informasjonen som trengs i denne brukerhistorien finnes i tabellene Kaffe, Kaffeparti og Kaffegård. Vi joiner Kaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegård der Kaffeparti.KaffegårdNavn = Kaffegård.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti. ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med Kaffe og returnerer Kaffe.Navn og KaffebrenneriNavn.
+Informasjonen som trengs i denne brukerhistorien finnes i tabellene Kaffe, Kaffeparti og Kaffegaard. Vi joiner Kaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegaard der Kaffeparti.KaffegaardNavn = Kaffegaard.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti. ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med Kaffe og returnerer Kaffe.Navn og KaffebrenneriNavn.
 
 ```sql
 SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
-FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
-ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegårdNavn = Kaffegård.Navn
-WHERE (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') 
+FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
+ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegaardNavn = Kaffegaard.Navn
+WHERE (Kaffegaard.Land='Rwanda' OR Kaffegaard.Land='Colombia') 
   AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
 ```

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS Kaffebønne;
-DROP TABLE IF EXISTS Kaffegård;
+DROP TABLE IF EXISTS Kaffeboenne;
+DROP TABLE IF EXISTS Kaffegaard;
 DROP TABLE IF EXISTS Kaffeparti;
 DROP TABLE IF EXISTS Kaffe;
 DROP TABLE IF EXISTS Kaffebrenneri;
@@ -7,26 +7,26 @@ DROP TABLE IF EXISTS Bruker;
 DROP TABLE IF EXISTS Foredlingsmetode;
 DROP TABLE IF EXISTS Kaffesmaking;
 DROP TABLE IF EXISTS DyrketAv;
-DROP TABLE IF EXISTS PartiBestårAv;
+DROP TABLE IF EXISTS PartiBestaarAv;
 
-CREATE TABLE Kaffebønne(
+CREATE TABLE Kaffeboenne(
 Art   TEXT NOT NULL,
-CONSTRAINT Kaffebønne_PK PRIMARY KEY (Art)
+CONSTRAINT Kaffeboenne_PK PRIMARY KEY (Art)
 );
 
-CREATE TABLE Kaffegård(
+CREATE TABLE Kaffegaard(
 Navn            TEXT NOT NULL,
-HøydeOverHavet  TEXT,
+HoeydeOverHavet  TEXT,
 Land            TEXT,
 Region          TEXT,
-CONSTRAINT Kaffegård_PK PRIMARY KEY (Navn)
+CONSTRAINT Kaffegaard_PK PRIMARY KEY (Navn)
 );
 
 CREATE TABLE Kaffeparti(
 ID                    TEXT NOT NULL,
-Innhøstingsår         INTEGER,
+Innhoestingsaar         INTEGER,
 Kilopris              REAL,
-KaffegårdNavn         TEXT,
+KaffegaardNavn         TEXT,
 ForedlingsmetodeNavn  TEXT,
 CONSTRAINT Kaffeparti_PK PRIMARY KEY (ID)
 CONSTRAINT Foredlingsmetode_FK FOREIGN KEY (ForedlingsmetodeNavn) REFERENCES Foredlingsmetode(Navn)
@@ -92,27 +92,27 @@ CONSTRAINT Bruker_FK FOREIGN KEY (Epost) REFERENCES Bruker(Epost)
 );
 
 CREATE TABLE DyrketAv(
-KaffebønneArt   TEXT NOT NULL,
-KaffegårdNavn   TEXT NOT NULL,
-CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffebønneArt, KaffegårdNavn),
-CONSTRAINT Kaffebønne_FK FOREIGN KEY (KaffebønneArt) REFERENCES Kaffebønne(Art)
+KaffeboenneArt   TEXT NOT NULL,
+KaffegaardNavn   TEXT NOT NULL,
+CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffeboenneArt, KaffegaardNavn),
+CONSTRAINT Kaffeboenne_FK FOREIGN KEY (KaffeboenneArt) REFERENCES Kaffeboenne(Art)
   ON UPDATE RESTRICT
   ON DELETE RESTRICT,
--- Vi tillater ikke endring av kaffebønneart, da disse er gitt en av 3 (total og disjunkt kaffebønne) 
+-- Vi tillater ikke endring av Kaffeboenneart, da disse er gitt en av 3 (total og disjunkt Kaffeboenne) 
 -- Vi tillater ikke sletting av kaffebrennerier
-CONSTRAINT Kaffegård_FK FOREIGN KEY (KaffegårdNavn) REFERENCES Kaffegård(Navn)
+CONSTRAINT Kaffegaard_FK FOREIGN KEY (KaffegaardNavn) REFERENCES Kaffegaard(Navn)
   ON UPDATE CASCADE
   ON DELETE RESTRICT
 );
 
-CREATE TABLE PartiBestårAv(
-KaffebønneArt   TEXT NOT NULL,
+CREATE TABLE PartiBestaarAv(
+KaffeboenneArt   TEXT NOT NULL,
 KaffepartiID    TEXT NOT NULL,
-CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffebønneArt, KaffepartiID),
-CONSTRAINT Kaffebønne_FK FOREIGN KEY (KaffebønneArt) REFERENCES Kaffebønne(Art)
+CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffeboenneArt, KaffepartiID),
+CONSTRAINT Kaffeboenne_FK FOREIGN KEY (KaffeboenneArt) REFERENCES Kaffeboenne(Art)
   ON UPDATE RESTRICT
   ON DELETE RESTRICT,
--- Vi tillater ikke at Kaffebønne(Art) endres eller slettes
+-- Vi tillater ikke at Kaffeboenne(Art) endres eller slettes
 CONSTRAINT Kaffeparti_FK FOREIGN KEY (KaffepartiID) REFERENCES Kaffeparti(ID)
   ON UPDATE RESTRICT
   ON DELETE RESTRICT

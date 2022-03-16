@@ -9,7 +9,7 @@ user = None
 ### Handlers ###
 
 def handle_insert():
-  options = ['kaffe', 'kaffebrenneri','kaffeparti', 'kaffebønne', 'kaffegård', 'bruker','kaffesmaking', 'dyrket av', 'parti består av']
+  options = ['kaffe', 'kaffebrenneri','kaffeparti', 'kaffeboenne', 'Kaffegaard', 'bruker','kaffesmaking', 'dyrket av', 'parti består av']
   options_str = '\t' + '\n\t'.join(options)
   command = input(f'Hva vil du sette inn?\n{options_str}\n').lower()
   
@@ -28,19 +28,19 @@ def handle_insert():
 
     case 'kaffeparti':
       attributes = ask(
-        ['ID', 'Innhøstingsår', 'Kilopris', 'KaffegårdNavn', 'ForedlingsmetodeNavn'],
+        ['ID', 'Innhoestingsaar', 'Kilopris', 'KaffegaardNavn', 'ForedlingsmetodeNavn'],
         [str, int, float, str, str])
       db.insert_kaffebrenneri(attributes)
       
-    case 'kaffebønne':
+    case 'Kaffeboenne':
       attributes = ask(
         ['Art'], [str]
       )
       db.insert_kaffebonne(attributes)
       
-    case 'kaffegård':
+    case 'Kaffegaard':
       attributes = ask(
-        ['Navn', 'HøydeOverHavet', 'Land', 'Region'],
+        ['Navn', 'HoeydeOverHavet', 'Land', 'Region'],
         [str, str, str, str])
       db.insert_kaffegard(attributes)
       
@@ -59,13 +59,13 @@ def handle_insert():
 
     case 'dyrket av':
       attributes = ask(
-        ['KaffebønneArt', 'KaffegårdNavn'],
+        ['KaffeboenneArt', 'KaffegaardNavn'],
         [str, str])
       db.insert_dyrketAv(attributes)
       
     case 'parti består av':
       attributes = ask(
-        ['KaffebønneArt', 'KaffepartiID'],
+        ['KaffeboenneArt', 'KaffepartiID'],
         [str, str])
       db.insert_partiBestarAv(attributes)
   
