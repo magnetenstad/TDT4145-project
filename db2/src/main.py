@@ -1,22 +1,10 @@
-import sqlite3
-
 from database import Database
+from utils import ask
 
 ### Globals ###
 
 db = None
 user = None
-
-### Utils ###
-
-def ask(questions, types=None):
-	try:
-		if types == None:
-			return [input(f'{q}: ') for q in questions]
-		else:
-			return [types[i](input(f'<{types[i].__name__}> {q}: ')) for i, q in enumerate(questions)]
-	except Exception as e:
-		print(f'ERROR - {e}')
 
 ### Handlers ###
 
@@ -141,15 +129,11 @@ def main():
   global db
   global user
 
-  connection = sqlite3.connect(':memory:')
-  cursor = connection.cursor()
-
-  db = Database(cursor)
+  db = Database(':memory:')
 
   print('\nVelkommen til Kaffedatabasen 😊\n')
-
+  
   while True:
-    
     options = ['login', 'register']
     options_str = '\t' + '\n\t'.join(options)
     command = input(f'\nHva vil du gjøre?\n{options_str}\n').lower()
@@ -159,6 +143,8 @@ def main():
         handle_login()
       case 'register':
         handle_registration()
+      case 'exit':
+        break
 
     while True:
       options = ['insert', 'select', 'update', 'sign out']
@@ -176,7 +162,7 @@ def main():
           user = None
           break
 
-  connection.close()
+  db.close()
 
 
 if __name__ == '__main__':

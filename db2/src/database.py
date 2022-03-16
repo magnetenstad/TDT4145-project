@@ -1,12 +1,16 @@
-
+import sqlite3
 
 class Database:
 
-  def __init__(self, cursor) -> None:
-    self.cursor = cursor
+  def __init__(self, path) -> None:
+    self.connection = sqlite3.connect(path)
+    self.cursor = self.connection.cursor()
     self.build_tables()
     self.insert_defaults()
   
+  def close(self):
+    self.connection.close()
+
   def build_tables(self):
     with open('db2/src/tables.sql', 'r') as file:
       for i, statement in enumerate(file.read().split(';')):
