@@ -220,7 +220,7 @@ WHERE Kaffe.Beskrivelse LIKE '%floral%'
 Informasjonen som trengs i denne brukerhistorien finnes i tabellene Kaffe, Kaffeparti og Kaffegård. Vi joiner Kaffe og Kaffeparti på KaffepartiID=ID. Deretter joiner vi dette med Kaffegård der Kaffeparti.KaffegårdNavn = Kaffegård.Navn. Nå velger vi ut de gårder hvor land er enten 'Rwanda' eller 'Columbia'. Avslutningsvis velger man de radene der Kaffeparti. ForedlingsmetodeNavn ikke er lik 'vasket', før man joiner disse med Kaffe og returnerer Kaffe.Navn og KaffebrenneriNavn.
 
 ```sql
-SELECT Kaffe.Navn, FerigbrentKaffe.KaffebrenneriNavn
+SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
 FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegård
 ON Kaffe.KaffepartiID = Kaffeparti.ID AND Kaffeparti.KaffegårdNavn = Kaffegård.Navn
 WHERE (Kaffegård.Land='Rwanda' OR Kaffegård.Land='Colombia') 

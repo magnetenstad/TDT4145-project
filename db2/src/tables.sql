@@ -24,7 +24,7 @@ CONSTRAINT Kaffegård_PK PRIMARY KEY (Navn)
 
 CREATE TABLE Kaffeparti(
 ID                    TEXT NOT NULL,
-Innhøstingsår         TEXT,
+Innhøstingsår         INTEGER,
 Kilopris              REAL,
 KaffegårdNavn         TEXT,
 ForedlingsmetodeNavn  TEXT,
@@ -41,6 +41,7 @@ KaffebrenneriNavn   TEXT NOT NULL,
 Navn                TEXT NOT NULL,
 Dato                TEXT,
 Brenningsgrad       TEXT,
+Beskrivelse         TEXT,
 Kilopris            REAL,
 KaffePartiID        TEXT,
 CONSTRAINT Kaffe_PK PRIMARY KEY (KaffebrenneriNavn, Navn),
