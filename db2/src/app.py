@@ -145,7 +145,7 @@ def Select(state):
   selected = ask_select('Hva vil du gjøre spørring på?', options.keys())
   print(f'\nResultatet ble: {options[selected]()}')
   if ask_select('\nVil du gjøre en ny spørring?', ['Ja', 'Nei']) == 'Nei':
-      state.route = state.route = Main
+    state.route = Main
 
 
 def Update(state):
