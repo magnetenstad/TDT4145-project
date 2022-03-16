@@ -5,6 +5,7 @@ from database import Database
 ### Globals ###
 
 db = None
+user = None
 
 ### Utils ###
 
@@ -99,10 +100,47 @@ def handle_select():
 def handle_update():
   print('TODO: ikke implementert.')
 
+def open_app():
+  options = ['(1) Logg inn', '(2) Opprett ny bruker']
+  options_str = '\t' + '\n\t'.join(options)
+  command = input(f'\nHva vil du gjøre? Skriv inn tallet\n{options_str}\n').lower()
+  
+  match command:
+    case '1':
+      handle_login()
+    case '2':
+      handle_registration()
+
+def handle_login():
+  global user
+  while True:
+    attributes = ask(['Epost', 'Password'])
+    if db.login(attributes):
+      user = attributes[0]
+      print(f'Logget inn som {user}!')
+      break
+    else:
+      print('Ugyldig epost eller passord!')
+
+def handle_registration():
+  global user
+  while True:
+    attributes = ask(['Epost', 'Passord', 'Fullt navn', 'Land'])
+    try:
+      db.insert_bruker(attributes)
+      user = attributes[0]
+      print(f'Registrert og logget inn som {user}!')
+      break
+    except:
+      print('Eposten er allerede i bruk.')
+
+
 ### Main ###
 
 def main():
   global db
+  global user
+
   connection = sqlite3.connect(':memory:')
   cursor = connection.cursor()
 
@@ -111,19 +149,32 @@ def main():
   print('\nVelkommen til Kaffedatabasen 😊\n')
 
   while True:
-    options = ['insert', 'select', 'update', 'exit']
+    
+    options = ['login', 'register']
     options_str = '\t' + '\n\t'.join(options)
     command = input(f'\nHva vil du gjøre?\n{options_str}\n').lower()
     
     match command:
-      case 'insert':
-        handle_insert()
-      case 'select':
-        handle_select()
-      case 'update':
-        handle_select()
-      case 'exit':
-        break
+      case 'login':
+        handle_login()
+      case 'register':
+        handle_registration()
+
+    while True:
+      options = ['insert', 'select', 'update', 'sign out']
+      options_str = '\t' + '\n\t'.join(options)
+      command = input(f'\nHva vil du gjøre?\n{options_str}\n').lower()
+      
+      match command:
+        case 'insert':
+          handle_insert()
+        case 'select':
+          handle_select()
+        case 'update':
+          handle_select()
+        case 'sign out':
+          user = None
+          break
 
   connection.close()
 

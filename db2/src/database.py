@@ -136,6 +136,7 @@ class Database:
     SELECT * FROM Kaffe
     ''')
     return self.cursor.fetchall()
+  
 
   def get_unique_coffees_per_user(self):
     self.cursor.execute('''
@@ -178,3 +179,14 @@ class Database:
       AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
     ''')
     return self.cursor.fetchall()
+
+  def login(self, attributes):
+    self.cursor.execute('''
+      SELECT Epost, Passord
+      FROM Bruker
+    ''')
+    all_users = self.cursor.fetchall()
+    for user in all_users:
+      if user[0] == attributes[0] and user[1] == attributes[1]:
+        return True
+    return False

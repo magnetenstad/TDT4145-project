@@ -27,7 +27,9 @@ TODO: Registrere og logge inn som bruker eller admin.
 
 ```mermaid
 flowchart LR
-  main(Hva vil du gjøre?)
+  main(Velkommen.)
+
+  logged_in(Innlogget \n Hva vil du gjøre?)
   
   select(Hva vil du gjøre spørring på?)
   insert(Hva vil du sette inn?)
@@ -39,10 +41,14 @@ flowchart LR
   select_3(Kaffer beskrevet som 'floral')
   select_4(Ikke-vaskede kaffer fra Rwanda eller Colombia)
 
-  main -->|insert| insert
-  main -->|select| select
-  main -->|update| update
-  main -->|exit| exit
+  main -->|login| logged_in
+  main -->|register| logged_in
+
+  logged_in -->|insert| insert
+  logged_in -->|select| select
+  logged_in -->|update| update
+  logged_in -->|exit| exit
+  logged_in -->|sign out| main
 
   select -->|1| select_1
   select -->|2| select_2
