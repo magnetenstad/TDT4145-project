@@ -19,10 +19,11 @@
 - [ ] Korrekt bruk av SQL i Python.
 - [ ] Forståelig og lesbar kode.
 - [ ] Konsise og tydelige beskrivelser i dokumentet
-- [ ] Det skal være mulig å reprodusere de leverte resultatene ved hjelp av programmet og
-databasen som er levert.
+- [ ] Det skal være mulig å reprodusere de leverte resultatene ved hjelp av programmet og databasen som er levert.
 
 ## Applikasjonsbeskrivelse
+
+TODO: Registrere og logge inn som bruker eller admin.
 
 ```mermaid
 flowchart LR
