@@ -22,8 +22,8 @@ def ask_select(question, options, indexed=False):
     if selected in options:
       return selected
     try:
-      return options[int(selected)]
+      if (0 <= int(selected) < len(options)):
+        return int(selected)
     except:
       pass
     print('Ugyldig input!')
-

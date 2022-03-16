@@ -19,7 +19,7 @@ class Database:
         except Exception as e:
           print(f'[ERROR] in create table {i}: {statement}')
           print(str(e))
-      print('\nSuccessfully build tables!\n')
+      print('\nSuccessfully built tables!\n')
 
   def insert_defaults(self):
     # oppretter alle Kaffeboennetypene
