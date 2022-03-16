@@ -5,21 +5,21 @@ class Database:
   def __init__(self, path) -> None:
     self.connection = sqlite3.connect(path)
     self.cursor = self.connection.cursor()
-    self.build_tables()
+    self.create_tables()
     self.insert_defaults()
   
   def close(self):
     self.connection.close()
 
-  def build_tables(self):
+  def create_tables(self):
     with open('db2/src/tables.sql', 'r') as file:
       for i, statement in enumerate(file.read().split(';')):
         try:
           self.cursor.execute(statement)
         except Exception as e:
-          print(f'[ERROR] in create table {i}: {statement}')
-          print(str(e))
-      print('\nSuccessfully built tables!\n')
+          print(f'[DB] [ERROR] in create table {i}: {statement}')
+          print(e)
+      print('\n[DB] Successfully built tables!\n')
 
   def insert_defaults(self):
     # oppretter alle Kaffeboennetypene
@@ -166,7 +166,7 @@ class Database:
   def get_floral_description(self):
     self.cursor.execute('''
     SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn
-    FROM Kaffe INNER JOIN Kaffesmaking
+    FROM Kaffe LEFT OUTER JOIN Kaffesmaking
     ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
       AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
     WHERE Kaffe.Beskrivelse LIKE '%floral%'

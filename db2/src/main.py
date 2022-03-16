@@ -6,8 +6,6 @@ def main():
   state = AppState()
   state.db = Database(':memory:')
 
-  print('\nVelkommen til Kaffedatabasen 😊\n')
-  
   App(state)
 
   state.db.close()

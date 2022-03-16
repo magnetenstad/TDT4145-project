@@ -8,29 +8,33 @@ class Response:
 class AppState:
   db = None
   user = None
-  route = lambda: print('[ERROR] Route is not defined.')
-
+  route = None
 
 def App(state):
   state.route = Welcome
   while True:
+    print('\n'*48)
+    if state.user:
+      print(f'Logget inn som \'{state.user}\'')
+    print('\n'*4)
     if state.route(state) == Response.exit:
       break
 
 def Welcome(state):
+  print('Velkommen til Kaffedatabasen 😊☕\n')
   options = {
-    'login': Login,
-    'register': Register,
-    'exit': Exit
+    'Logge inn': Login,
+    'Registrere en ny bruker': Register,
+    'Avslutte': Exit
   }
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
 
 def Main(state):
   options = {
-    'insert': Insert,
-    'select': Select,
-    'update': Update,
-    'sign out': SignOut
+    'Skrive data': Insert,
+    'Lese data': Select,
+    'Oppdatere data': Update,
+    'Logge ut': SignOut
   }
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
 
@@ -42,27 +46,29 @@ def Exit(_):
   return Response.exit
 
 def Login(state):
-  while True:
-    attributes = ask(['Epost', 'Password'])
-    if state.db.login(attributes):
-      state.user = attributes[0]
-      state.route = Main
-      print(f'Logget inn som {state.user}!')
-      break
-    else:
-      print('Ugyldig epost eller passord!')
+  print('Logg inn med epost og passord:\n')
+  attributes = ask(['Epost', 'Password'])
+  if state.db.login(attributes):
+    state.user = attributes[0]
+    state.route = Main
+    print(f'Logget inn som {state.user}!')
+  else:
+    print('\nUgyldig epost eller passord!')
+    if ask_select('\nVil du prøve på nytt?', ['Ja', 'Nei']) == 'Nei':
+      state.route = Welcome
 
 def Register(state):
-  while True:
-    attributes = ask(['Epost', 'Passord', 'Fullt navn', 'Land'])
-    try:
-      state.db.insert_bruker(attributes)
-      state.user = attributes[0]
-      state.route = Main
-      print(f'\nRegistrert og logget inn som {state.user}!\n')
-      break
-    except:
-      print('\nEposten er allerede i bruk.\n')
+  print('Registrer deg med epost, passord, navn og land:\n')
+  attributes = ask(['Epost', 'Passord', 'Fullt navn', 'Land'])
+  try:
+    state.db.insert_bruker(attributes)
+    state.user = attributes[0]
+    state.route = Main
+    print(f'\nRegistrert og logget inn som {state.user}!\n')
+  except:
+    print('\nEposten er allerede i bruk.\n')
+    if ask_select('\nVil du prøve på nytt?', ['Ja', 'Nei']) == 'Nei':
+      state.route = Welcome
 
 
 def Insert(state):
@@ -74,6 +80,7 @@ def Insert(state):
       attributes = ask(
         ['Navn', 'Dato', 'Brenningsgrad', 'Beskrivelse', 'Kilopris', 'KaffebrenneriNavn', 'KaffepartiID'],
         [str, str, str, str, float, str, str])
+      print(attributes)
       state.db.insert_kaffe(attributes)
       
     case 'kaffebrenneri':
@@ -128,20 +135,18 @@ def Insert(state):
 
 
 def Select(state):
-  match ask_select('Hva vil du gjøre spørring på?', [
-      'flest unike kaffer i år',
-      'mest for pengene',
-      'beskrevet som floral',
-      'ikke vasket fra Rwanda eller Colombia'], indexed=True):
-    case 0:
-      print(state.db.get_unique_coffees_per_user())
-    case 1:
-      print(state.db.get_value_per_money())
-    case 2:
-      print(state.db.get_floral_description())
-    case 3:
-      print(state.db.get_not_washed_rwanda_colombia())
-  state.route = Main
+  options = {
+    'Flest unike kaffer i år': state.db.get_unique_coffees_per_user,
+    'Mest for pengene': state.db.get_value_per_money,
+    'Beskrevet som floral': state.db.get_floral_description,
+    'Ikke vasket fra Rwanda eller Colombia':
+        state.db.get_not_washed_rwanda_colombia
+  }
+  selected = ask_select('Hva vil du gjøre spørring på?', options.keys())
+  print(f'\nResultatet ble: {options[selected]()}')
+  if ask_select('\nVil du gjøre en ny spørring?', ['Ja', 'Nei']) == 'Nei':
+      state.route = state.route = Main
+
 
 def Update(state):
   print('TODO: ikke implementert.')

@@ -9,21 +9,28 @@ def ask(questions, types=None):
         try:
           answers.append(
             types[i](input(f'<{types[i].__name__}> {q}: ').lower()))
+          break
         except:
-          print('Ugyldig input!')
+          print('\nUgyldig input! Prøv igjen.\n')
+    return answers
 
-def ask_select(question, options, indexed=False):
-  if indexed:
-    options = [f'({i})' + option for i, option in enumerate(options)]
-    # question += '\n(skriv tallet)'
-  options_str = '\t' + '\n\t'.join(options)
+def ask_select(question, options, return_int=False):
+  options = list(options)
+  indexed_options = '\t' + \
+      '\n\t'.join([f'({i}) {option}' for i, option in enumerate(options)])
   while True:
-    selected = input(f'{question}\n{options_str}\n').lower()
-    if selected in options:
-      return selected
+    selected = input(f'{question}\n{indexed_options}\n').lower()
+    for i, option in enumerate(options):
+      if selected == option.lower():
+        if return_int:
+          return i
+        else:
+          return option
     try:
-      if (0 <= int(selected) < len(options)):
+      option = options[int(selected)]
+      if return_int:
         return int(selected)
+      else:
+        return option 
     except:
-      pass
-    print('Ugyldig input!')
+      print('\nUgyldig input! Prøv igjen.\n')
