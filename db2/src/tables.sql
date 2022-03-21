@@ -16,7 +16,7 @@ CONSTRAINT Kaffeboenne_PK PRIMARY KEY (Art)
 
 CREATE TABLE Kaffegaard(
 Navn            TEXT NOT NULL,
-HoeydeOverHavet  TEXT,
+HoeydeOverHavet  REAL,
 Land            TEXT,
 Region          TEXT,
 CONSTRAINT Kaffegaard_PK PRIMARY KEY (Navn)

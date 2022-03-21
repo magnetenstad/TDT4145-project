@@ -80,11 +80,14 @@ def Register(state):
 
 def Insert(state):
   match ask_select('Hva vil du sette inn?', [
-      'kaffe', 'kaffebrenneri','kaffeparti', 'kaffeboenne', 'kaffegaard','kaffesmaking', 'dyrket av', 'parti består av']):
-    
+      'kaffe', 'kaffebrenneri','kaffeparti', 'kaffeboenne', 'kaffegaard','kaffesmaking', 'dyrket av', 'parti består av', 'ingenting']):
+       
+    case 'ingenting':
+      pass
+
     case 'kaffe':
       attributes = ask(
-        ['Navn', 'Dato', 'Brenningsgrad', 'Beskrivelse', 'Kilopris', 'KaffebrenneriNavn', 'KaffepartiID'],
+        ['Navn', 'Brenningsdato (yyyy.mm.dd)', 'Brenningsgrad', 'Beskrivelse', 'Kilopris', 'KaffebrenneriNavn', 'KaffepartiID'],
         [str, str, str, str, float, str, str])
       state.db.insert_kaffe(attributes)
     
@@ -123,7 +126,7 @@ def Insert(state):
         ['KaffebrenneriNavn', 'KaffeNavn', 'Smaksnotater', 'Poeng', 'Dato (yyyy.mm.dd)'],
         [str, str, str, int, str]
       )
-
+ 
       state.db.insert_kaffebrenneri([kaffesmaking[0]])
 
       if (state.db.kaffesmaking_exists([state.user] + kaffesmaking[:2])):
@@ -135,15 +138,79 @@ def Insert(state):
         state.db.insert_kaffesmaking([state.user] + kaffesmaking)
       
       if not state.db.kaffe_exists(kaffesmaking[:2]):
-        print('Vi har ikke informasjon om kaffen du har smakt. Vennligst fyll inn følgende:')
+        print('\nVi har ikke informasjon om kaffen du har smakt. Vennligst fyll inn følgende:\n')
+
+        # Kaffe
 
         kaffe = ask(
-        ['Dato', 'Brenningsgrad', 'Beskrivelse', 'Kilopris', 'KaffepartiID'],
-        [str, str, str, float, int])
+        ['Brenningsdato (yyyy.mm.dd)', 'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
+        [str, str, str, float])
+
         kaffe.insert(0, kaffesmaking[1])
         kaffe.insert(5, kaffesmaking[0])
-        state.db.insert_kaffe(kaffe)
 
+        kaffeparti_options = {
+          str(x[1:]): x[0] for x in state.db.get_kaffepartier()
+        }
+        kaffeparti_options['Ingen av disse.'] = -1
+        kaffeparti_id = kaffeparti_options[ask_select('\nHvilket kaffeparti er kaffen din fremstilt av?', kaffeparti_options.keys())]
+
+        if kaffeparti_id == -1:
+          print(f'Du valgte ingen av de eksisterende kaffepartiene. Vennligst fyll inn følgende: ')
+
+          kaffeparti = ask(
+            ['Innhøstningsår', 'Kilopris'],
+            [int, float])
+          
+          # Kaffegård
+          
+          kaffegaard_options = {
+            str(x[:]): x[0] for x in state.db.get_kaffegaarder()
+          }
+          kaffegaard_options['Ingen av disse.'] = -1
+          kaffegaard_navn = kaffegaard_options[
+            ask_select('\nHvilken kaffegård har produsert partiet?', kaffegaard_options.keys())
+          ]
+
+          if kaffegaard_navn == -1:
+            kaffegaard = ask(['Navn', 'HoeydeOverHavet', 'Land', 'Region'], [str, float, str, str])
+            state.db.insert_kaffegaard(kaffegaard)
+            kaffeparti.append(kaffegaard[0])
+          else:
+            kaffeparti.append(kaffegaard_navn)
+
+          # Foredlingsmetode
+
+          foredlingsmetode_options = {
+            str(x[:]): x[0] for x in state.db.get_foredlingsmetoder()
+          }
+          foredlingsmetode_options['Ingen av disse.'] = -1
+          foredlingsmetode_navn = foredlingsmetode_options[
+            ask_select('\nHvilken foredlingsmetode er brukt?', foredlingsmetode_options.keys())
+          ]
+
+          if foredlingsmetode_navn == -1:
+            foredlingsmetode = ask(['Navn', 'Beskrivelse'], [str, str])
+            state.db.insert_foredlingsmetode(foredlingsmetode)
+            kaffeparti.append(foredlingsmetode[0])
+          else:
+            kaffeparti.append(foredlingsmetode_navn)
+          
+          kaffeparti_id = state.db.insert_kaffeparti(kaffeparti)
+          kaffe.append(kaffeparti_id)
+          
+          # Kaffebønner?
+
+          for boenne in state.db.get_kaffeboenner():
+            if ask_select(f'Består partiet av {boenne[0]}?',
+                ['Ja', 'Nei']) == 'Ja':
+              state.db.insert_partiBestaarAv([boenne[0], kaffeparti_id])
+
+        else:
+          print(f'Du valgte {kaffeparti_id}')
+          kaffe.append(kaffeparti_id)
+        
+        state.db.insert_kaffe(kaffe)
 
     case 'dyrket av':
       attributes = ask(
@@ -162,12 +229,13 @@ def Insert(state):
 
 def Select(state):
   options = {
-    'Alle kaffesmakinger': state.db.get_kaffesmaking,
+    'Alle kaffesmakinger': state.db.get_kaffesmakinger,
     'Flest unike kaffer i år': state.db.get_unique_coffees_per_user,
     'Mest for pengene': state.db.get_value_per_money,
     'Beskrevet som floral': state.db.get_floral_description,
     'Ikke vasket fra Rwanda eller Colombia':
         state.db.get_not_washed_rwanda_colombia,
+    'Hele databasen': state.db.print_all,
   }
   selected = ask_select('Hva vil du gjøre spørring på?', options.keys())
   print(f'\nResultatet ble: {options[selected]()}')

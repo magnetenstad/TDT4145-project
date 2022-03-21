@@ -1,13 +1,14 @@
 import sqlite3
+import pandas as pd
 
 class Database:
 
   def __init__(self, path) -> None:
     self.connection = sqlite3.connect(path)
     self.cursor = self.connection.cursor()
+    self.uuid = 0 # NOTE: This only works in memory
     self.create_tables()
     self.insert_defaults()
-    self.uuid = 0 # NOTE: This only works in memory
 
   def close(self):
     self.connection.close()
@@ -23,6 +24,8 @@ class Database:
       print('\n[DB] Successfully built tables!\n')
 
   def insert_defaults(self):
+    self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
+
     # oppretter alle Kaffeboennetypene
 
     self.insert_kaffeboenne(['Coffea arabica'])
@@ -74,7 +77,7 @@ class Database:
     self.uuid += 1
     self.cursor.execute('''
     INSERT OR IGNORE INTO Kaffeparti
-      (Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
+      (ID, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
     VALUES
       (?, ?, ?, ?, ?)
     ''', [self.uuid] + attributes)
@@ -138,18 +141,48 @@ class Database:
 
   ### Getters ###
 
-  def get_kaffe(self):
+  def get_kaffer(self):
     self.cursor.execute('''
-    SELECT * FROM Kaffe
+    SELECT * 
+    FROM Kaffe
     ''')
     return self.cursor.fetchall()
   
-  def get_kaffesmaking(self):
+  def get_kaffesmakinger(self):
     self.cursor.execute('''
-    SELECT * FROM Kaffesmaking
+    SELECT * 
+    FROM Kaffesmaking
     ''')
     return self.cursor.fetchall()
   
+  def get_kaffepartier(self):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Kaffeparti
+    ''')
+    return self.cursor.fetchall()
+  
+  def get_foredlingsmetoder(self):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Foredlingsmetode
+    ''')
+    return self.cursor.fetchall()
+
+  def get_kaffegaarder(self):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Kaffegaard
+    ''')
+    return self.cursor.fetchall()
+  
+  def get_kaffeboenner(self):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Kaffeboenne
+    ''')
+    return self.cursor.fetchall()
+
   def get_unique_coffees_per_user(self):
     self.cursor.execute('''
     SELECT FulltNavn, COUNT(*) AS Antall
@@ -225,3 +258,17 @@ class Database:
     WHERE KaffebrenneriNavn = ? AND Navn = ? 
     ''', attributes)
     return bool(self.cursor.fetchone())
+
+  
+  def kaffegaard_exists(self, attributes):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Kaffegaard
+    WHERE Navn = ?
+    ''', attributes)
+    return bool(self.cursor.fetchone())
+
+  def print_all(self):
+    # TODO
+    self.connection.commit()
+    return pd.read_sql_query("SELECT * FROM sqlite_master WHERE type='table'", self.connection)
