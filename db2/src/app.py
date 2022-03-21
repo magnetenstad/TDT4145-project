@@ -36,7 +36,6 @@ def Main(state):
   options = {
     'Skrive data': Insert,
     'Lese data': Select,
-    'Oppdatere data': Update,
     'Logge ut': SignOut
   }
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
@@ -106,37 +105,36 @@ def Select(state):
     state.route = Main
 
 
-def Update(state):
-  print('TODO: ikke implementert.')
-  state.route = Main
-
-
-
 def ask_kaffebrenneri(state):
-  kaffebrenneri = ask(
-    ['Navn'], [str]
-  )
+  print('\nFyll inn følgende verdier for kaffebrenneriet.\n')
+  kaffebrenneri = ask(['Navn'], [str])
   state.db.insert_kaffebrenneri(kaffebrenneri)
+  print(f'\n ✓ Satt inn kaffebrenneriet {kaffebrenneri}')
   return kaffebrenneri[0]
 
 def ask_foredlingsmetode(state):
+  print('\nFyll inn følgende verdier for foredlingsmetoden.\n')
   foredlingsmetode = ask(['Navn', 'Beskrivelse'], [str, str])
   state.db.insert_foredlingsmetode(foredlingsmetode)
+  print(f'\n ✓ Satt inn foredlingsmetoden {foredlingsmetode}')
   return foredlingsmetode[0]
 
 def ask_kaffegaard(state):
+  print('\nFyll inn følgende verdier for kaffegården.\n')
   kaffegaard = ask(['Navn', 'HoeydeOverHavet', 'Land', 'Region'],
       [str, float, str, str])
   state.db.insert_kaffegaard(kaffegaard)
   
   for kaffeboenne in state.db.get_kaffeboenner():
-    if ask_select(f'Dyrker gården {kaffeboenne[0]}?',
+    if ask_select(f'Dyrker gården kaffebønnen {kaffeboenne[0]}?',
         ['Ja', 'Nei']) == 'Ja':
       state.db.insert_dyrketAv([kaffeboenne[0], kaffegaard[0]])
-  
+
+  print(f'\n ✓ Satt inn kaffegården {kaffegaard}')
   return kaffegaard[0]
 
 def ask_kaffeparti(state):
+  print('\nFyll inn følgende verdier for kaffepartiet.\n')
   kaffeparti = ask(
       ['Innhøstningsår', 'Kilopris'],
       [int, float])
@@ -156,48 +154,53 @@ def ask_kaffeparti(state):
   kaffeparti_id = state.db.insert_kaffeparti(kaffeparti)
 
   for kaffeboenne in state.db.get_kaffeboenner():
-    if ask_select(f'Består partiet av {kaffeboenne[0]}?',
+    if ask_select(f'Består partiet av kaffebønnen {kaffeboenne[0]}?',
         ['Ja', 'Nei']) == 'Ja':
       state.db.insert_partiBestaarAv([kaffeboenne[0], kaffeparti_id])
   
+  print(f'\n ✓ Satt inn kaffepartiet {kaffeparti}')
   return kaffeparti_id
 
 def ask_kaffe(state, kaffe_PK=None):
-    if kaffe_PK:
-      kaffe = kaffe_PK + ask(['Brenningsdato (yyyy.mm.dd)', 
-          'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
-          [str, str, str, float])
-    else:
-      kaffe = ask(['KaffebrenneriNavn', 'Navn', 'Brenningsdato (yyyy.mm.dd)', 
-          'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
-          [str, str, str, str, str, float])
+  print('\nFyll inn følgende verdier for kaffen.\n')
+  if kaffe_PK:
+    kaffe = kaffe_PK + ask(['Brenningsdato (yyyy.mm.dd)', 
+        'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
+        [str, str, str, float])
+  else:
+    kaffe = ask(['KaffebrenneriNavn', 'Navn', 'Brenningsdato (yyyy.mm.dd)', 
+        'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
+        [str, str, str, str, str, float])
 
-    kaffe.append(
-        ask_select_or_create(state,
-            '\nHvilket kaffeparti er kaffen fremstilt av?',
-            state.db.get_kaffepartier(),
-            ask_kaffeparti))
+  kaffe.append(
+      ask_select_or_create(state,
+          '\nHvilket kaffeparti er kaffen fremstilt av?',
+          state.db.get_kaffepartier(),
+          ask_kaffeparti))
 
-    state.db.insert_kaffe(kaffe)
+  state.db.insert_kaffe(kaffe)
+  print(f'\n ✓ Satt inn kaffen {kaffe}')
+  return kaffe[:2]
 
 def ask_kaffesmaking(state):
-  kaffesmaking = ask(['KaffebrenneriNavn', 'KaffeNavn',
-      'Smaksnotater', 'Poeng', 'Dato (yyyy.mm.dd)'],
-      [str, str, str, int, str])
+  kaffe = list(ask_select_or_create(state,
+      '\nHvilken kaffe har du smakt?',
+      state.db.get_kaffer(),
+      ask_kaffe, key_end=2))
 
-  state.db.insert_kaffebrenneri([kaffesmaking[0]])
-
-  if (state.db.kaffesmaking_exists([state.user] + kaffesmaking[:2])):
-    print('Du har allerede smakt på denne kaffen.')
+  if (state.db.kaffesmaking_exists([state.user] + kaffe)):
+    print('\nDu har allerede smakt på denne kaffen.\n')
     if ask_select(
-        '\nVil du erstatte den eksisterende kaffesmakingen?',
-        ['Ja', 'Nei']) == 'Ja':
-      state.db.delete_kaffesmaking([state.user] + kaffesmaking[:2])
-      state.db.insert_kaffesmaking([state.user] + kaffesmaking)
-  else:
-    state.db.insert_kaffesmaking([state.user] + kaffesmaking)
+        'Vil du erstatte den eksisterende kaffesmakingen?',
+        ['Ja', 'Nei']) == 'Nei':
+      return
+    state.db.delete_kaffesmaking([state.user] + kaffe)
   
-  if not state.db.kaffe_exists(kaffesmaking[:2]):
-    print('\nVi har ikke informasjon om kaffen du har smakt. Vennligst fyll inn følgende:\n')
-    ask_kaffe(state, kaffesmaking[:2])
+  print('\nFyll inn følgende verdier for kaffesmakingen.\n')
+  kaffesmaking = [state.user] + kaffe + \
+      ask(['Smaksnotater', 'Poeng', 'Dato (yyyy.mm.dd)'],
+          [str, str, str, int, str])
 
+  state.db.insert_kaffesmaking(kaffesmaking)
+  print(f'\n ✓ Satt inn kaffesmakingen {kaffesmaking}')
+  return kaffesmaking[:2]

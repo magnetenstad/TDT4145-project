@@ -40,14 +40,14 @@ def ask_select(question, options, return_int=False):
     except:
       print('\nUgyldig input! Prøv igjen.\n')
 
-def ask_select_row(question, rows):
-  options = {
-    str(x[:]): x[0] for x in rows
-  }
+def ask_select_row(question, rows, key_end=None):
+  if key_end != None:
+    options = {str(x[:]): x[0:key_end] for x in rows}
+  else:
+    options = {str(x[:]): x[0] for x in rows}
   options['Ingen av disse.'] = -1
-  return options[
-    ask_select(question, options.keys())]
+  return options[ask_select(question, options.keys())]
 
-def ask_select_or_create(state, question, rows, ask_create):
-  row_id = ask_select_row(question, rows)
+def ask_select_or_create(state, question, rows, ask_create, key_end=None):
+  row_id = ask_select_row(question, rows, key_end)
   return ask_create(state) if row_id == -1 else row_id
