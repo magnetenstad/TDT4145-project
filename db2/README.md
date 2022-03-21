@@ -13,6 +13,9 @@
 - [ ] Brukerhistorie 3 med SQL-spørring og data for å teste spørringen
 - [ ] Brukerhistorie 4 med SQL-spørring og data for å teste spørringen
 - [ ] Brukerhistorie 5 med SQL-spørring og data for å teste spørringen
+- [ ] Notere alle endringer som er gjort fra DB1 (se git history)
+- [ ] Skrive og begrunne antakelser
+- [ ] Forklare hvordan programmet kjøres og brukes
 
 ## Evalueringskriterier
 - [ ] En oversikt over hvordan brukerhistoriene er løst.
