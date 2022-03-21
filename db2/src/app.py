@@ -55,7 +55,7 @@ def Exit(_):
 def Login(state):
   print('Logg inn med epost og passord:\n')
   attributes = ask(['Epost', 'Password'])
-  if state.db.login(attributes):
+  if state.db.bruker_exists(attributes):
     state.user = attributes[0]
     state.route = Main
   else:

@@ -1,5 +1,5 @@
 import sqlite3
-import pandas as pd
+import pandas as pd # TODO: Skal vi bruke pandas?
 
 class Database:
 
@@ -225,7 +225,7 @@ class Database:
     ''')
     return self.cursor.fetchall()
 
-  def login(self, attributes):
+  def bruker_exists(self, attributes):
     self.cursor.execute('''
       SELECT Epost, Passord
       FROM Bruker
@@ -259,7 +259,6 @@ class Database:
     ''', attributes)
     return bool(self.cursor.fetchone())
 
-  
   def kaffegaard_exists(self, attributes):
     self.cursor.execute('''
     SELECT * 
@@ -269,6 +268,11 @@ class Database:
     return bool(self.cursor.fetchone())
 
   def print_all(self):
-    # TODO
-    self.connection.commit()
-    return pd.read_sql_query("SELECT * FROM sqlite_master WHERE type='table'", self.connection)
+    result = '\n'
+    self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+    tables = self.cursor.fetchall()
+    for table_name in tables:
+        table_name = table_name[0]
+        table = pd.read_sql_query('SELECT * from %s' % table_name, self.connection)
+        result += f'\n _{table_name}_ \n{table}\n'
+    return result
