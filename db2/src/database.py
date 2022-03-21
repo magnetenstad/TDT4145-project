@@ -7,7 +7,8 @@ class Database:
     self.cursor = self.connection.cursor()
     self.create_tables()
     self.insert_defaults()
-  
+    self.uuid = 0 # NOTE: This only works in memory
+
   def close(self):
     self.connection.close()
 
@@ -36,23 +37,23 @@ class Database:
     # Brukerhistorie 1:
 
     self.insert_kaffegaard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
-    self.insert_kaffeparti([1, 2021, 72, 'Nombre Dios', 'bærtørket'])
-    self.insert_kaffe(['Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, 'Jacobsen & Svart', 1])
+    self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
+    uuid = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'bærtørket'])
+    self.insert_partiBestaarAv(['Coffea arabica', uuid])
+    self.insert_kaffe(['Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, 'Jacobsen & Svart', uuid])
     self.insert_kaffebrenneri(['Jacobsen & Svart'])
     self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
     self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
-    self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
-    self.insert_partiBestaarAv(['Coffea arabica', 1])
 
     # Brukerhistorie 4:
 
     self.insert_kaffegaard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
-    self.insert_kaffeparti([2, 2021, 72, 'Akageragården', 'bærtørket'])
-    self.insert_kaffe(['Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400, 'Jacobsen & Svart', 2])
+    uuid = self.insert_kaffeparti([2021, 72, 'Akageragården', 'bærtørket'])
+    self.insert_kaffe(['Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400, 'Jacobsen & Svart', uuid])
 
     self.insert_kaffegaard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
-    self.insert_kaffeparti([3, 2019, 10, 'Bogotagården', 'vasket'])
-    self.insert_kaffe(['Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, 'Jacobsen & Svart', 2])
+    uuid = self.insert_kaffeparti([2019, 10, 'Bogotagården', 'vasket'])
+    self.insert_kaffe(['Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, 'Jacobsen & Svart', uuid])
 
   def insert_kaffe(self, attributes):
     self.cursor.execute('''
@@ -69,14 +70,16 @@ class Database:
       (?)
     ''', attributes)
 
-  def insert_kaffeparti(self, attributes):
+  def insert_kaffeparti(self, attributes) -> int:
+    self.uuid += 1
     self.cursor.execute('''
-    INSERT INTO Kaffeparti
-      (ID, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
+    INSERT OR IGNORE INTO Kaffeparti
+      (Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
     VALUES
       (?, ?, ?, ?, ?)
-    ''', attributes)
-    
+    ''', [self.uuid] + attributes)
+    return self.uuid
+  
   def insert_kaffeboenne(self, attributes):
     self.cursor.execute('''
     INSERT INTO Kaffeboenne
@@ -141,6 +144,12 @@ class Database:
     ''')
     return self.cursor.fetchall()
   
+  def get_kaffesmaking(self):
+    self.cursor.execute('''
+    SELECT * FROM Kaffesmaking
+    ''')
+    return self.cursor.fetchall()
+  
   def get_unique_coffees_per_user(self):
     self.cursor.execute('''
     SELECT FulltNavn, COUNT(*) AS Antall
@@ -193,3 +202,26 @@ class Database:
       if user[0] == attributes[0] and user[1] == attributes[1]:
         return True
     return False
+
+  def kaffesmaking_exists(self, attributes):
+    self.cursor.execute('''
+      SELECT *
+      FROM Kaffesmaking
+      WHERE Epost = ? AND KaffebrenneriNavn = ? AND KaffeNavn = ?
+    ''', attributes)
+    return bool(self.cursor.fetchone())
+
+  def delete_kaffesmaking(self, attributes):
+    self.cursor.execute('''
+      DELETE *
+      FROM Kaffesmaking
+      WHERE Epost = ? AND KaffebrenneriNavn = ? AND KaffeNavn = ?
+    ''', attributes)
+
+  def kaffe_exists(self, attributes):
+    self.cursor.execute('''
+    SELECT * 
+    FROM Kaffe
+    WHERE KaffebrenneriNavn = ? AND Navn = ? 
+    ''', attributes)
+    return bool(self.cursor.fetchone())

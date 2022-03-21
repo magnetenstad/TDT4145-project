@@ -23,10 +23,10 @@ CONSTRAINT Kaffegaard_PK PRIMARY KEY (Navn)
 );
 
 CREATE TABLE Kaffeparti(
-ID                    TEXT NOT NULL,
-Innhoestingsaar         INTEGER,
+ID                    INTEGER NOT NULL,
+Innhoestingsaar       INTEGER,
 Kilopris              REAL,
-KaffegaardNavn         TEXT,
+KaffegaardNavn        TEXT,
 ForedlingsmetodeNavn  TEXT,
 CONSTRAINT Kaffeparti_PK PRIMARY KEY (ID)
 CONSTRAINT Foredlingsmetode_FK FOREIGN KEY (ForedlingsmetodeNavn) REFERENCES Foredlingsmetode(Navn)
