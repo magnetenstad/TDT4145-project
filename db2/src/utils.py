@@ -27,16 +27,10 @@ def ask_select(question, options, return_int=False):
     selected = pinput(f'{question}\n{indexed_options}\n').lower()
     for i, option in enumerate(options):
       if selected == option.lower():
-        if return_int:
-          return i
-        else:
-          return option
+        return i if return_int else option
     try:
       option = options[int(selected)]
-      if return_int:
-        return int(selected)
-      else:
-        return option 
+      return int(selected) if return_int else option
     except:
       print('\nUgyldig input! Prøv igjen.\n')
 

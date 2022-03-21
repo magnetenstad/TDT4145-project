@@ -14,10 +14,9 @@ class AppState:
 def App(state):
   state.route = Welcome
   while True:
-    print()#'\n'*48)
+    print()
     if state.user:
-      print(f'Logget inn som \'{state.user}\'')
-    print()#'\n'*4)
+      print(f'Logget inn som \'{state.user}\'\n')
     if state.route(state) == Response.exit:
       break
 
