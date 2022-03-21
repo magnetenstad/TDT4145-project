@@ -11,6 +11,7 @@ class Database:
     self.insert_defaults()
 
   def close(self):
+    self.cursor.close() # TODO: Skal cursor lukkes oftere?
     self.connection.close()
 
   def create_tables(self):
@@ -184,6 +185,7 @@ class Database:
     return self.cursor.fetchall()
 
   def get_unique_coffees_per_user(self):
+    # TODO: Hva med brukere som ikke har kaffesmakinger?
     self.cursor.execute('''
     SELECT FulltNavn, COUNT(*) AS Antall
     FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
