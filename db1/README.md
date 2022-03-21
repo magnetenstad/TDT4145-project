@@ -8,7 +8,7 @@
 | Tenstad    | Magne Erlendsønn       | magneet@stud.ntnu.no  |
 
 ## ER-modell
-![](images/er.png)
+![](assets/er.png)
 
 <div style="page-break-after: always;"></div>
 

@@ -1,14 +1,19 @@
 
+# Doesn't hide the prompt when testing with unittest
+def pinput(prompt):
+  print(prompt, end='')
+  return input()
+
 def ask(questions, types=None):
   if types == None:
-    return [input(f'{q}: ') for q in questions]
+    return [pinput(f'{q}: ') for q in questions]
   else:
     answers = []
     for i, q in enumerate(questions):
       while True:
         try:
           answers.append(
-            types[i](input(f'<{types[i].__name__}> {q}: ').lower()))
+            types[i](pinput(f'<{types[i].__name__}> {q}: ').lower()))
           break
         except:
           print('\nUgyldig input! Prøv igjen.\n')
@@ -19,7 +24,7 @@ def ask_select(question, options, return_int=False):
   indexed_options = '\t' + \
       '\n\t'.join([f'({i}) {option}' for i, option in enumerate(options)])
   while True:
-    selected = input(f'{question}\n{indexed_options}\n').lower()
+    selected = pinput(f'{question}\n{indexed_options}\n').lower()
     for i, option in enumerate(options):
       if selected == option.lower():
         if return_int:

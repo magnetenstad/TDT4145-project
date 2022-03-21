@@ -14,7 +14,7 @@ class Database:
     self.connection.close()
 
   def create_tables(self):
-    with open('db2/src/tables.sql', 'r') as file:
+    with open('tables.sql', 'r') as file:
       for i, statement in enumerate(file.read().split(';')):
         try:
           self.cursor.execute(statement)
