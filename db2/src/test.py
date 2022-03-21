@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
     main()
 
   @patch('builtins.input', 
-        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'KaffebrenneriNavn', 'KaffeNavn', 'Smaksnotater', '5', 'Smaksdato', 'Brenningsdato', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Nei', 'Ja', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
+        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'KaffebrenneriNavn', 'KaffeNavn', 'Smaksnotater', '5', 'Smaksdato', 'Brenningsdato', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ja', 'Nei', 'Ja', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Nei', 'Ja', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
   def test_insert_kaffesmaking(self, _):
     print('\n\n### TEST 3 ###')
     main()

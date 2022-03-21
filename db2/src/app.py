@@ -82,11 +82,8 @@ def Insert(state):
       'kaffe': ask_kaffe,
       'kaffebrenneri': ask_kaffebrenneri,
       'kaffeparti': ask_kaffeparti,
-      'kaffeboenne': ask_kaffeboenne,
       'kaffegaard': ask_kaffegaard,
       'kaffesmaking': ask_kaffesmaking, 
-      'dyrket av': ask_dyrketAv,
-      'parti består av': ask_partiBestaarAv,
       'Ingenting, gå tilbake': lambda _: None
   }
   options[ask_select('Hva vil du sette inn?', options.keys())](state)
@@ -122,24 +119,6 @@ def ask_kaffebrenneri(state):
   state.db.insert_kaffebrenneri(kaffebrenneri)
   return kaffebrenneri[0]
 
-def ask_kaffeboenne(state):
-  kaffeboenne = ask(
-    ['Art'], [str]
-  )
-  state.db.insert_kaffeboenne(kaffeboenne)
-
-def ask_dyrketAv(state):
-  attributes = ask(
-    ['KaffeboenneArt', 'KaffegaardNavn'],
-    [str, str])
-  state.db.insert_dyrketAv(attributes)
-
-def ask_partiBestaarAv(state):
-  attributes = ask(
-    ['KaffeboenneArt', 'KaffepartiID'],
-    [str, str])
-  state.db.insert_partiBestaarAv(attributes)
-
 def ask_foredlingsmetode(state):
   foredlingsmetode = ask(['Navn', 'Beskrivelse'], [str, str])
   state.db.insert_foredlingsmetode(foredlingsmetode)
@@ -149,6 +128,12 @@ def ask_kaffegaard(state):
   kaffegaard = ask(['Navn', 'HoeydeOverHavet', 'Land', 'Region'],
       [str, float, str, str])
   state.db.insert_kaffegaard(kaffegaard)
+  
+  for kaffeboenne in state.db.get_kaffeboenner():
+    if ask_select(f'Dyrker gården {kaffeboenne[0]}?',
+        ['Ja', 'Nei']) == 'Ja':
+      state.db.insert_dyrketAv([kaffeboenne[0], kaffegaard[0]])
+  
   return kaffegaard[0]
 
 def ask_kaffeparti(state):

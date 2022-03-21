@@ -55,3 +55,24 @@ flowchart LR
   select -->|3| select_3
   select -->|4| select_4
 ```
+
+## Avhengigheter
+
+```mermaid
+flowchart TD
+  Kaffebønne
+  Kaffegård
+  Kaffeparti
+  Kaffe
+  Bruker
+  Kaffesmaking
+  Kaffebrenneri
+
+  Kaffe --> Kaffebrenneri
+  Kaffe --> Kaffeparti
+  Kaffeparti --> Kaffebønne
+  Kaffeparti --> Kaffegård
+  Kaffesmaking --> Bruker
+  Kaffesmaking --> Kaffe
+  Kaffegård --> Kaffebønne
+```
