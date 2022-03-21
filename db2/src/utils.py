@@ -1,6 +1,6 @@
 
-# Doesn't hide the prompt when testing with unittest
 def pinput(prompt):
+  # Doesn't hide the prompt when testing with unittest
   print(prompt, end='')
   return input()
 
@@ -39,3 +39,15 @@ def ask_select(question, options, return_int=False):
         return option 
     except:
       print('\nUgyldig input! Prøv igjen.\n')
+
+def ask_select_row(question, rows):
+  options = {
+    str(x[:]): x[0] for x in rows
+  }
+  options['Ingen av disse.'] = -1
+  return options[
+    ask_select(question, options.keys())]
+
+def ask_select_or_create(state, question, rows, ask_create):
+  row_id = ask_select_row(question, rows)
+  return ask_create(state) if row_id == -1 else row_id
