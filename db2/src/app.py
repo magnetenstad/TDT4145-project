@@ -22,6 +22,8 @@ def App(state):
       break
 
 
+# Pages
+
 def Welcome(state):
   print('Velkommen til Kaffedatabasen 😊☕\n')
   options = {
@@ -105,6 +107,8 @@ def Select(state):
     state.route = Main
 
 
+# ask_x
+
 def ask_kaffebrenneri(state):
   print('\nFyll inn følgende verdier for kaffebrenneriet.\n')
   kaffebrenneri = ask(['Navn'], [str])
@@ -112,12 +116,14 @@ def ask_kaffebrenneri(state):
   print(f'\n ✓ Satt inn kaffebrenneriet {kaffebrenneri}')
   return kaffebrenneri[0]
 
+
 def ask_foredlingsmetode(state):
   print('\nFyll inn følgende verdier for foredlingsmetoden.\n')
   foredlingsmetode = ask(['Navn', 'Beskrivelse'], [str, str])
   state.db.insert_foredlingsmetode(foredlingsmetode)
   print(f'\n ✓ Satt inn foredlingsmetoden {foredlingsmetode}')
   return foredlingsmetode[0]
+
 
 def ask_kaffegaard(state):
   print('\nFyll inn følgende verdier for kaffegården.\n')
@@ -132,6 +138,7 @@ def ask_kaffegaard(state):
 
   print(f'\n ✓ Satt inn kaffegården {kaffegaard}')
   return kaffegaard[0]
+
 
 def ask_kaffeparti(state):
   print('\nFyll inn følgende verdier for kaffepartiet.\n')
@@ -161,16 +168,12 @@ def ask_kaffeparti(state):
   print(f'\n ✓ Satt inn kaffepartiet {kaffeparti}')
   return kaffeparti_id
 
-def ask_kaffe(state, kaffe_PK=None):
+
+def ask_kaffe(state):
   print('\nFyll inn følgende verdier for kaffen.\n')
-  if kaffe_PK:
-    kaffe = kaffe_PK + ask(['Brenningsdato (yyyy.mm.dd)', 
-        'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
-        [str, str, str, float])
-  else:
-    kaffe = ask(['KaffebrenneriNavn', 'Navn', 'Brenningsdato (yyyy.mm.dd)', 
-        'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
-        [str, str, str, str, str, float])
+  kaffe = ask(['KaffebrenneriNavn', 'Navn', 'Brenningsdato (yyyy.mm.dd)', 
+      'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
+      [str, str, str, str, str, float])
 
   kaffe.append(
       ask_select_or_create(state,
@@ -181,6 +184,7 @@ def ask_kaffe(state, kaffe_PK=None):
   state.db.insert_kaffe(kaffe)
   print(f'\n ✓ Satt inn kaffen {kaffe}')
   return kaffe[:2]
+
 
 def ask_kaffesmaking(state):
   kaffe = list(ask_select_or_create(state,
