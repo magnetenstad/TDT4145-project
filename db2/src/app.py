@@ -39,7 +39,20 @@ def Main(state):
     'Lese data': Select,
     'Logge ut': SignOut
   }
+  if state.user == 'admin':
+    options['Gå til admin-panel'] = Admin
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
+
+
+def Admin(state):
+  options = {
+      'Resette databasen til standardverdier': state.db.reset,
+      'Ingenting, gå tilbake': lambda: None
+  }
+  options[ask_select('Hva vil du gjøre?', options.keys())]()
+  if ask_select('\nVil du gjøre noe mer i admin-panelet?', 
+      ['Ja', 'Nei']) == 'Nei':
+    state.route = Main
 
 
 def SignOut(state):

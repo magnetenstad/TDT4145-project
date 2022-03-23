@@ -1,10 +1,10 @@
 
-CREATE TABLE IF NOT EXISTS Kaffeboenne(
+CREATE TABLE Kaffeboenne(
 Art   TEXT NOT NULL,
 CONSTRAINT Kaffeboenne_PK PRIMARY KEY (Art)
 );
 
-CREATE TABLE IF NOT EXISTS Kaffegaard(
+CREATE TABLE Kaffegaard(
 Navn            TEXT NOT NULL,
 HoeydeOverHavet  REAL,
 Land            TEXT,
@@ -12,7 +12,7 @@ Region          TEXT,
 CONSTRAINT Kaffegaard_PK PRIMARY KEY (Navn)
 );
 
-CREATE TABLE IF NOT EXISTS Kaffeparti(
+CREATE TABLE Kaffeparti(
 Id                    INTEGER NOT NULL,
 Innhoestingsaar       INTEGER,
 Kilopris              REAL,
@@ -26,7 +26,7 @@ CONSTRAINT Foredlingsmetode_FK FOREIGN KEY (ForedlingsmetodeNavn) REFERENCES For
 -- Vi tillater ikke å slette foredlingsmetoder
 );
 
-CREATE TABLE IF NOT EXISTS Kaffe(
+CREATE TABLE Kaffe(
 KaffebrenneriNavn   TEXT NOT NULL,
 Navn                TEXT NOT NULL,
 Dato                TEXT,
@@ -42,12 +42,12 @@ CONSTRAINT Kaffebrenneri_FK FOREIGN KEY (KaffebrenneriNavn) REFERENCES Kaffebren
 -- Vi tillater ikke sletting av kaffebrennerier
 );
 
-CREATE TABLE IF NOT EXISTS Kaffebrenneri(
+CREATE TABLE Kaffebrenneri(
 Navn  TEXT NOT NULL,
 CONSTRAINT Kaffebrenneri_PK PRIMARY KEY (Navn)
 );
 
-CREATE TABLE IF NOT EXISTS Bruker(
+CREATE TABLE Bruker(
 Epost       TEXT NOT NULL,
 Passord     TEXT,
 FulltNavn   TEXT,
@@ -55,13 +55,13 @@ Land        TEXT,
 CONSTRAINT Bruker_PK PRIMARY KEY (Epost)
 );
 
-CREATE TABLE IF NOT EXISTS Foredlingsmetode(
+CREATE TABLE Foredlingsmetode(
 Navn          TEXT NOT NULL,
 Beskrivelse   TEXT,
 CONSTRAINT Foredlingsmetode_PK PRIMARY KEY (Navn)
 );
 
-CREATE TABLE IF NOT EXISTS Kaffesmaking(
+CREATE TABLE Kaffesmaking(
 Epost               TEXT NOT NULL,
 KaffebrenneriNavn   TEXT NOT NULL,
 KaffeNavn           TEXT NOT NULL,
@@ -81,7 +81,7 @@ CONSTRAINT Bruker_FK FOREIGN KEY (Epost) REFERENCES Bruker(Epost)
 -- Hvis en bruker slettes, så slettes også alle tilhørende kaffesmakinger
 );
 
-CREATE TABLE IF NOT EXISTS DyrketAv(
+CREATE TABLE DyrketAv(
 KaffeboenneArt   TEXT NOT NULL,
 KaffegaardNavn   TEXT NOT NULL,
 CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffeboenneArt, KaffegaardNavn),
@@ -95,7 +95,7 @@ CONSTRAINT Kaffegaard_FK FOREIGN KEY (KaffegaardNavn) REFERENCES Kaffegaard(Navn
   ON DELETE RESTRICT
 );
 
-CREATE TABLE IF NOT EXISTS PartiBestaarAv(
+CREATE TABLE PartiBestaarAv(
 KaffeboenneArt   TEXT NOT NULL,
 KaffepartiId    TEXT NOT NULL,
 CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffeboenneArt, KaffepartiId),

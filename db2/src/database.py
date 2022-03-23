@@ -7,13 +7,14 @@ class Database:
     self.connection = sqlite3.connect(path)
     self.cursor = self.connection.cursor()
     
-    self.create_tables()
-    self.uuid = self.get_uuid()
+    if len(self.get_tables()) == 0:
+      self.uuid = 0
+      self.reset()
 
-    self.insert_defaults() # TODO: 
+    self.uuid = self.get_uuid()
     if self.uuid == None:
       self.uuid = 0
-  
+    
   def close(self):
     self.connection.commit()
     self.connection.close()
@@ -27,10 +28,22 @@ class Database:
         except Exception as e:
           print(f'[DB] [ERROR] in create table {i}: {statement}')
           print(e)
-      print('\n[DB] Successfully built tables!\n')
+      print('\n ✅ Successfully built tables!\n')
+
+  def get_tables(self):
+    self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
+    return list(map(lambda x: x[0], self.cursor.fetchall()))
+
+  def reset(self):
+    self.drop_tables()
+    self.create_tables()
+    self.insert_defaults()
+
+  def drop_tables(self):
+    for table in self.get_tables():
+        self.cursor.execute(f'DROP TABLE {table}')
 
   def insert_defaults(self):
-    
     self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
 
     # oppretter alle Kaffeboennetypene
@@ -194,9 +207,9 @@ class Database:
         (?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn at kaffebønnen {attributes[0]} er dyrket av {attributes[1]} \n')
+      print(f'\n ✅ Satt inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]} \n')
     except Exception as e:
-      print(f'\n ❌ Kunne ikke sette inn at kaffebønnen {attributes[0]} er dyrket av {attributes[1]}! Kanskje det allerede er satt inn?')
+      print(f'\n ❌ Kunne ikke sette inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]}! Kanskje det allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
   
   def insert_partiBestaarAv(self, attributes):
@@ -208,9 +221,9 @@ class Database:
         (?,?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn at partiet {attributes[1]} består av {attributes[0]} \n')
+      print(f'\n ✅ Satt inn at kaffebønnen {attributes[0]} i parti {attributes[1]} \n')
     except Exception as e:
-      print(f'\n ❌ Kunne ikke sette inn at partiet {attributes[1]} består av {attributes[0]}! Kanskje det allerede er satt inn?')
+      print(f'\n ❌ Kunne ikke sette inn kaffbønnen {attributes[0]} i pati {attributes[1]}! Kanskje den allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
 
   ### Getters ###
