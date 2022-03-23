@@ -5,7 +5,7 @@ from app import App, AppState
 def main():
   
   state = AppState()
-  state.db = Database(':memory:')
+  state.db = Database('database.db') # ':memory:' 
 
   App(state)
 
