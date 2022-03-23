@@ -318,9 +318,8 @@ class Database:
 
   def delete_kaffesmaking(self, attributes):
     self.cursor.execute('''
-      DELETE *
-      FROM Kaffesmaking
-      WHERE Epost = ? AND KaffebrenneriNavn = ? AND KaffeNavn = ?
+    DELETE FROM Kaffesmaking
+    WHERE Epost = ? AND KaffebrenneriNavn = ? AND KaffeNavn = ?
     ''', attributes)
     self.connection.commit()
 
