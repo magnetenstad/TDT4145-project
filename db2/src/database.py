@@ -69,7 +69,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_kaffeparti(self, attributes) -> int:
-    """attributes: [Id, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn]"""
+    """attributes: [Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn]"""
     try:
       kaffeparti_id = self.get_uuid()
       self.cursor.execute('''
@@ -176,11 +176,11 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
   
   def insert_partiBestaarAv(self, attributes):
-    """attributes: [KaffeboenneArt, KaffepartiId]"""
+    """attributes: [KaffepartiId, KaffeboenneArt]"""
     try:
       self.cursor.execute('''
       INSERT INTO PartiBestaarAv
-        (KaffeboenneArt, KaffepartiId)
+        (KaffepartiId, KaffeboenneArt)
       VALUES
         (?,?)
       ''', attributes)
@@ -255,7 +255,7 @@ class Database:
     return pd.read_sql_query('''
         SELECT FulltNavn, COUNT(*) AS Antall
         FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
-        WHERE Dato LIKE '%2022'
+        WHERE Dato LIKE '2022%'
         GROUP BY Epost
         ORDER BY Antall DESC
         ''', self.connection)
@@ -340,42 +340,131 @@ class Database:
     return bool(self.cursor.fetchone())
 
   def insert_defaults(self):
+
+    # Admin-bruker
     self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
 
-    # oppretter alle Kaffeboennetypene
-
+    # Kun 3 kaffebønnetyper:
     self.insert_kaffeboenne(['Coffea arabica'])
     self.insert_kaffeboenne(['Coffea liberica'])
     self.insert_kaffeboenne(['Coffea robusta'])
 
-    # oppretter to foredlingsmetoder, vasket og bærtørket
+    # Tar utgangspunkt i 4 foredlingsmetoder, kilde: https://kaffe.no/foredling/
+    self.insert_foredlingsmetode(['Bærtørket', '''Den eldste og enkleste
+foredlingsmetoden som tradisjonelt har hatt størst utbredelse i områder
+med lite regn som Brasil og Indonesia.'''])
     
-    self.insert_foredlingsmetode(['vasket', None])
-    self.insert_foredlingsmetode(['bærtørket', None])
+    self.insert_foredlingsmetode(['Vasket', '''God kontroll på prosessen gir
+stabil kvalitet. Vasket kaffe kjennetegnes ved en frisk og ren smak
+med markant syre.'''])
     
-    # Brukerhistorie 1:
-    # TODO: Change defaults
+    self.insert_foredlingsmetode(['Pulped natural', '''Kan ha mer kropp
+og lavere syre enn vasket kaffe, og en renere, mer ensartet cup
+enn bærtørket.'''])
+    
+    self.insert_foredlingsmetode(['Delvis vasket', '''Kan gi kaffe med
+intens sødme, god munnfølelse og balansert syre.'''])
+    
+    # Kaffebrennerier
+    self.insert_kaffebrenneri(['Jacobsen & Svart']) # TODO: Trondheim?
+    self.insert_kaffebrenneri(['Realfagsbrenneriet'])
+
+    # Kaffegårder, kaffepartier og kaffer
 
     self.insert_kaffegaard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
     self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
-    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'bærtørket'])
-    if kaffeparti_id != None:
-      self.insert_partiBestaarAv(['Coffea arabica', kaffeparti_id])
-      self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, kaffeparti_id])
-
-    self.insert_kaffebrenneri(['Jacobsen & Svart'])
-    self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
-    self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene:\nsitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
-
-    # Brukerhistorie 4:
-
-    self.insert_kaffegaard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
-    self.insert_kaffegaard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
+    id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'Bærtørket'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
+    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.20.01',
+        'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.',
+        600, id])
+      # Kilde: Oppgavetekst
     
-    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Akageragården', 'bærtørket'])
-    if kaffeparti_id != None:
-      self.insert_kaffe(['Jacobsen & Svart', 'Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400,  kaffeparti_id])
+    self.insert_kaffegaard(['Fazendas Dutra', 1100, 'Brasil', 'Minas Gerais'])
+    self.insert_dyrketAv(['Coffea arabica', 'Fazendas Dutra'])
+    id = self.insert_kaffeparti([2020, 60, 'Fazendas Dutra', 'Pulped natural'])
+    self.insert_kaffe(['Jacobsen & Svart', 'Diamond Santos',
+        '2021.02.01', 'lysbrent',
+        'En temmelig stabil og streit kaffe.',
+        349, id])
+      # Kilde: https://jacobsensvart.no/products/copy-of-1-kg-jose-vasquez-peru
 
-    kaffeparti_id = self.insert_kaffeparti([2019, 10, 'Bogotagården', 'vasket'])
-    if kaffeparti_id != None:
-      self.insert_kaffe(['Jacobsen & Svart', 'Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, kaffeparti_id])
+    self.insert_kaffegaard(['Fernandez Familia', 1100, 'Peru', 'Colosay'])
+    self.insert_dyrketAv(['Coffea arabica', 'Fernandez Familia'])
+    id = self.insert_kaffeparti([2021, 69, 'Fernandez Familia', 'Vasket'])
+    self.insert_kaffe(['Jacobsen & Svart', 'La Palma', '2021.02.01',
+        'lysbrent', 'Forfriskende og delikat.', 598, id])
+      # Kilde: https://jacobsensvart.no/products/copy-of-1-kg-jose-vasquez-peru
+
+    self.insert_kaffegaard(['Kivubelt', 1567, 'Rwanda', 'Kigali'])
+    self.insert_dyrketAv(['Coffea arabica', 'Kivubelt'])
+      # Kilde: https://www.mukasa.no/kaffe-fra-rwanda/
+    id = self.insert_kaffeparti([2020, 50, 'Kivubelt', 'Bærtørket'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
+    self.insert_kaffe(['Realfagsbrenneriet', 'Data-kaffe',
+        '2021.02.01', 'mørkbrent',
+        'En kaffe for datateknologi-studenter.',
+        600, id])
+
+    self.insert_kaffegaard(['El Placer', 2115, 'Colombia', 'Tolima'])
+    self.insert_dyrketAv(['Coffea arabica', 'El Placer'])
+      # Kilde: https://sh.no/journal/kaffe-med-kjaerlighet-fra-colombia/
+    id = self.insert_kaffeparti([2019, 62, 'El Placer', 'Vasket'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
+    self.insert_kaffe(['Realfagsbrenneriet', 'Kyb-kaffe',
+        '2022.01.02', 'lysbrent',
+        'En kaffe for kybernetikk-studenter.',
+        412, id])
+
+    self.insert_kaffegaard(['Amadeo', 400, 'Filippinene', 'Calabarzon'])
+    self.insert_dyrketAv(['Coffea robusta', 'Amadeo'])
+    self.insert_dyrketAv(['Coffea liberica', 'Amadeo'])
+      # Kilde: https://philcoffeeboard.com/philippine-coffee/
+    id = self.insert_kaffeparti([2021, 58, 'Amadeo', 'Delvis vasket'])
+    self.insert_partiBestaarAv([id, 'Coffea robusta'])
+    self.insert_partiBestaarAv([id, 'Coffea liberica'])
+    self.insert_kaffe(['Realfagsbrenneriet', 'Indøk-kaffe',
+        '2022.02.12', 'lysbrent',
+        'En kaffe for indøk-studenter.',
+        789, id])
+    
+    self.insert_kaffegaard(['Dak Lak', 1600, 'Vietnam', 'Buôn Mê Thuột'])
+    self.insert_dyrketAv(['Coffea arabica', 'Dak Lak'])
+    self.insert_dyrketAv(['Coffea robusta', 'Dak Lak'])
+    self.insert_dyrketAv(['Coffea liberica', 'Dak Lak'])
+      # Kilde: http://amarin.com.vn/buon-ma-thuot-coffee
+    id = self.insert_kaffeparti([2022, 78, 'Dak Lak', 'Vasket'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
+    self.insert_partiBestaarAv([id, 'Coffea robusta'])
+    self.insert_partiBestaarAv([id, 'Coffea liberica'])
+    self.insert_kaffe(['Realfagsbrenneriet', 'I&IKT-kaffe',
+        '2022.03.12', 'mørkbrent',
+        'En kaffe for ingeniørvitenskap-og-ikt-studenter.',
+        359, id])
+    
+    # Brukere og kaffesmakinger
+
+    self.insert_bruker(['magneet@ntnu.no', 
+        'Password123', 'Magne Erlendsønn Tenstad', 'Norge'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Jacobsen & Svart', 'Vinterkaffe',
+        'Hadde en rar bismak.', 3, '2022.03.16'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Jacobsen & Svart', 'La Palma',
+        'Forfriskende og floral!', 8, '2022.03.17'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Jacobsen & Svart', 'Diamond Santos',
+        'God kaffe for prisen.', 7, '2022.03.18'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Realfagsbrenneriet', 'Data-kaffe',
+        'Beste kaffen jeg har smakt!', 10, '2022.03.20'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Realfagsbrenneriet', 'Kyb-kaffe',
+        'Litt robotisk.', 4, '2022.03.21'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Realfagsbrenneriet', 'I&IKT-kaffe',
+        'Ikke det verste jeg har smakt.', 6, '2022.03.22'])
+    self.insert_kaffesmaking(['magneet@ntnu.no',
+        'Realfagsbrenneriet', 'Indøk-kaffe',
+        'Fysj og fy, dette var dårlig.', 2, '2022.03.24'])
+    

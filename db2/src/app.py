@@ -187,7 +187,7 @@ def ask_kaffeparti(state):
   for kaffeboenne in kaffeboenner:
     if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
         ['Ja', 'Nei']) == 'Ja':
-      state.db.insert_partiBestaarAv([kaffeboenne, kaffeparti_id])
+      state.db.insert_partiBestaarAv([kaffeparti_id, kaffeboenne])
   
   return kaffeparti_id
 
