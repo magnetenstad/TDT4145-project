@@ -8,13 +8,8 @@ class Database:
     self.cursor = self.connection.cursor()
     
     if len(self.get_tables()) == 0:
-      self.uuid = 0
       self.reset()
 
-    self.uuid = self.get_uuid()
-    if self.uuid == None:
-      self.uuid = 0
- 
   def create_tables(self):
     with open('tables.sql', 'r') as file:
       for i, statement in enumerate(file.read().split(';')):
@@ -45,6 +40,7 @@ class Database:
   ### Inserts ###
 
   def insert_kaffe(self, attributes):
+    """attributes: [KaffebrenneriNavn, Navn, Dato, Brenningsgrad, Beskrivelse, Kilopris, KaffepartiId]"""
     try:
       self.cursor.execute('''
       INSERT INTO Kaffe
@@ -58,6 +54,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_kaffebrenneri(self, attributes):
+    """attributes: [Navn]"""
     try:
       self.cursor.execute('''
       INSERT INTO Kaffebrenneri
@@ -72,26 +69,28 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_kaffeparti(self, attributes) -> int:
+    """attributes: [Id, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn]"""
     try:
-      self.uuid += 1
+      kaffeparti_id = self.get_uuid()
       self.cursor.execute('''
       INSERT INTO Kaffeparti
         (Id, Innhoestingsaar, Kilopris, KaffegaardNavn, ForedlingsmetodeNavn)
       VALUES
         (?, ?, ?, ?, ?)
-      ''', [self.uuid] + attributes)
+      ''', [kaffeparti_id] + attributes)
       self.connection.commit()
       print(f'\n ✅ Satt inn kaffepartiet {attributes} \n')
-      return self.uuid
+      return kaffeparti_id
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffepartiet {attributes}! Kanskje det allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
       
   def insert_kaffeboenne(self, attributes):
+    """attributes: [Art]"""
     try:
       self.cursor.execute('''
       INSERT INTO Kaffeboenne
-        ('Art')
+        (Art)
       VALUES
         (?)
       ''', attributes)
@@ -102,6 +101,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_kaffegaard(self, attributes):
+    """attributes: [Navn, HoeydeOverHavet, Land, Region]"""
     try:
       self.cursor.execute('''
       INSERT INTO Kaffegaard
@@ -116,6 +116,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_bruker(self, attributes):
+    """attributes: [Epost, Passord, FulltNavn, Land]"""
     try:
       self.cursor.execute('''
       INSERT INTO Bruker
@@ -130,6 +131,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_foredlingsmetode(self, attributes):
+    """attributes: [Navn, Beskrivelse]"""
     try:
       self.cursor.execute('''
       INSERT INTO Foredlingsmetode
@@ -144,6 +146,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_kaffesmaking(self, attributes):
+    """attributes: [Epost, KaffebrenneriNavn, KaffeNavn, Smaksnotater, Poeng, Dato]"""
     try:
       self.cursor.execute('''
       INSERT INTO Kaffesmaking
@@ -158,6 +161,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
 
   def insert_dyrketAv(self, attributes):
+    """attributes: [KaffeboenneArt, KaffegaardNavn]"""
     try:
       self.cursor.execute('''
       INSERT INTO DyrketAv
@@ -172,6 +176,7 @@ class Database:
       print(f'\n Feilmelding: \n {e}')
   
   def insert_partiBestaarAv(self, attributes):
+    """attributes: [KaffeboenneArt, KaffepartiId]"""
     try:
       self.cursor.execute('''
       INSERT INTO PartiBestaarAv
@@ -188,11 +193,14 @@ class Database:
   ### Getters ###
 
   def get_uuid(self):
+    """KaffepartiId is the only generated key.
+    A new uuid is given by MAX(Kaffeparti.id) + 1"""
     self.cursor.execute('''
     SELECT MAX(Id)
     FROM Kaffeparti
     ''')
-    return self.cursor.fetchone()[0]
+    max_id = self.cursor.fetchone()[0]
+    return max_id + 1 if max_id != None else 0
 
   def get_kaffer(self):
     self.cursor.execute('''
@@ -237,13 +245,13 @@ class Database:
     ''', attributes)
     return self.cursor.fetchall()
 
-  def get_kaffesmakinger(self):
+  def get_kaffesmakinger(self) -> pd.DataFrame:
     return pd.read_sql_query('''
         SELECT * 
         FROM Kaffesmaking
         ''', self.connection)
   
-  def get_unique_coffees_per_user(self):
+  def get_unique_coffees_per_user(self) -> pd.DataFrame:
     return pd.read_sql_query('''
         SELECT FulltNavn, COUNT(*) AS Antall
         FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
@@ -252,7 +260,7 @@ class Database:
         ORDER BY Antall DESC
         ''', self.connection)
 
-  def get_value_per_money(self):
+  def get_value_per_money(self) -> pd.DataFrame:
     return pd.read_sql_query('''
         SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn, Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
         FROM Kaffe INNER JOIN Kaffesmaking
@@ -262,7 +270,7 @@ class Database:
         ORDER BY GjPoeng DESC
         ''', self.connection)
 
-  def get_floral_description(self):
+  def get_floral_description(self) -> pd.DataFrame:
     return pd.read_sql_query('''
         SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn
         FROM Kaffe LEFT OUTER JOIN Kaffesmaking
@@ -272,7 +280,7 @@ class Database:
           OR Kaffesmaking.Smaksnotater LIKE '%floral%'
         ''', self.connection)
 
-  def get_not_washed_rwanda_colombia(self):
+  def get_not_washed_rwanda_colombia(self) -> pd.DataFrame:
     return pd.read_sql_query('''
         SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
         FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
@@ -280,6 +288,14 @@ class Database:
         WHERE (Kaffegaard.Land='Rwanda' OR Kaffegaard.Land='Colombia') 
           AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
         ''', self.connection)
+
+  def print_all(self) -> str:
+    result = ''
+    for table_name in self.get_tables():
+        table = pd.read_sql_query('SELECT * from %s' % table_name,
+            self.connection)
+        result += f'\n _{table_name}_ \n{table.to_markdown(index=False)}\n'
+    return result
 
   def bruker_exists(self, attributes):
     self.cursor.execute('''
@@ -323,14 +339,6 @@ class Database:
     WHERE Navn = ?
     ''', attributes)
     return bool(self.cursor.fetchone())
-
-  def print_all(self):
-    result = ''
-    for table_name in self.get_tables():
-        table = pd.read_sql_query('SELECT * from %s' % table_name,
-            self.connection)
-        result += f'\n _{table_name}_ \n{table}\n'
-    return result
 
   def insert_defaults(self):
     self.insert_bruker(['admin', 'admin', 'admin', 'admin'])

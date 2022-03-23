@@ -46,9 +46,10 @@ I de tilfellene hvor det kan opprettes flere relasjoner mellom entitetene, er la
 
 Programmet er skrevet med python 3.10 og er ikke testet for andre versjoner av python.
 
-Installer `pandas` dersom du ikke allerede har det.
+Installer `pandas` og `tabulate` dersom du ikke allerede har det.
 ```
 pip install pandas
+pip install tabulate
 ```
 Gå til `src`-mappen dersom du ikke allerede er der.
 ```

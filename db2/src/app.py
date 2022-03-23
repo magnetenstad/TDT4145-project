@@ -115,7 +115,10 @@ def Select(state):
     'Hele databasen': state.db.print_all,
   }
   selected = ask_select('Hva vil du gjøre spørring på?', options.keys())
-  print(f'\nResultatet ble:\n\n{options[selected]()}\n')
+  result = options[selected]()
+  if type(result) != str and type(result) != list:
+    result = result.to_markdown(index=False)
+  print(f'\nResultatet ble:\n\n{result}\n')
   if ask_select('\nVil du gjøre en ny spørring?', ['Ja', 'Nei']) == 'Nei':
     state.route = Main
 
