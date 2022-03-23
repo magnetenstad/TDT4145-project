@@ -56,5 +56,13 @@ class Date(str):
     if not (len(yyyy) == 4 and len(mm) == 2 and len(dd) == 2):
       raise Exception()
 
-    datetime.datetime(int(yyyy), int(mm), int(dd))
+    yyyy, mm, dd = map(lambda x: int(x), (yyyy, mm, dd))
 
+    then = datetime.datetime(yyyy, mm, dd)
+    now = datetime.datetime.now()
+    
+    if then > now:
+      raise Exception()
+
+    
+    
