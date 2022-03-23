@@ -13,7 +13,7 @@ def ask(questions, types=None):
       while True:
         try:
           answers.append(
-            types[i](pinput(f'<{types[i].__name__}> {q}: ').lower()))
+            types[i](pinput(f'<{types[i].__name__}> {q}: ')))
           break
         except:
           print('\nUgyldig input! Prøv igjen.\n')

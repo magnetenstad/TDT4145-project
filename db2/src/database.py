@@ -243,7 +243,7 @@ class Database:
     FROM DyrketAv
     WHERE KaffegaardNavn = ?
     ''', attributes)
-    return self.cursor.fetchall()
+    return list(map(lambda x: x[0], self.cursor.fetchall()))
 
   def get_kaffesmakinger(self) -> pd.DataFrame:
     return pd.read_sql_query('''
