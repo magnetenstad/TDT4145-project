@@ -138,19 +138,16 @@ Etter at applikasjonen er startet implementeres brukerhistorie 1 ved å gjøre f
 2. Fyll inn feltene som dukker opp med ønsket informasjon (Epost, passord, fullt navn og land). Du logges automatisk inn.
 3. Du blir nå presentert med 3 alternativer, og velger alternativ (0) 'Skrive data'. 
 4. Du får fem nye alternativer og velger alternativ (4) 'Kaffesmaking' for å legge til en ny kaffesmaking.
-5. Dersom kaffen du har smakt ikke eksisterer velger du alternativ (4) 'Ingen av disse', og får muligheten til å legge til en ny kaffe. 
-6. Fyller inn KaffebrenneriNavn, KaffeNavn, Brenningsdato, Brenningsgrad, Beskrivelse og Kilopris for Kaffen. 
-7. Deretter må en velge kaffeparti eller opprette et nytt et
-
-
-Ved implementasjon av brukerhistorie én må man først registrere en ny bruker med epost, passord, fullt navn og land. Da er man logget inn, og får spørsmålet om hva man ønsker å gjøre. For brukerhistorie
-
-er implementert under 'Skrive data'. Her får brukeren fem valgmuligheter: 
-- Legge til kaffe
-- Legge til kaffebrenneri
-- Legge til kaffeparti
-- Legge til kaffegård
-- Legge til kaffesmaking
+5. Dersom kaffen du har smakt ikke eksisterer velger du alternativ (4) 'Ingen av disse'. 
+6. Fyll inn KaffebrenneriNavn, KaffeNavn, Brenningsdato, Brenningsgrad, Beskrivelse og Kilopris for Kaffen. 
+7. Oppgi hvilket kaffeparti kaffen er laget av ved å velge et eksisterende kaffeparti eller opprette et nytt. Et nytt kaffeparti opprettes ved å velge alternativ (3) 'Ingen av disse'.
+8. Ved oppretting av et nytt kaffeparti fylles innhøstingsår og kilopris for partiet inn. 
+9. Oppgi hvilken kaffegård kaffepartiet kommer fra ved å velge en eksisterende kaffeparti eller opprette en ny. En ny kaffegård kan opprettes ved å velge alternativ (3) 'Ingen av disse'.
+10. Ved oppretting av en ny kaffegård oppgis navn på gården, høyde over havet, land og region. Deretter oppgis det hvilke(n) av tre typer kaffebønner som produseres ved gården.
+11. Oppgi hvilken foredlingsmetode som er benyttet ved å velge blant eksisterende foredlingsmetoder eller opprette en ny ved å velge alternativ (2) 'Ingen av disse'. En foredlingsmetode opprettes ved å fylle inn navn og beskrivelse.
+12. Deretter velger man hvilke kaffebønner kaffepartiet består av, blant de gården produserer
+13. Til slutt fyller en inn følgende verdier for kaffesmakingen: smaksnotater, poeng (fra 0 til 10) og smaksdato.
+14. Gå tilbake tilbake til menyen over til "Hva vil du gjøre?"-menyen ved å velge alternativ (1) 'Nei' på spørsmålet om du ønsker å sette inn noe mer.
 
 
 #### Implementasjon av brukerhistorie 2-5
