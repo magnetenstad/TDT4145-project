@@ -267,7 +267,7 @@ class Database:
         ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
           AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
         GROUP BY Kaffe.KaffebrenneriNavn, Kaffe.Navn
-        ORDER BY GjPoeng DESC
+        ORDER BY GjPoeng/Kaffe.Kilopris DESC
         ''', self.connection)
 
   def get_floral_description(self) -> pd.DataFrame:
