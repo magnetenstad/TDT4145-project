@@ -2,10 +2,10 @@ from database import Database
 from app import App, AppState
 
 
-def main():
+def main(db_path='database.db'):
   
   state = AppState()
-  state.db = Database('database.db') # ':memory:' 
+  state.db = Database(db_path) 
 
   App(state)
 

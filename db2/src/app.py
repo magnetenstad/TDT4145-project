@@ -182,7 +182,7 @@ def ask_kaffeparti(state):
   
   kaffeboenner = state.db.get_kaffeboenner_on_kaffegaard([kaffegaard_navn])
 
-  print(f'Kaffegården {kaffegaard_navn} dyrker følgende kaffebønner: {kaffeboenner}')
+  print(f'Kaffegården {kaffegaard_navn} dyrker følgende kaffebønner: {kaffeboenner}\n')
 
   for kaffeboenne in kaffeboenner:
     if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',

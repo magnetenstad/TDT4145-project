@@ -8,17 +8,23 @@ class Test(unittest.TestCase):
         side_effect=['Avslutte'])
   def test_cancel(self, _):
     print('\n\n### TEST 1 ###')
-    main()
+    main(':memory:')
 
   @patch('builtins.input', 
         side_effect=['Logge inn', 'admin', 'admin', 'Logge ut', 'Avslutte'])
   def test_login_admin(self, _):
     print('\n\n### TEST 2 ###')
-    main()
+    main(':memory:')
 
   @patch('builtins.input', 
-        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'Ingen av disse.', 'KaffebrenneriNavn', 'KaffeNavn', 'Brenningsdato', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ja', 'Nei', 'Ja', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Nei', 'Ja', 'Smaksnotater', '5', 'Smaksdato', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
+        side_effect=['Logge inn', 'admin', 'admin', 'Logge ut', 'Avslutte'])
+  def test_reset_database(self, _):
+    print('\n\n### TEST 2 ###')
+    main(':memory:')
+
+  @patch('builtins.input', 
+        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'Ingen av disse.', 'KaffebrenneriNavn', 'KaffeNavn', 'Brenningsdato', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ja', 'Nei', 'Ja', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Ja', 'Smaksnotater', '5', 'Smaksdato', 'Nei', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
   def test_insert_kaffesmaking(self, _):
     print('\n\n### TEST 3 ###')
-    main()
+    main(':memory:')
   

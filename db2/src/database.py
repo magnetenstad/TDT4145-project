@@ -366,7 +366,7 @@ class Database:
 
     self.insert_kaffebrenneri(['Jacobsen & Svart'])
     self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
-    self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
+    self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene:\nsitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
 
     # Brukerhistorie 4:
 
