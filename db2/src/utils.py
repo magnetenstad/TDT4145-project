@@ -50,7 +50,9 @@ import datetime
 
 class Date(str):
   def __init__(self, date_str):
-    """Basic format validation"""
+    """Date validation: 
+    Must be a valid date (yyyy.mm.dd)
+    and cannot be in the future."""
     yyyy, mm, dd = date_str.split('.')
     
     if not (len(yyyy) == 4 and len(mm) == 2 and len(dd) == 2):
