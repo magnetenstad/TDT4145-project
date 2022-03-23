@@ -257,12 +257,6 @@ class Database:
     ''')
     return self.cursor.fetchall()
 
-  def get_kaffesmakinger(self):
-    return pd.read_sql_query('''
-    SELECT * 
-    FROM Kaffesmaking
-    ''', self.connection)
-  
   def get_kaffeboenner_on_kaffegaard(self, attributes):
     self.cursor.execute('''
     SELECT KaffeboenneArt
@@ -271,6 +265,12 @@ class Database:
     ''', attributes)
     return self.cursor.fetchall()
 
+  def get_kaffesmakinger(self):
+    return pd.read_sql_query('''
+    SELECT * 
+    FROM Kaffesmaking
+    ''', self.connection)
+  
   def get_unique_coffees_per_user(self):
     return pd.read_sql_query('''
         SELECT FulltNavn, COUNT(*) AS Antall
@@ -288,7 +288,7 @@ class Database:
           AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
         GROUP BY Kaffe.KaffebrenneriNavn, Kaffe.Navn
         ORDER BY GjPoeng DESC
-        ''')
+        ''', self.connection)
 
   def get_floral_description(self):
     return pd.read_sql_query('''
