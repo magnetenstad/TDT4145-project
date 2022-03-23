@@ -92,11 +92,11 @@ def Register(state):
 
 def Insert(state):
   options = {
-      'kaffe': ask_kaffe,
-      'kaffebrenneri': ask_kaffebrenneri,
-      'kaffeparti': ask_kaffeparti,
-      'kaffegaard': ask_kaffegaard,
-      'kaffesmaking': ask_kaffesmaking, 
+      'Kaffe': ask_kaffe,
+      'Kaffebrenneri': ask_kaffebrenneri,
+      'Kaffeparti': ask_kaffeparti,
+      'Kaffegård': ask_kaffegaard,
+      'Kaffesmaking': ask_kaffesmaking,
       'Ingenting, gå tilbake': lambda _: None
   }
   options[ask_select('Hva vil du sette inn?', options.keys())](state)
@@ -145,11 +145,15 @@ def ask_kaffegaard(state):
       [str, float, str, str])
   state.db.insert_kaffegaard(kaffegaard)
   
-  for kaffeboenne in state.db.get_kaffeboenner():
-    if ask_select(f'Dyrker gården kaffebønnen {kaffeboenne[0]}?',
-        ['Ja', 'Nei']) == 'Ja':
-      state.db.insert_dyrketAv([kaffeboenne[0], kaffegaard[0]])
-
+  n = 0
+  while not n:
+    for kaffeboenne in state.db.get_kaffeboenner():
+      if ask_select(f'Dyrker gården kaffebønnen {kaffeboenne[0]}?',
+          ['Ja', 'Nei']) == 'Ja':
+        state.db.insert_dyrketAv([kaffeboenne[0], kaffegaard[0]])
+        n += 1
+    if n == 0:
+      print('\nEn kaffegård må dyrke minst én kaffebønne!\n')
   return kaffegaard[0]
 
 
@@ -159,11 +163,11 @@ def ask_kaffeparti(state):
       ['Innhøstningsår', 'Kilopris'],
       [int, float])
 
-  kaffegaard_id = ask_select_or_create(state,
+  kaffegaard_navn = ask_select_or_create(state,
           '\nVed hvilken kaffegård er partiet produsert?',
           state.db.get_kaffegaarder(),
           ask_kaffegaard)
-  kaffeparti.append(kaffegaard_id)
+  kaffeparti.append(kaffegaard_navn)
 
   kaffeparti.append(
       ask_select_or_create(state,
@@ -175,11 +179,15 @@ def ask_kaffeparti(state):
 
   if kaffeparti_id == None:
     return
+  
+  kaffeboenner = state.db.get_kaffeboenner_on_kaffegaard([kaffegaard_navn])
 
-  for kaffeboenne in state.db.get_kaffeboenner_on_kaffegaard([kaffegaard_id]):
-    if ask_select(f'Består partiet av kaffebønnen {kaffeboenne[0]}?',
+  print(f'Kaffegården {kaffegaard_navn} dyrker følgende kaffebønner: {kaffeboenner}\n')
+
+  for kaffeboenne in kaffeboenner:
+    if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
         ['Ja', 'Nei']) == 'Ja':
-      state.db.insert_partiBestaarAv([kaffeboenne[0], kaffeparti_id])
+      state.db.insert_partiBestaarAv([kaffeboenne, kaffeparti_id])
   
   return kaffeparti_id
 

@@ -32,6 +32,7 @@
 - Endret Innhøstingsår fra TEXT til INTEGER for å få rett validering av input.
 - La til Beskrivelse attributt på kaffe da dette var blitt glemt.
 - Byttet ut æ, ø og å med ae, oe og aa i alle attributtnavn da det ga feilmelding.
+- Kaffegårder må dyrke minst en kaffebønne.
 
 #### Antakelser
 - I brukerhistorie 2 har vi antatt at brukere som ikke har smakt noen kaffer ikke skal vises i tabellen.
