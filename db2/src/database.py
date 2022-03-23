@@ -300,14 +300,11 @@ class Database:
 
   def bruker_exists(self, attributes):
     self.cursor.execute('''
-    SELECT Epost, Passord
+    SELECT *
     FROM Bruker
-    ''')
-    all_users = self.cursor.fetchall()
-    for user in all_users:
-      if user[0] == attributes[0] and user[1] == attributes[1]:
-        return True
-    return False
+    WHERE Epost = ? AND Passord = ?
+    ''', attributes)
+    return self.cursor.fetchone() != None
 
   def kaffesmaking_exists(self, attributes):
     self.cursor.execute('''
