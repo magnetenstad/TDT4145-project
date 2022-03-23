@@ -14,11 +14,7 @@ class Database:
     self.uuid = self.get_uuid()
     if self.uuid == None:
       self.uuid = 0
-    
-  def close(self):
-    self.connection.commit()
-    self.connection.close()
-
+ 
   def create_tables(self):
     with open('tables.sql', 'r') as file:
       for i, statement in enumerate(file.read().split(';')):
@@ -34,55 +30,19 @@ class Database:
     self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
     return list(map(lambda x: x[0], self.cursor.fetchall()))
 
+  def drop_tables(self):
+    for table in self.get_tables():
+        self.cursor.execute(f'DROP TABLE {table}')
+   
   def reset(self):
     self.drop_tables()
     self.create_tables()
     self.insert_defaults()
 
-  def drop_tables(self):
-    for table in self.get_tables():
-        self.cursor.execute(f'DROP TABLE {table}')
+  def close(self):
+    self.connection.close()
 
-  def insert_defaults(self):
-    self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
-
-    # oppretter alle Kaffeboennetypene
-
-    self.insert_kaffeboenne(['Coffea arabica'])
-    self.insert_kaffeboenne(['Coffea liberica'])
-    self.insert_kaffeboenne(['Coffea robusta'])
-
-    # oppretter to foredlingsmetoder, vasket og bærtørket
-    
-    self.insert_foredlingsmetode(['vasket', None])
-    self.insert_foredlingsmetode(['bærtørket', None])
-    
-    # Brukerhistorie 1:
-    # TODO: remove
-
-    self.insert_kaffegaard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
-    self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
-    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'bærtørket'])
-    if kaffeparti_id != None:
-      self.insert_partiBestaarAv(['Coffea arabica', kaffeparti_id])
-      self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, kaffeparti_id])
-
-    self.insert_kaffebrenneri(['Jacobsen & Svart'])
-    self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
-    self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
-
-    # Brukerhistorie 4:
-
-    self.insert_kaffegaard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
-    self.insert_kaffegaard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
-    
-    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Akageragården', 'bærtørket'])
-    if kaffeparti_id != None:
-      self.insert_kaffe(['Jacobsen & Svart', 'Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400,  kaffeparti_id])
-
-    kaffeparti_id = self.insert_kaffeparti([2019, 10, 'Bogotagården', 'vasket'])
-    if kaffeparti_id != None:
-      self.insert_kaffe(['Jacobsen & Svart', 'Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, kaffeparti_id])
+  ### Inserts ###
 
   def insert_kaffe(self, attributes):
     try:
@@ -127,7 +87,6 @@ class Database:
       print(f'\n ❌ Kunne ikke sette inn kaffepartiet {attributes}! Kanskje det allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
       
-  
   def insert_kaffeboenne(self, attributes):
     try:
       self.cursor.execute('''
@@ -280,9 +239,9 @@ class Database:
 
   def get_kaffesmakinger(self):
     return pd.read_sql_query('''
-    SELECT * 
-    FROM Kaffesmaking
-    ''', self.connection)
+        SELECT * 
+        FROM Kaffesmaking
+        ''', self.connection)
   
   def get_unique_coffees_per_user(self):
     return pd.read_sql_query('''
@@ -324,8 +283,8 @@ class Database:
 
   def bruker_exists(self, attributes):
     self.cursor.execute('''
-      SELECT Epost, Passord
-      FROM Bruker
+    SELECT Epost, Passord
+    FROM Bruker
     ''')
     all_users = self.cursor.fetchall()
     for user in all_users:
@@ -366,11 +325,50 @@ class Database:
     return bool(self.cursor.fetchone())
 
   def print_all(self):
-    result = '\n'
-    self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
-    tables = self.cursor.fetchall()
-    for table_name in tables:
-        table_name = table_name[0]
-        table = pd.read_sql_query('SELECT * from %s' % table_name, self.connection)
+    result = ''
+    for table_name in self.get_tables():
+        table = pd.read_sql_query('SELECT * from %s' % table_name,
+            self.connection)
         result += f'\n _{table_name}_ \n{table}\n'
     return result
+
+  def insert_defaults(self):
+    self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
+
+    # oppretter alle Kaffeboennetypene
+
+    self.insert_kaffeboenne(['Coffea arabica'])
+    self.insert_kaffeboenne(['Coffea liberica'])
+    self.insert_kaffeboenne(['Coffea robusta'])
+
+    # oppretter to foredlingsmetoder, vasket og bærtørket
+    
+    self.insert_foredlingsmetode(['vasket', None])
+    self.insert_foredlingsmetode(['bærtørket', None])
+    
+    # Brukerhistorie 1:
+    # TODO: Change defaults
+
+    self.insert_kaffegaard(['Nombre Dios', 1500, 'El Salvador', 'Santa Ana'])
+    self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
+    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'bærtørket'])
+    if kaffeparti_id != None:
+      self.insert_partiBestaarAv(['Coffea arabica', kaffeparti_id])
+      self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '20.01.2022', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden', 600, kaffeparti_id])
+
+    self.insert_kaffebrenneri(['Jacobsen & Svart'])
+    self.insert_bruker(['ola@nordmann.no', 'Passord', 'Ola Nordmann', 'Norge'])
+    self.insert_kaffesmaking(['ola@nordmann.no', 'Jacobsen & Svart', 'Vinterkaffe', 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '20.1.2022'])
+
+    # Brukerhistorie 4:
+
+    self.insert_kaffegaard(['Akageragården', 1990, 'Rwanda', 'Akagera'])
+    self.insert_kaffegaard(['Bogotagården', 1990, 'Columbia', 'Bogota'])
+    
+    kaffeparti_id = self.insert_kaffeparti([2021, 72, 'Akageragården', 'bærtørket'])
+    if kaffeparti_id != None:
+      self.insert_kaffe(['Jacobsen & Svart', 'Sommerkaffe', '10.02.2022', 'mørkbrent', 'God om sommeren.', 400,  kaffeparti_id])
+
+    kaffeparti_id = self.insert_kaffeparti([2019, 10, 'Bogotagården', 'vasket'])
+    if kaffeparti_id != None:
+      self.insert_kaffe(['Jacobsen & Svart', 'Bogotakaffe', '10.02.2020', 'mørkbrent', 'God i Bogota.', 300, kaffeparti_id])
