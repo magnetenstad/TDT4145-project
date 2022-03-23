@@ -1,3 +1,4 @@
 .obsidian
 **/__pycache__
 db2/src/database.db
+**/.DS_store

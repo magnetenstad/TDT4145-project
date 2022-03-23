@@ -23,7 +23,7 @@ class Test(unittest.TestCase):
     main(':memory:')
 
   @patch('builtins.input', 
-        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'Ingen av disse.', 'KaffebrenneriNavn', 'KaffeNavn', 'Brenningsdato', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ja', 'Nei', 'Ja', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Ja', 'Smaksnotater', '5', 'Smaksdato', 'Nei', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
+        side_effect=['Logge inn', 'admin', 'admin', 'Skrive data', 'Kaffesmaking', 'Ingen av disse.', 'KaffebrenneriNavn', 'KaffeNavn', '2021.01.01', 'Brenningsgrad', 'Beskrivelse', '14.5', 'Ingen av disse.', '1998', '5.5', 'Ingen av disse.', 'KaffegårdNavn', '100', 'Land', 'Region', 'Ja', 'Nei', 'Ja', 'Ingen av disse.', 'ForedlingsmetodeNavn', 'ForedlingsmetodeBeskrivelse', 'Ja', 'Ja', 'Smaksnotater', '5', '2022.02.02', 'Nei', 'Lese data', 'Alle kaffesmakinger', 'Nei', 'Logge ut', 'Avslutte'])
   def test_insert_kaffesmaking(self, _):
     print('\n\n### TEST 3 ###')
     main(':memory:')

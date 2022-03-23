@@ -196,7 +196,7 @@ def ask_kaffe(state):
   print('\nFyll inn følgende verdier for kaffen.\n')
   kaffe = ask(['KaffebrenneriNavn', 'Navn', 'Brenningsdato (yyyy.mm.dd)', 
       'Brenningsgrad', 'Beskrivelse', 'Kilopris'],
-      [str, str, str, str, str, float])
+      [str, str, Date, str, str, float])
 
   kaffeparti_id = ask_select_or_create(state,
           '\nHvilket kaffeparti er kaffen fremstilt av?',
@@ -231,8 +231,8 @@ def ask_kaffesmaking(state):
   
   print('\nFyll inn følgende verdier for kaffesmakingen.\n')
   kaffesmaking = [state.user] + kaffe + \
-      ask(['Smaksnotater', 'Poeng', 'Dato (yyyy.mm.dd)'],
-          [str, str, str, int, str])
+      ask(['Smaksnotater', 'Poeng', 'Smaksdato (yyyy.mm.dd)'],
+          [str, int, Date])
 
   state.db.insert_kaffesmaking(kaffesmaking)
   return kaffesmaking[:2]

@@ -45,3 +45,16 @@ def ask_select_row(question, rows, key_end=None):
 def ask_select_or_create(state, question, rows, ask_create, key_end=None):
   row_id = ask_select_row(question, rows, key_end)
   return ask_create(state) if row_id == -1 else row_id
+
+import datetime
+
+class Date(str):
+  def __init__(self, date_str):
+    """Basic format validation"""
+    yyyy, mm, dd = date_str.split('.')
+    
+    if not (len(yyyy) == 4 and len(mm) == 2 and len(dd) == 2):
+      raise Exception()
+
+    datetime.datetime(int(yyyy), int(mm), int(dd))
+
