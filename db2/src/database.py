@@ -383,6 +383,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_kaffegaard(['Fazendas Dutra', 1100, 'Brasil', 'Minas Gerais'])
     self.insert_dyrketAv(['Coffea arabica', 'Fazendas Dutra'])
     id = self.insert_kaffeparti([2020, 60, 'Fazendas Dutra', 'Pulped natural'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
     self.insert_kaffe(['Jacobsen & Svart', 'Diamond Santos',
         '2021.02.01', 'lysbrent',
         'En temmelig stabil og streit kaffe.',
@@ -392,6 +393,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_kaffegaard(['Fernandez Familia', 1100, 'Peru', 'Colosay'])
     self.insert_dyrketAv(['Coffea arabica', 'Fernandez Familia'])
     id = self.insert_kaffeparti([2021, 69, 'Fernandez Familia', 'Vasket'])
+    self.insert_partiBestaarAv([id, 'Coffea arabica'])
     self.insert_kaffe(['Jacobsen & Svart', 'La Palma', '2021.02.01',
         'lysbrent', 'Forfriskende og delikat.', 598, id])
       # Kilde: https://jacobsensvart.no/products/copy-of-1-kg-jose-vasquez-peru
