@@ -4,6 +4,7 @@ import pandas as pd
 class Database:
 
   def __init__(self, path):
+    self.verbose = True
     self.connection = sqlite3.connect(path)
     self.cursor = self.connection.cursor()
     
@@ -19,7 +20,7 @@ class Database:
         except Exception as e:
           print(f'[DB] [ERROR] in create table {i}: {statement}')
           print(e)
-      print('\n ✅ Successfully built tables!\n')
+      if self.verbose: print('\n✅ Successfully built tables!\n')
 
   def get_tables(self):
     self.cursor.execute('SELECT name FROM sqlite_master WHERE type=\'table\';')
@@ -48,7 +49,7 @@ class Database:
       VALUES (?, ?, ?, ?, ?, ?, ?)
       ''', (attributes))
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffen {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -63,7 +64,7 @@ class Database:
         (?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffebrenneriet {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffebrenneriet {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffebrenneriet {attributes}! Kanskje det allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -79,7 +80,7 @@ class Database:
         (?, ?, ?, ?, ?)
       ''', [kaffeparti_id] + attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffepartiet {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffepartiet {attributes} \n')
       return kaffeparti_id
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffepartiet {attributes}! Kanskje det allerede finnes?')
@@ -95,7 +96,7 @@ class Database:
         (?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffebønnen {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffebønnen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffebønnen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -110,7 +111,7 @@ class Database:
         (?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffegården {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffegården {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffegården {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -125,7 +126,7 @@ class Database:
         (?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn brukeren {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn brukeren {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn brukeren {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -140,7 +141,7 @@ class Database:
         (?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn foredlingsmetoden {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn foredlingsmetoden {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn foredlingsmetoden {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -155,7 +156,7 @@ class Database:
         (?, ?, ?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn kaffesmakingen {attributes} \n')
+      if self.verbose: print(f'\n ✅ Satt inn kaffesmakingen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffesmakingen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -170,7 +171,7 @@ class Database:
         (?, ?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]} \n')
+      if self.verbose: print(f'\n ✅ Satt inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]}! Kanskje det allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
@@ -185,7 +186,7 @@ class Database:
         (?,?)
       ''', attributes)
       self.connection.commit()
-      print(f'\n ✅ Satt inn at kaffebønnen {attributes[0]} i parti {attributes[1]} \n')
+      if self.verbose: print(f'\n ✅ Satt inn at kaffebønnen {attributes[0]} i parti {attributes[1]} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffbønnen {attributes[0]} i pati {attributes[1]}! Kanskje den allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
@@ -340,6 +341,7 @@ class Database:
     return bool(self.cursor.fetchone())
 
   def insert_defaults(self):
+    self.verbose = False
 
     # Admin-bruker
     self.insert_bruker(['admin', 'admin', 'admin', 'admin'])
@@ -470,3 +472,5 @@ intens sødme, god munnfølelse og balansert syre.'''])
         'Realfagsbrenneriet', 'Indøk-kaffe',
         'Fysj og fy, dette var dårlig.', 2, '2022.03.24'])
     
+    print('\n✅ Inserted defaults.\n')
+    self.verbose = True
