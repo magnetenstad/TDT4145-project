@@ -46,7 +46,7 @@ def ask_select_or_create(state, question, rows, ask_create, key_end=None):
   row_id = ask_select_row(question, rows, key_end)
   return ask_create(state) if row_id == -1 else row_id
 
-import datetime
+from datetime import datetime
 
 class Date(str):
   def __init__(self, date_str):
@@ -60,11 +60,8 @@ class Date(str):
 
     yyyy, mm, dd = map(lambda x: int(x), (yyyy, mm, dd))
 
-    then = datetime.datetime(yyyy, mm, dd)
-    now = datetime.datetime.now()
+    then = datetime(yyyy, mm, dd)
+    now = datetime.now()
     
     if then > now:
       raise Exception()
-
-    
-    
