@@ -186,7 +186,7 @@ class Database:
         (?,?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n✅ Satt inn at kaffebønnen {attributes[0]} i parti {attributes[1]} \n')
+      if self.verbose: print(f'\n✅ Satt inn at kaffebønnen {attributes[1]} er del av parti {attributes[0]} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffbønnen {attributes[0]} i pati {attributes[1]}! Kanskje den allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
@@ -374,7 +374,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
     id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'Bærtørket'])
     self.insert_partiBestaarAv([id, 'Coffea arabica'])
-    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.20.01',
+    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.01.20',
         'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.',
         600, id])
       # Kilde: Oppgavetekst

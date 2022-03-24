@@ -203,14 +203,14 @@ Hva vil du sette inn?
 > kaffesmaking
 
 Hvilken kaffe har du smakt?
-        (0) ('Jacobsen & Svart', 'Vinterkaffe', '2022.20.01', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, '0')   
+        (0) ('Jacobsen & Svart', 'Vinterkaffe', '2022.01.20', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, '0')   
         (1) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '1')
         (2) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '2')
         (3) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '3')
         (4) ('Realfagsbrenneriet', 'Kyb-kaffe', '2022.01.02', 'lysbrent', 'En kaffe for kybernetikk-studenter.', 412.0, '4')
         (5) ('Realfagsbrenneriet', 'Indøk-kaffe', '2022.02.12', 'lysbrent', 'En kaffe for indøk-studenter.', 789.0, '5')
         (6) ('Realfagsbrenneriet', 'I&IKT-kaffe', '2022.03.12', 'mørkbrent', 'En kaffe for ingeniørvitenskap-og-ikt-studenter.', 359.0, '6')
-        (7) Ingen av disse.
+        (7) Ingen av disse
 > 0
 
 Fyll inn følgende verdier for kaffesmakingen.
@@ -246,6 +246,124 @@ Hva vil du gjøre?
 
 Takk for nå!
 ```
+
+Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål om disse på følgende vis. 
+```
+Hvilken kaffe har du smakt?
+        (0) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '0')        
+        (1) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '1')
+        (2) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '2')       
+        (3) ('Realfagsbrenneriet', 'Kyb-kaffe', '2022.01.02', 'lysbrent', 'En kaffe for kybernetikk-studenter.', 412.0, '3')
+        (4) ('Realfagsbrenneriet', 'Indøk-kaffe', '2022.02.12', 'lysbrent', 'En kaffe for indøk-studenter.', 789.0, '4')
+        (5) ('Realfagsbrenneriet', 'I&IKT-kaffe', '2022.03.12', 'mørkbrent', 'En kaffe for ingeniørvitenskap-og-ikt-studenter.', 359.0, '5')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffen.
+
+<str> KaffebrenneriNavn: Jacobsen & Svart
+<str> Navn: Vinterkaffe
+<Date> Brenningsdato (yyyy.mm.dd): 2022.01.20
+<str> Brenningsgrad: lysbrent
+<str> Beskrivelse: En velsmakende og kompleks kaffe for mørketiden.
+<float> Kilopris: 600
+
+Hvilket kaffeparti er kaffen fremstilt av?
+        (0) (0, 2020, 60.0, 'Fazendas Dutra', 'Pulped natural')
+        (1) (1, 2021, 69.0, 'Fernandez Familia', 'Vasket')
+        (2) (2, 2020, 50.0, 'Kivubelt', 'Bærtørket')
+        (3) (3, 2019, 62.0, 'El Placer', 'Vasket')
+        (4) (4, 2021, 58.0, 'Amadeo', 'Delvis vasket')
+        (5) (5, 2022, 78.0, 'Dak Lak', 'Vasket')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffepartiet.
+
+<int> Innhøstningsår: 2021
+<float> Kilopris: 72
+
+Ved hvilken kaffegård er partiet produsert?
+        (0) ('Fazendas Dutra', 1100.0, 'Brasil', 'Minas Gerais')
+        (1) ('Fernandez Familia', 1100.0, 'Peru', 'Colosay')
+        (2) ('Kivubelt', 1567.0, 'Rwanda', 'Kigali')
+        (3) ('El Placer', 2115.0, 'Colombia', 'Tolima')
+        (4) ('Amadeo', 400.0, 'Filippinene', 'Calabarzon')
+        (5) ('Dak Lak', 1600.0, 'Vietnam', 'Buôn Mê Thuột')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffegården.
+
+<str> Navn: Nombre Dios
+<float> HoeydeOverHavet: 1500
+<str> Land: El Salvador
+<str> Region: Santa Ana
+
+✅ Satt inn kaffegården ['Nombre Dios', 1500.0, 'El Salvador', 'Santa Ana']
+
+Dyrker gården kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> ja
+
+✅ Satt inn at kaffegården Nombre Dios dyrker kaffebønnen Coffea arabica
+
+Dyrker gården kaffebønnen Coffea liberica?
+        (0) Ja
+        (1) Nei
+> nei
+
+Dyrker gården kaffebønnen Coffea robusta?
+        (0) Ja
+        (1) Nei
+> nei
+
+Hvilken foredlingsmetode er brukt?
+        (0) ('Vasket', 'God kontroll på prosessen gir\nstabil kvalitet. Vasket kaffe kjennetegnes ved en frisk og ren smak\nmed markant syre.')
+        (1) ('Pulped natural', 'Kan ha mer kropp\nog lavere syre enn vasket kaffe, og en renere, mer ensartet cup\nenn bærtørket.')    
+        (2) ('Delvis vasket', 'Kan gi kaffe med\nintens sødme, god munnfølelse og balansert syre.')
+        (3) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for foredlingsmetoden.
+
+<str> Navn: Bærtørket
+<str> Beskrivelse: Den eldste og enkleste foredlingsmetoden som tradisjonelt har hatt størst utbredelse i områder med lite regn som Brasil og Indonesia.
+
+✅ Satt inn foredlingsmetoden ['Bærtørket', 'Den eldste og enkleste foredlingsmetoden som tradisjonelt har hatt størst utbredelse i områder med lite regn som Brasil og Indonesia.']
+
+✅ Satt inn kaffepartiet [2021, 72.0, 'Nombre Dios', 'Bærtørket']
+
+Kaffegården Nombre Dios dyrker følgende kaffebønner: ['Coffea arabica']
+
+Består partiet av kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> nei
+
+Et kaffeparti må bestå av minst én kaffebønne!
+
+Består partiet av kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> ja
+
+✅ Satt inn at kaffebønnen Coffea arabica er del av parti 6 
+
+✅ Satt inn kaffen ['Jacobsen & Svart', 'Vinterkaffe', '2022.01.20',
+'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, 6]
+
+Fyll inn følgende verdier for kaffesmakingen.
+
+<str> Smaksnotater: Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!
+<int> Poeng: 10
+<Date> Smaksdato (yyyy.mm.dd): 2022.03.24
+
+✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe',
+'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '2022.03.24']
+```
+Legg også merke til at ved spørsmål om kaffebønnene partiet består av, er det kun mulig å velge mellom bønner som dyrkes av den aktuelle gården. Og dersom ingen bønner blir valgt, blir brukeren spurt igjen. På denne måten opprettholdes en konsistent databasetilstand.
 
 ### Brukerhistorie 2 - 5
 Brukerhistorie 2 - 5 går alle ut på å gjøre spørringer på databasen. Dette krever *ikke* at man har en registrert bruker, og vi logger derfor inn som gjest.

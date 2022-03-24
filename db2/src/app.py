@@ -161,6 +161,7 @@ def ask_kaffegaard(state):
         n += 1
     if n == 0:
       print('\nEn kaffegård må dyrke minst én kaffebønne!\n')
+  
   return kaffegaard[0]
 
 
@@ -191,10 +192,15 @@ def ask_kaffeparti(state):
 
   print(f'Kaffegården {kaffegaard_navn} dyrker følgende kaffebønner: {kaffeboenner}\n')
 
-  for kaffeboenne in kaffeboenner:
-    if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
-        ['Ja', 'Nei']) == 'Ja':
-      state.db.insert_partiBestaarAv([kaffeparti_id, kaffeboenne])
+  n = 0
+  while not n:
+    for kaffeboenne in kaffeboenner:
+      if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
+          ['Ja', 'Nei']) == 'Ja':
+        state.db.insert_partiBestaarAv([kaffeparti_id, kaffeboenne])
+        n += 1
+    if n == 0:
+      print('\nEt kaffeparti må bestå av minst én kaffebønne!\n')
   
   return kaffeparti_id
 
