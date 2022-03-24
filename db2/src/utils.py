@@ -24,7 +24,7 @@ def ask_select(question, options, return_int=False):
   indexed_options = '\t' + \
       '\n\t'.join([f'({i}) {option}' for i, option in enumerate(options)])
   while True:
-    selected = pinput(f'{question}\n{indexed_options}\n').lower()
+    selected = pinput(f'{question}\n{indexed_options}\n> ').lower()
     for i, option in enumerate(options):
       if selected == option.lower():
         return i if return_int else option
