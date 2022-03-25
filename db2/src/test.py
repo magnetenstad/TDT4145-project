@@ -24,9 +24,9 @@ class Test(unittest.TestCase):
   
   @patch('builtins.input', 
       side_effect=['Registrere en ny bruker', 'bruker@ntnu.no',
-      'brukerpassord', 'Bruker Fullt Navn', 'Brukerland', 'Skrive data',
+      'bruker-passord', 'Bruker Bruker', 'Brukerland', 'Skrive data',
       'Kaffesmaking', '0', 'Wow - en odyssé for smaksløkene:\nsitrusskall, melkesjokolade, aprikos!',
-      '10', '2022.03.24', 'Nei', 'Logge ut', 'Avslutte'])
+      '10', '', 'Nei', 'Logge ut', 'Avslutte'])
   def test_brukerhistorie_1(self, _):
     print('\n\n### 🤖 TEST: Brukerhistorie 1 ###')
     main(':memory:')
