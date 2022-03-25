@@ -50,13 +50,13 @@ def ask_select_or_create(state, question, rows, ask_create, key_end=None):
 from datetime import datetime
 
 class Date(str):
-  def __init__(self, date_str):
+  def __new__(cls, date_str):
     """Date validation: 
     Must be a valid date (yyyy.mm.dd)
     and cannot be in the future."""
 
     if date_str == None:
-      return True
+      return None
 
     yyyy, mm, dd = date_str.split('.')
     
@@ -70,3 +70,5 @@ class Date(str):
     
     if then > now:
       raise Exception()
+
+    return str.__new__(cls, date_str)

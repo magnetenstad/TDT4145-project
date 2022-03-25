@@ -185,10 +185,10 @@ Fyll inn følgende verdier for kaffesmakingen.
 
 <str> Smaksnotater: Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!
 <int> Poeng: 10
-<Date> Smaksdato (yyyy.mm.dd): 2022.03.24
+<Date> Smaksdato (yyyy.mm.dd):
 
 ✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe 2022',
-'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '2022.03.24'] 
+'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, None] 
 
 Vil du sette inn noe mer?
         (0) Ja
@@ -214,6 +214,7 @@ Hva vil du gjøre?
 
 Takk for nå!
 ```
+Legg merke til at det ikke ble spesifisert noen smaksdato. Den blir da satt til `NULL` (`None` i python).
 
 Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål. Oversikt over avhengighetene er i figur 2. Det er implementert på følgende måte:
 ```
