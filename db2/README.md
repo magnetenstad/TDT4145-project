@@ -161,3 +161,345 @@ Spørringen fra brukerhistorie 3 finnes under alternativ 1: 'Gjennomsnittlig poe
 Spørringen fra brukerhistorie 4 finnes under alternativ 2: 'Kaffer beskrevet som 'floral'' og returnerer en liste med kaffebrennerinavn og kaffenavn. 
 
 Spørringen fra brukerhistorie 5 finnes under alternativ 3: 'Ikke-vaskede kaffer fra Rwanda eller Colombia' og returnerer en liste over kafferbrennerinavn og kaffenavn.
+
+## Brukerhistorier v2
+
+### Brukerhistorie 1
+Brukerhistorie 1 går ut på å notere en kaffesmaking, og krever at den aktuelle brukeren er logget inn. Vi registrerer derfor en bruker før vi notererer kaffesmakingen. 
+```
+Velkommen til Kaffedatabasen 😊☕   
+
+Hva vil du gjøre?
+        (0) Logge inn
+        (1) Logge inn som gjest    
+        (2) Registrere en ny bruker
+        (3) Avslutte
+> registrere en ny bruker
+
+Registrer deg med epost, passord, navn og land:
+
+<str> Epost: bruker@ntnu.no
+<str> Passord: bruker-passord
+<str> Fullt navn: Bruker Bruker                  
+<str> Land: Brukerland
+
+✅ Satt inn brukeren ['bruker@ntnu.no', 'bruker-passord', 'Bruker Bruker', 'Brukerland'] 
+
+Registrert og logget inn som bruker@ntnu.no!
+
+Hva vil du gjøre?
+        (0) Lese data
+        (1) Logge ut
+        (2) Skrive data
+> skrive data
+
+Hva vil du sette inn?
+        (0) Kaffe
+        (1) Kaffebrenneri        
+        (2) Kaffeparti
+        (3) Kaffegård
+        (4) Kaffesmaking
+        (5) Ingenting, gå tilbake
+> kaffesmaking
+
+Hvilken kaffe har du smakt?
+        (0) ('Jacobsen & Svart', 'Vinterkaffe', '2022.01.20', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, '0')   
+        (1) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '1')
+        (2) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '2')
+        (3) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '3')
+        (4) ('Realfagsbrenneriet', 'Kyb-kaffe', '2022.01.02', 'lysbrent', 'En kaffe for kybernetikk-studenter.', 412.0, '4')
+        (5) ('Realfagsbrenneriet', 'Indøk-kaffe', '2022.02.12', 'lysbrent', 'En kaffe for indøk-studenter.', 789.0, '5')
+        (6) ('Realfagsbrenneriet', 'I&IKT-kaffe', '2022.03.12', 'mørkbrent', 'En kaffe for ingeniørvitenskap-og-ikt-studenter.', 359.0, '6')
+        (7) Ingen av disse
+> 0
+
+Fyll inn følgende verdier for kaffesmakingen.
+
+<str> Smaksnotater: Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!
+<int> Poeng: 10
+<Date> Smaksdato (yyyy.mm.dd): 2022.03.24
+
+✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe',
+'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '2022.03.24'] 
+
+Vil du sette inn noe mer?
+        (0) Ja
+        (1) Nei
+> nei
+
+Hva vil du gjøre?
+        (0) Lese data
+        (1) Logge ut
+        (2) Skrive data
+> logge ut
+
+Logget ut.
+
+Velkommen til Kaffedatabasen 😊☕
+
+Hva vil du gjøre?
+        (0) Logge inn
+        (1) Logge inn som gjest
+        (2) Registrere en ny bruker
+        (3) Avslutte
+> avslutte
+
+Takk for nå!
+```
+
+Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål om disse på følgende vis. 
+```
+Hvilken kaffe har du smakt?
+        (0) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '0')        
+        (1) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '1')
+        (2) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '2')       
+        (3) ('Realfagsbrenneriet', 'Kyb-kaffe', '2022.01.02', 'lysbrent', 'En kaffe for kybernetikk-studenter.', 412.0, '3')
+        (4) ('Realfagsbrenneriet', 'Indøk-kaffe', '2022.02.12', 'lysbrent', 'En kaffe for indøk-studenter.', 789.0, '4')
+        (5) ('Realfagsbrenneriet', 'I&IKT-kaffe', '2022.03.12', 'mørkbrent', 'En kaffe for ingeniørvitenskap-og-ikt-studenter.', 359.0, '5')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffen.
+
+<str> KaffebrenneriNavn: Jacobsen & Svart
+<str> Navn: Vinterkaffe
+<Date> Brenningsdato (yyyy.mm.dd): 2022.01.20
+<str> Brenningsgrad: lysbrent
+<str> Beskrivelse: En velsmakende og kompleks kaffe for mørketiden.
+<float> Kilopris: 600
+
+Hvilket kaffeparti er kaffen fremstilt av?
+        (0) (0, 2020, 60.0, 'Fazendas Dutra', 'Pulped natural')
+        (1) (1, 2021, 69.0, 'Fernandez Familia', 'Vasket')
+        (2) (2, 2020, 50.0, 'Kivubelt', 'Bærtørket')
+        (3) (3, 2019, 62.0, 'El Placer', 'Vasket')
+        (4) (4, 2021, 58.0, 'Amadeo', 'Delvis vasket')
+        (5) (5, 2022, 78.0, 'Dak Lak', 'Vasket')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffepartiet.
+
+<int> Innhøstningsår: 2021
+<float> Kilopris: 72
+
+Ved hvilken kaffegård er partiet produsert?
+        (0) ('Fazendas Dutra', 1100.0, 'Brasil', 'Minas Gerais')
+        (1) ('Fernandez Familia', 1100.0, 'Peru', 'Colosay')
+        (2) ('Kivubelt', 1567.0, 'Rwanda', 'Kigali')
+        (3) ('El Placer', 2115.0, 'Colombia', 'Tolima')
+        (4) ('Amadeo', 400.0, 'Filippinene', 'Calabarzon')
+        (5) ('Dak Lak', 1600.0, 'Vietnam', 'Buôn Mê Thuột')
+        (6) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for kaffegården.
+
+<str> Navn: Nombre Dios
+<float> HoeydeOverHavet: 1500
+<str> Land: El Salvador
+<str> Region: Santa Ana
+
+✅ Satt inn kaffegården ['Nombre Dios', 1500.0, 'El Salvador', 'Santa Ana']
+
+Dyrker gården kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> ja
+
+✅ Satt inn at kaffegården Nombre Dios dyrker kaffebønnen Coffea arabica
+
+Dyrker gården kaffebønnen Coffea liberica?
+        (0) Ja
+        (1) Nei
+> nei
+
+Dyrker gården kaffebønnen Coffea robusta?
+        (0) Ja
+        (1) Nei
+> nei
+
+Hvilken foredlingsmetode er brukt?
+        (0) ('Vasket', 'God kontroll på prosessen gir\nstabil kvalitet. Vasket kaffe kjennetegnes ved en frisk og ren smak\nmed markant syre.')
+        (1) ('Pulped natural', 'Kan ha mer kropp\nog lavere syre enn vasket kaffe, og en renere, mer ensartet cup\nenn bærtørket.')    
+        (2) ('Delvis vasket', 'Kan gi kaffe med\nintens sødme, god munnfølelse og balansert syre.')
+        (3) Ingen av disse
+> ingen av disse
+
+Fyll inn følgende verdier for foredlingsmetoden.
+
+<str> Navn: Bærtørket
+<str> Beskrivelse: Den eldste og enkleste foredlingsmetoden som tradisjonelt har hatt størst utbredelse i områder med lite regn som Brasil og Indonesia.
+
+✅ Satt inn foredlingsmetoden ['Bærtørket', 'Den eldste og enkleste foredlingsmetoden som tradisjonelt har hatt størst utbredelse i områder med lite regn som Brasil og Indonesia.']
+
+✅ Satt inn kaffepartiet [2021, 72.0, 'Nombre Dios', 'Bærtørket']
+
+Kaffegården Nombre Dios dyrker følgende kaffebønner: ['Coffea arabica']
+
+Består partiet av kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> nei
+
+Et kaffeparti må bestå av minst én kaffebønne!
+
+Består partiet av kaffebønnen Coffea arabica?
+        (0) Ja
+        (1) Nei
+> ja
+
+✅ Satt inn at kaffebønnen Coffea arabica er del av parti 6 
+
+✅ Satt inn kaffen ['Jacobsen & Svart', 'Vinterkaffe', '2022.01.20',
+'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, 6]
+
+Fyll inn følgende verdier for kaffesmakingen.
+
+<str> Smaksnotater: Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!
+<int> Poeng: 10
+<Date> Smaksdato (yyyy.mm.dd): 2022.03.24
+
+✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe',
+'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '2022.03.24']
+```
+Legg også merke til at ved spørsmål om kaffebønnene partiet består av, er det kun mulig å velge mellom bønner som dyrkes av den aktuelle gården. Og dersom ingen bønner blir valgt, blir brukeren spurt igjen. På denne måten opprettholdes en konsistent databasetilstand.
+
+### Brukerhistorie 2 - 5
+Brukerhistorie 2 - 5 går alle ut på å gjøre spørringer på databasen. Dette krever *ikke* at man har en registrert bruker, og vi logger derfor inn som gjest.
+
+```
+Velkommen til Kaffedatabasen 😊☕   
+
+Hva vil du gjøre?
+        (0) Logge inn
+        (1) Logge inn som gjest    
+        (2) Registrere en ny bruker
+        (3) Avslutte
+> logge inn som gjest
+
+Logget inn som 'guest'
+
+Hva vil du gjøre?     
+        (0) Lese data 
+        (1) Logge ut  
+> lese data
+```
+
+#### Brukerhistorie 2
+```
+Hva vil du gjøre spørring på?
+        (0) Alle kaffesmakinger
+        (1) Flest unike kaffer i år
+        (2) Mest for pengene
+        (3) Beskrevet som floral
+        (4) Ikke vasket fra Rwanda eller Colombia
+        (5) Hele databasen
+> flest unike kaffer i år
+
+Resultatet ble:
+
+| FulltNavn                |   Antall |
+|:-------------------------|---------:|
+| Magne Erlendsønn Tenstad |        7 |
+| Bruker Bruker            |        1 |
+
+Vil du gjøre en ny spørring?
+        (0) Ja
+        (1) Nei
+> ja 
+```
+
+### Brukerhistorie 3
+```
+Hva vil du gjøre spørring på?
+        (0) Alle kaffesmakinger
+        (1) Flest unike kaffer i år
+        (2) Mest for pengene
+        (3) Beskrevet som floral
+        (4) Ikke vasket fra Rwanda eller Colombia
+        (5) Hele databasen
+> mest for pengene
+
+Resultatet ble:
+
+| KaffebrenneriNavn   | Navn           |   Kilopris |   GjPoeng |
+|:--------------------|:---------------|-----------:|----------:|
+| Jacobsen & Svart    | Diamond Santos |        349 |       7   |
+| Realfagsbrenneriet  | I&IKT-kaffe    |        359 |       6   |
+| Realfagsbrenneriet  | Data-kaffe     |        600 |      10   |
+| Jacobsen & Svart    | La Palma       |        598 |       8   |
+| Jacobsen & Svart    | Vinterkaffe    |        600 |       6.5 |
+| Realfagsbrenneriet  | Kyb-kaffe      |        412 |       4   |
+| Realfagsbrenneriet  | Indøk-kaffe    |        789 |       2   |
+
+Vil du gjøre en ny spørring?
+        (0) Ja
+        (1) Nei
+> ja
+```
+
+### Brukerhistorie 4
+```
+Hva vil du gjøre spørring på?
+        (0) Alle kaffesmakinger
+        (1) Flest unike kaffer i år
+        (2) Mest for pengene
+        (3) Beskrevet som floral
+        (4) Ikke vasket fra Rwanda eller Colombia
+        (5) Hele databasen
+> beskrevet som floral
+
+Resultatet ble:
+
+| KaffebrenneriNavn   | Navn     |
+|:--------------------|:---------|
+| Jacobsen & Svart    | La Palma |
+
+Vil du gjøre en ny spørring?
+        (0) Ja
+        (1) Nei
+> ja
+```
+
+### Brukerhistorie 5
+```
+Hva vil du gjøre spørring på?
+        (0) Alle kaffesmakinger
+        (1) Flest unike kaffer i år
+        (2) Mest for pengene
+        (3) Beskrevet som floral
+        (4) Ikke vasket fra Rwanda eller Colombia
+        (5) Hele databasen
+> ikke vasket fra rwanda eller colombia
+
+Resultatet ble:
+
+| Navn       | KaffebrenneriNavn   |
+|:-----------|:--------------------|
+| Data-kaffe | Realfagsbrenneriet  |
+| Kyb-kaffe  | Realfagsbrenneriet  |
+
+Vil du gjøre en ny spørring?
+        (0) Ja
+        (1) Nei
+> nei
+
+Hva vil du gjøre?
+        (0) Lese data
+        (1) Logge ut
+> logge ut
+
+Logget ut.
+
+Velkommen til Kaffedatabasen 😊☕
+
+Hva vil du gjøre?
+        (0) Logge inn
+        (1) Logge inn som gjest
+        (2) Registrere en ny bruker
+        (3) Avslutte
+> avslutte
+
+Takk for nå!
+```

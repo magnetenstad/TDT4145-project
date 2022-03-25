@@ -24,7 +24,7 @@ def ask_select(question, options, return_int=False):
   indexed_options = '\t' + \
       '\n\t'.join([f'({i}) {option}' for i, option in enumerate(options)])
   while True:
-    selected = pinput(f'{question}\n{indexed_options}\n').lower()
+    selected = pinput(f'{question}\n{indexed_options}\n> ').lower()
     for i, option in enumerate(options):
       if selected == option.lower():
         return i if return_int else option
@@ -39,7 +39,7 @@ def ask_select_row(question, rows, key_end=None):
     options = {str(x[:]): x[0:key_end] for x in rows}
   else:
     options = {str(x[:]): x[0] for x in rows}
-  options['Ingen av disse.'] = -1
+  options['Ingen av disse'] = -1
   return options[ask_select(question, options.keys())]
 
 def ask_select_or_create(state, question, rows, ask_create, key_end=None):

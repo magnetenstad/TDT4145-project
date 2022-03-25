@@ -49,7 +49,7 @@ class Database:
       VALUES (?, ?, ?, ?, ?, ?, ?)
       ''', (attributes))
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffen {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -64,7 +64,7 @@ class Database:
         (?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffebrenneriet {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffebrenneriet {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffebrenneriet {attributes}! Kanskje det allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -80,7 +80,7 @@ class Database:
         (?, ?, ?, ?, ?)
       ''', [kaffeparti_id] + attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffepartiet {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffepartiet {attributes} \n')
       return kaffeparti_id
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffepartiet {attributes}! Kanskje det allerede finnes?')
@@ -96,7 +96,7 @@ class Database:
         (?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffebønnen {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffebønnen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffebønnen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -111,7 +111,7 @@ class Database:
         (?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffegården {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffegården {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffegården {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -126,7 +126,7 @@ class Database:
         (?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn brukeren {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn brukeren {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn brukeren {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -141,7 +141,7 @@ class Database:
         (?, ?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn foredlingsmetoden {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn foredlingsmetoden {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn foredlingsmetoden {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -156,7 +156,7 @@ class Database:
         (?, ?, ?, ?, ?, ?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn kaffesmakingen {attributes} \n')
+      if self.verbose: print(f'\n✅ Satt inn kaffesmakingen {attributes} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffesmakingen {attributes}! Kanskje den allerede finnes?')
       print(f'\n Feilmelding: \n {e}')
@@ -171,7 +171,7 @@ class Database:
         (?, ?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]} \n')
+      if self.verbose: print(f'\n✅ Satt inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn at kaffegården {attributes[1]} dyrker kaffebønnen {attributes[0]}! Kanskje det allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
@@ -186,7 +186,7 @@ class Database:
         (?,?)
       ''', attributes)
       self.connection.commit()
-      if self.verbose: print(f'\n ✅ Satt inn at kaffebønnen {attributes[0]} i parti {attributes[1]} \n')
+      if self.verbose: print(f'\n✅ Satt inn at kaffebønnen {attributes[1]} er del av parti {attributes[0]} \n')
     except Exception as e:
       print(f'\n ❌ Kunne ikke sette inn kaffbønnen {attributes[0]} i pati {attributes[1]}! Kanskje den allerede er satt inn?')
       print(f'\n Feilmelding: \n {e}')
@@ -374,7 +374,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
     id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'Bærtørket'])
     self.insert_partiBestaarAv([id, 'Coffea arabica'])
-    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.20.01',
+    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.01.20',
         'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.',
         600, id])
       # Kilde: Oppgavetekst
@@ -492,6 +492,27 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_kaffesmaking(['kslie@ntnu.no',
         'Realfagsbrenneriet', 'Indøk-kaffe',
         'Not my cup of coffee.', 3, '2022.03.24'])
+    
+    self.insert_bruker(['karoliys@ntnu.no', 
+        'Passord1', 'Karoline Stabell', 'Norge'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Jacobsen & Svart', 'Vinterkaffe', 
+        'Rund og god kaffe, litt bitter', 5, '2022.03.02'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Jacobsen & Svart', 'Diamond Santos',
+        'God kaffe for prisen.', 7, '2021.03.16'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Realfagsbrenneriet', 'Data-kaffe',
+        'Bitter med et hint av appelsin', 4, '2021.05.20'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Realfagsbrenneriet', 'Kyb-kaffe',
+        'Besk med hint av metall', 3, '2022.02.27'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Realfagsbrenneriet', 'I&IKT-kaffe',
+        'En søt og god blandingskaffe med hint av karamell', 8, '2022.03.23'])
+    self.insert_kaffesmaking(['karoliys@ntnu.no',
+        'Realfagsbrenneriet', 'Indøk-kaffe',
+        'Beste kaffen på Gløs!', 9, '2022.02.24'])
     
     print('\n✅ Inserted defaults.\n')
     self.verbose = True

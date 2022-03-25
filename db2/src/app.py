@@ -15,8 +15,6 @@ def App(state):
   state.route = Welcome
   while True:
     print()
-    if state.user:
-      print(f'Logget inn som \'{state.user}\'\n')
     if state.route(state) == Response.exit:
       break
 
@@ -27,6 +25,7 @@ def Welcome(state):
   print('Velkommen til Kaffedatabasen 😊☕\n')
   options = {
     'Logge inn': Login,
+    'Logge inn som gjest': LoginGuest,
     'Registrere en ny bruker': Register,
     'Avslutte': Exit
   }
@@ -34,13 +33,11 @@ def Welcome(state):
 
 
 def Main(state):
-  options = {
-    'Skrive data': Insert,
-    'Lese data': Select,
-    'Logge ut': SignOut
-  }
-  if state.user == 'admin':
-    options['Gå til admin-panel'] = Admin
+  options = {}
+  if state.user != 'guest': options['Skrive data'] = Insert
+  options['Lese data'] = Select
+  if state.user == 'admin': options['Gå til admin-panel'] = Admin
+  options['Logge ut'] = SignOut
   state.route = options[ask_select('Hva vil du gjøre?', options.keys())]
 
 
@@ -57,10 +54,12 @@ def Admin(state):
 
 def SignOut(state):
   state.user = None
+  print(f'Logget ut.')
   state.route = Welcome
 
 
 def Exit(_):
+  print('Takk for nå!')
   return Response.exit
 
 
@@ -69,6 +68,7 @@ def Login(state):
   attributes = ask(['Epost', 'Password'])
   if state.db.bruker_exists(attributes):
     state.user = attributes[0]
+    print(f'\nLogget inn som \'{state.user}\'')
     state.route = Main
   else:
     print('\nUgyldig epost eller passord!')
@@ -76,9 +76,16 @@ def Login(state):
       state.route = Welcome
 
 
+def LoginGuest(state):
+  state.user = 'guest'
+  print(f'Logget inn som \'{state.user}\'')
+  state.route = Main
+
+
 def Register(state):
   print('Registrer deg med epost, passord, navn og land:\n')
-  attributes = ask(['Epost', 'Passord', 'Fullt navn', 'Land'])
+  attributes = ask(['Epost', 'Passord', 'Fullt navn', 'Land'],
+      [str, str, str, str])
   try:
     state.db.insert_bruker(attributes)
     state.user = attributes[0]
@@ -118,7 +125,7 @@ def Select(state):
   result = options[selected]()
   if type(result) != str and type(result) != list:
     result = result.to_markdown(index=False)
-  print(f'\nResultatet ble:\n\n{result}\n')
+  print(f'\nResultatet ble:\n\n{result}')
   if ask_select('\nVil du gjøre en ny spørring?', ['Ja', 'Nei']) == 'Nei':
     state.route = Main
 
@@ -154,6 +161,7 @@ def ask_kaffegaard(state):
         n += 1
     if n == 0:
       print('\nEn kaffegård må dyrke minst én kaffebønne!\n')
+  
   return kaffegaard[0]
 
 
@@ -184,10 +192,15 @@ def ask_kaffeparti(state):
 
   print(f'Kaffegården {kaffegaard_navn} dyrker følgende kaffebønner: {kaffeboenner}\n')
 
-  for kaffeboenne in kaffeboenner:
-    if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
-        ['Ja', 'Nei']) == 'Ja':
-      state.db.insert_partiBestaarAv([kaffeparti_id, kaffeboenne])
+  n = 0
+  while not n:
+    for kaffeboenne in kaffeboenner:
+      if ask_select(f'Består partiet av kaffebønnen {kaffeboenne}?',
+          ['Ja', 'Nei']) == 'Ja':
+        state.db.insert_partiBestaarAv([kaffeparti_id, kaffeboenne])
+        n += 1
+    if n == 0:
+      print('\nEt kaffeparti må bestå av minst én kaffebønne!\n')
   
   return kaffeparti_id
 
