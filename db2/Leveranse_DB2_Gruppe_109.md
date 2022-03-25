@@ -14,15 +14,16 @@ Etter første leveranse har vi oppdaget noen små feil og gjort noen endringer.
 - Byttet ut æ, ø og å med ae, oe og aa i alle attributtnavn da det ga feilmelding.
 - Endret Innhoestingsår fra `TEXT` til `INTEGER`.
 - Lagt til Beskrivelse-attributt på kaffe.
-- Endret strukturell restriksjon på Kaffegård, fra å dyrke (0, 3) kaffebønner til (1, 3) kaffebønner. En gård er først en kaffegård dersom den dyrker minst én kaffebønne.
 - Endringer i spørringene er omtalt ved de aktuelle spørringene (brukerhistorie 2-5)
 
 I tillegg ser vi oss nødt til å definere noen ytterligere antakelser.
 
 - I brukerhistorie 2 har vi antatt at brukere som ikke har smakt noen kaffer også skal vises i tabellen.
-- Utifra brukerhistorie 1 har vi antatt at en kaffesmaking ikke trenger en smaksdato, og dermed er det naturlig at samme bruker ikke kan legge inn en kaffesmaking på samme kaffe flere ganger.
-- En bruker kan kun legge inn én kaffesmaking per kaffe, ettersom statistikk er et viktig formål med applikasjonen. # TODO
-- Det er antatt at brenningsdatoen på en kaffe ikke er identifiserende, ettersom samme kaffe kan brennes på ulike tidspunkt. # TODO
+- Ut ifra brukerhistorie 1 har vi antatt at en kaffesmaking hverken må spesifisere datoen kaffen ble brent eller datoen kaffen ble smakt. Dette har følgende konsekvenser:
+  - Brennedato kan ikke være nøkkelattributt i kaffe. En kaffe gitt ved et bestemt kaffebrennerinavn og kaffenavn kan ikke brennes flere ganger.
+  - Smaksdato kan ikke være nøkkelattributt for kaffesmaking. En bruker kan kun notere én kaffesmaking av hver kaffe.
+- Et kaffeparti kan kun bestå av kaffebønner som er dyrket ved kaffegården der partiet er produsert.
+- En gård er først en kaffegård dersom den dyrker minst én kaffebønne. Dette endrer den strukturell restriksjonen på Kaffegaard, fra å dyrke (0, 3) kaffebønner til (1, 3) kaffebønner. Uten denne restriksjonen kunne det finnes kaffegårder som ikke var i stand til å produsere kaffepartier.
 
 <div style="page-break-after: always;"></div>
 
@@ -499,7 +500,6 @@ Resultatet ble:
 | Navn       | KaffebrenneriNavn   |
 |:-----------|:--------------------|
 | Data-kaffe | Realfagsbrenneriet  |
-| Kyb-kaffe  | Realfagsbrenneriet  |
 
 Vil du gjøre en ny spørring?
         (0) Ja

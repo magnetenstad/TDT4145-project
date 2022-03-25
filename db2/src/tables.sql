@@ -23,7 +23,7 @@ CONSTRAINT Foredlingsmetode_FK FOREIGN KEY (ForedlingsmetodeNavn) REFERENCES For
   ON UPDATE CASCADE
   ON DELETE RESTRICT
 -- Vil oppdatere fremmednøkkel dersom Foredlingsmetode(Navn) endres
--- Vi tillater ikke å slette foredlingsmetoder
+-- Vi tillater ikke å slette foredlingsmetoder som er referert til
 );
 
 CREATE TABLE Kaffe(
@@ -39,7 +39,7 @@ CONSTRAINT Kaffebrenneri_FK FOREIGN KEY (KaffebrenneriNavn) REFERENCES Kaffebren
   ON UPDATE CASCADE
   ON DELETE RESTRICT
 -- Vil oppdatere fremmednøkkel dersom Kaffebrenneri endres 
--- Vi tillater ikke sletting av kaffebrennerier
+-- Vi tillater ikke sletting av kaffebrennerier som er referert til
 );
 
 CREATE TABLE Kaffebrenneri(
@@ -73,7 +73,7 @@ CONSTRAINT Kaffe_FK FOREIGN KEY (KaffebrenneriNavn, KaffeNavn) REFERENCES Kaffe(
   ON UPDATE CASCADE
   ON DELETE RESTRICT,
 -- Vil oppdatere fremmednøkkel dersom en kaffe endres
--- Vi tillater ikke å slette kaffer
+-- Vi tillater ikke å slette kaffer som er referert
 CONSTRAINT Bruker_FK FOREIGN KEY (Epost) REFERENCES Bruker(Epost)
   ON UPDATE CASCADE
   ON DELETE CASCADE
@@ -89,10 +89,12 @@ CONSTRAINT Kaffeboenne_FK FOREIGN KEY (KaffeboenneArt) REFERENCES Kaffeboenne(Ar
   ON UPDATE RESTRICT
   ON DELETE RESTRICT,
 -- Vi tillater ikke endring av Kaffeboenneart, da disse er gitt en av 3 (total og disjunkt Kaffeboenne) 
--- Vi tillater ikke sletting av kaffebrennerier
+-- Vi tillater ikke sletting av kaffebrennerier som er referert til
 CONSTRAINT Kaffegaard_FK FOREIGN KEY (KaffegaardNavn) REFERENCES Kaffegaard(Navn)
   ON UPDATE CASCADE
   ON DELETE RESTRICT
+-- Vil oppdatere fremmednøkkel dersom en kaffegård endrer navn
+-- Vi tillater ikke sletting av kaffegårder som er referert til
 );
 
 CREATE TABLE PartiBestaarAv(
@@ -102,9 +104,9 @@ CONSTRAINT DyrketAv_PK PRIMARY KEY (KaffeboenneArt, KaffepartiId),
 CONSTRAINT Kaffeboenne_FK FOREIGN KEY (KaffeboenneArt) REFERENCES Kaffeboenne(Art)
   ON UPDATE RESTRICT
   ON DELETE RESTRICT,
--- Vi tillater ikke at Kaffeboenne(Art) endres eller slettes
+-- Vi tillater ikke at Kaffeboenne(Art) som er referert til endres eller slettes
 CONSTRAINT Kaffeparti_FK FOREIGN KEY (KaffepartiId) REFERENCES Kaffeparti(Id)
   ON UPDATE RESTRICT
   ON DELETE RESTRICT
--- Vi tillater ikke at Kaffeparti(Id) endres eller slettes
+-- Vi tillater ikke at Kaffeparti(Id) som er referert til endres eller slettes
 );
