@@ -2,7 +2,8 @@
 def pinput(prompt):
   # Doesn't hide the prompt when testing with unittest
   print(prompt, end='')
-  return input()
+  i = input()
+  return i if len(i) else None
 
 def ask(questions, types=None):
   if types == None:
@@ -53,6 +54,10 @@ class Date(str):
     """Date validation: 
     Must be a valid date (yyyy.mm.dd)
     and cannot be in the future."""
+
+    if date_str == None:
+      return True
+
     yyyy, mm, dd = date_str.split('.')
     
     if not (len(yyyy) == 4 and len(mm) == 2 and len(dd) == 2):

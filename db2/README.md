@@ -8,40 +8,35 @@
 | Tenstad    | Magne Erlendsønn       | magneet@stud.ntnu.no  |
 
 ## Sjekkliste
-- [ ] Brukerhistorie 1
-- [ ] Brukerhistorie 2 med SQL-spørring og data for å teste spørringen
-- [ ] Brukerhistorie 3 med SQL-spørring og data for å teste spørringen
+- [x] Brukerhistorie 1
+- [x] Brukerhistorie 2 med SQL-spørring og data for å teste spørringen
+- [x] Brukerhistorie 3 med SQL-spørring og data for å teste spørringen
 - [x] Brukerhistorie 4 med SQL-spørring og data for å teste spørringen
 - [x] Brukerhistorie 5 med SQL-spørring og data for å teste spørringen
 - [x] Notere alle endringer som er gjort fra DB1 (se git history)
-- [ ] Skrive og begrunne antakelser
-- [ ] Forklare hvordan programmet kjøres og brukes
+- [x] Skrive og begrunne antakelser
+- [x] Forklare hvordan programmet kjøres og brukes
 
 ## Evalueringskriterier
-- [ ] En oversikt over hvordan brukerhistoriene er løst.
-- [ ] Korrekt bruk av SQL i Python.
+- [x] En oversikt over hvordan brukerhistoriene er løst.
+- [x] Korrekt bruk av SQL i Python.
 - [ ] Forståelig og lesbar kode.
 - [ ] Konsise og tydelige beskrivelser i dokumentet
 - [ ] Det skal være mulig å reprodusere de leverte resultatene ved hjelp av programmet og databasen som er levert.
 
 ## Applikasjonsbeskrivelse
 
-### Endringer i struktur og antakelser
-
-#### Endringer i struktur (SQL)
-- Endret Innhøstingsår fra TEXT til INTEGER for å få rett validering av input.
-- La til Beskrivelse attributt på kaffe da dette var blitt glemt.
+### Endringer og antakelser
 - Byttet ut æ, ø og å med ae, oe og aa i alle attributtnavn da det ga feilmelding.
+- Endret Innhøstingsår fra TEXT til INTEGER for å få rett validering av input.
+- Lagt til Beskrivelse-attributt på kaffe.
 - Kaffegårder må dyrke minst en kaffebønne.
 
-#### Antakelser
-- I brukerhistorie 2 har vi antatt at brukere som ikke har smakt noen kaffer ikke skal vises i tabellen.
+- I brukerhistorie 2 har vi antatt at brukere som ikke har smakt noen kaffer også skal vises i tabellen.
+- En bruker kan kun legge inn én kaffesmaking per kaffe, ettersom statistikk er et viktig formål med applikasjonen.
+- Utifra brukerhistorie 1 har vi antatt at en kaffesmaking ikke trenger en smaksdato, og dermed er det naturlig at samme bruker ikke kan legge inn en kaffesmaking på samme kaffe flere ganger.
+- Det er antatt at brenningsdatoen på en kaffe ikke er identifiserende, ettersom samme kaffe kan brennes på ulike tidspunkt. 
 
-
-#### Hvordan kardinalitet implementeres
-Kardinalitet for de ulike relasjonene implementeres ved hjelp av RDB-skjemaene. I de tilfeller det er én til mange har den entiteten som bare kan ha en relasjon til den andre entiteten en fremmednøkkel. 
-
-I de tilfellene hvor det kan opprettes flere relasjoner mellom entitetene, er lagres de to fremmednøklene i en tabell. 
 
 ### Hvordan kjøre programmet
 
@@ -64,7 +59,7 @@ Kjør følgende kommando for å kjøre automatiske tester.
 ```
 python -m unittest test.py
 ```
-Hver gang det presenteres alternativer, velger man et alternativ ved å skrive nummeret som står foran alternativet.
+Hver gang det presenteres alternativer, velger man et alternativ ved å skrive nummeret som står foran alternativet, eller selve alternativet.
 
 ### Hvordan applikasjonen fungerer
 
@@ -78,10 +73,11 @@ flowchart LR
   insert(Hva vil du sette inn?)
   exit(Avslutter applikasjonen)
 
-  select_1(Antall unike kaffer per bruker)
-  select_2(Gjennomsnittlig poeng per kaffe)
-  select_3(Kaffer beskrevet som 'floral')
-  select_4(Ikke-vaskede kaffer fra Rwanda eller Colombia)
+  select_0(Alle kaffesmakinger)
+  select_1(Flest unike kaffer i år)
+  select_2(Mest for pengene)
+  select_3(Beskrevet som 'floral')
+  select_4(Ikke-vasket fra Rwanda eller Colombia)
   select_5(Hele databasen)
 
   main -->|Logge inn| logged_in
@@ -92,22 +88,24 @@ flowchart LR
   logged_in -->|Lese data| select
   logged_in -->|Logge ut| main
 
-  select -->|0| select_1
-  select -->|1| select_2
-  select -->|2| select_3
-  select -->|3| select_4
-  select -->|4| select_5
+  select -->|0| select_0
+  select -->|1| select_1
+  select -->|2| select_2
+  select -->|3| select_3
+  select -->|4| select_4
+  select -->|5| select_5
 
   insert --> |0| kaffe
   insert --> |1| kaffebrenneri
   insert --> |2| kaffeparti
   insert --> |3| kaffegård
   insert --> |4| kaffesmaking
+  insert --> |5 - Ingenting, gå tilbake | logged_in
 
 ```
 <b>Figur 1: Tilstandsdiagram for applikasjonen</b>
 
-Brukeren får mulighet til å logge inn eller registrere en ny bruker. Ved oppstart må det opprettes en bruker for å få logget inn. Deretter blir man spurt hva man ønsker å gjøre, og får tre alternativer: skrive data, lese data eller avslutte programmet. Ved valg av alternativ kan man enten skrive inn nummeret på valget, eller skrive selve valget.
+Brukeren får mulighet til å logge inn eller registrere en ny bruker. Ved oppstart må det opprettes en bruker for å få logget inn. Deretter blir man spurt hva man ønsker å gjøre, og får tre alternativer: skrive data, lese data eller avslutte programmet.
 
 Figur 2 viser hvordan ulike objekter i databasen er avhengige av andre objekter. Når man skal skrive inn data for disse tilfellene kan man velge å bruke data som allerede ligger i tabellen, eller legge til ny. Dersom man ønsker å legge til ny data må det også legges til data for eventuelle avhengigheter. Om en bruker for eksempel ønsker å legge til en kaffesmaking, må en kaffe velges eller opprettes. Ved hver avhengighet blir alternativene som ligger i databasen presentert, og det kan velges blant de lagrede eller legges til en ny. 
 
@@ -132,40 +130,10 @@ flowchart TD
 ```
 <b>Figur 2: Avhengigheter mellom tabellene i databasen</b>
 
-#### Implementasjon av brukerhistorie 1
-Etter at applikasjonen er startet implementeres brukerhistorie 1 ved å gjøre følgende:
-1. Velg alternativ (1) 'Registrere ny bruker' ved spørsmålet 'Hva vil du gjøre?'
-2. Fyll inn feltene som dukker opp med ønsket informasjon (Epost, passord, fullt navn og land). Du logges automatisk inn.
-3. Du blir nå presentert med 3 alternativer, og velger alternativ (0) 'Skrive data'. 
-4. Du får fem nye alternativer og velger alternativ (4) 'Kaffesmaking' for å legge til en ny kaffesmaking.
-5. Dersom kaffen du har smakt ikke eksisterer velger du alternativ (4) 'Ingen av disse'. 
-6. Fyll inn KaffebrenneriNavn, KaffeNavn, Brenningsdato, Brenningsgrad, Beskrivelse og Kilopris for Kaffen. 
-7. Oppgi hvilket kaffeparti kaffen er laget av ved å velge et eksisterende kaffeparti eller opprette et nytt. Et nytt kaffeparti opprettes ved å velge alternativ (3) 'Ingen av disse'.
-8. Ved oppretting av et nytt kaffeparti fylles innhøstingsår og kilopris for partiet inn. 
-9. Oppgi hvilken kaffegård kaffepartiet kommer fra ved å velge en eksisterende kaffeparti eller opprette en ny. En ny kaffegård kan opprettes ved å velge alternativ (3) 'Ingen av disse'.
-10. Ved oppretting av en ny kaffegård oppgis navn på gården, høyde over havet, land og region. Deretter oppgis det hvilke(n) av tre typer kaffebønner som produseres ved gården.
-11. Oppgi hvilken foredlingsmetode som er benyttet ved å velge blant eksisterende foredlingsmetoder eller opprette en ny ved å velge alternativ (2) 'Ingen av disse'. En foredlingsmetode opprettes ved å fylle inn navn og beskrivelse.
-12. Deretter velger man hvilke kaffebønner kaffepartiet består av, blant de gården produserer
-13. Til slutt fyller en inn følgende verdier for kaffesmakingen: smaksnotater, poeng (fra 0 til 10) og smaksdato.
-14. Gå tilbake tilbake til menyen over til "Hva vil du gjøre?"-menyen ved å velge alternativ (1) 'Nei' på spørsmålet om du ønsker å sette inn noe mer.
-
-
-#### Implementasjon av brukerhistorie 2-5
-
-Etter å ha logget inn får man velge mellom 'Skrive data', 'Lese data' og 'Logge ut'. Brukerhistorie 2-5 er implementert under 'Lese data'. Her får man mulighet til å velge mellom de fire ulike spørringene, samt et femte alternativ der man får se alt som ligger i databasen. Se figur 1.
-
-Spørringen fra brukerhistorie 2 finnes under alternativ 0: 'Antall unike kaffer'. Spørringen returnerer brukernes fulle navn og antallet kaffer de har smakt.
-
-Spørringen fra brukerhistorie 3 finnes under alternativ 1: 'Gjennomsnittlig poeng per kaffe' og returnerer en liste med kaffebrennerinavn, kaffenavn, pris og gjennomsnittsscore for hver kaffe, med høyest gjennomsnittsscore. 
-
-Spørringen fra brukerhistorie 4 finnes under alternativ 2: 'Kaffer beskrevet som 'floral'' og returnerer en liste med kaffebrennerinavn og kaffenavn. 
-
-Spørringen fra brukerhistorie 5 finnes under alternativ 3: 'Ikke-vaskede kaffer fra Rwanda eller Colombia' og returnerer en liste over kafferbrennerinavn og kaffenavn.
-
-## Brukerhistorier v2
+## Brukerhistorier
 
 ### Brukerhistorie 1
-Brukerhistorie 1 går ut på å notere en kaffesmaking, og krever at den aktuelle brukeren er logget inn. Vi registrerer derfor en bruker før vi notererer kaffesmakingen. 
+Brukerhistorie 1 går ut på å notere en kaffesmaking, og krever at den aktuelle brukeren er logget inn. Vi registrerer derfor en bruker før vi notererer kaffesmakingen. Der man blir presentert med alternativer velges disse ved å skrive tallet som står foran. Følgende viser hvordan brukerhistorie 1 er implementert.
 ```
 Velkommen til Kaffedatabasen 😊☕   
 
@@ -247,7 +215,7 @@ Hva vil du gjøre?
 Takk for nå!
 ```
 
-Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål om disse på følgende vis. 
+Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål. Oversikt over avhengighetene er i figur 2. Det er implementert på følgende måte:
 ```
 Hvilken kaffe har du smakt?
         (0) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '0')        
@@ -387,6 +355,7 @@ Hva vil du gjøre?
 ```
 
 #### Brukerhistorie 2
+Følgende viser hvordan brukerhistorie 2 er implementert. Spørringen fra brukerhistorie 2 finnes under alternativ 1: 'Flest unike kaffer i år'. Spørringen returnerer brukernes fulle navn og antallet kaffer de har smakt.
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -402,7 +371,10 @@ Resultatet ble:
 | FulltNavn                |   Antall |
 |:-------------------------|---------:|
 | Magne Erlendsønn Tenstad |        7 |
+| Karin Syversveen Lie     |        7 |
+| Karoline Stabell         |        4 |
 | Bruker Bruker            |        1 |
+| admin                    |        0 |
 
 Vil du gjøre en ny spørring?
         (0) Ja
@@ -410,7 +382,25 @@ Vil du gjøre en ny spørring?
 > ja 
 ```
 
+Spørringen utføres med følgende SQL-kode:
+```sql
+SELECT FulltNavn, MAX(Antall) AS Antall
+FROM (
+  SELECT Epost, FulltNavn, 0 AS Antall
+  FROM Bruker
+  UNION
+  SELECT Epost, FulltNavn, COUNT(*) AS Antall
+  FROM Bruker INNER JOIN Kaffesmaking USING (Epost)
+  WHERE Dato LIKE '2022%'
+  GROUP BY Epost
+)
+GROUP BY Epost
+ORDER BY Antall DESC
+```
+Siden første leveranse har vi har valgt å endre spørringen til å inkludere brukere som har 0 kaffesmakinger.
+
 ### Brukerhistorie 3
+Følgende viser hvordan brukerhistorie 3 er implementert. Spørringen fra brukerhistorie 3 finnes under alternativ 2: 'Mest for pengene' og returnerer en liste med kaffebrennerinavn, kaffenavn, pris og gjennomsnittsscore for hver kaffe, sortert etter for hvilken kaffe man får mest for pengene. 
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -425,13 +415,13 @@ Resultatet ble:
 
 | KaffebrenneriNavn   | Navn           |   Kilopris |   GjPoeng |
 |:--------------------|:---------------|-----------:|----------:|
-| Jacobsen & Svart    | Diamond Santos |        349 |       7   |
-| Realfagsbrenneriet  | I&IKT-kaffe    |        359 |       6   |
-| Realfagsbrenneriet  | Data-kaffe     |        600 |      10   |
-| Jacobsen & Svart    | La Palma       |        598 |       8   |
-| Jacobsen & Svart    | Vinterkaffe    |        600 |       6.5 |
-| Realfagsbrenneriet  | Kyb-kaffe      |        412 |       4   |
-| Realfagsbrenneriet  | Indøk-kaffe    |        789 |       2   |
+| Realfagsbrenneriet  | I&IKT-kaffe    |        359 |   7.66667 |
+| Jacobsen & Svart    | Diamond Santos |        349 |   5.66667 |
+| Jacobsen & Svart    | La Palma       |        598 |   8       |
+| Realfagsbrenneriet  | Data-kaffe     |        600 |   7.33333 |
+| Realfagsbrenneriet  | Kyb-kaffe      |        412 |   3.66667 |
+| Jacobsen & Svart    | Vinterkaffe    |        600 |   5.33333 |
+| Realfagsbrenneriet  | Indøk-kaffe    |        789 |   4.66667 |
 
 Vil du gjøre en ny spørring?
         (0) Ja
@@ -439,7 +429,19 @@ Vil du gjøre en ny spørring?
 > ja
 ```
 
+Spørringen utføres med følgende SQL-kode:
+```sql
+SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn, Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
+FROM Kaffe INNER JOIN Kaffesmaking 
+  ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
+    AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+GROUP BY Kaffe.KaffebrenneriNavn, Kaffe.Navn
+ORDER BY GjPoeng/Kaffe.Kilopris DESC
+```
+Siden første leveranse har vi endret sorteringen fra å være på kun på GjPoeng til å være på GjPoeng/Kilopris. På denne måten kan man se for hvilken kaffe man får mest for pengene.
+
 ### Brukerhistorie 4
+Følgende viser hvordan brukerhistorie 4 er implementert. Spørringen fra brukerhistorie 4 finnes under alternativ 3: 'Beskrevet som 'floral'' og returnerer en liste med kaffebrennerinavn og kaffenavn. 
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -462,7 +464,19 @@ Vil du gjøre en ny spørring?
 > ja
 ```
 
+Spørringen utføres med følgende SQL-kode:
+```sql
+SELECT DISTINCT Kaffe.KaffebrenneriNavn, Kaffe.Navn
+FROM Kaffe LEFT OUTER JOIN Kaffesmaking
+  ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
+  AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+WHERE Kaffe.Beskrivelse LIKE '%floral%'
+  OR Kaffesmaking.Smaksnotater LIKE '%floral%'
+```
+Siden første leveranse har vi lagt til `DISTINCT`, slik at kaffene ikke oppgis flere ganger (dersom de er beskrevet som floral flere ganger). Antallet beskrivelser er ikke er relevant her.
+
 ### Brukerhistorie 5
+Følgende viser hvordan brukerhistorie 5 er implementert. Spørringen fra brukerhistorie 5 finnes under alternativ 4: 'Ikke-vasket fra Rwanda eller Colombia' og returnerer en liste over kafferbrennerinavn og kaffenavn.
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -502,4 +516,13 @@ Hva vil du gjøre?
 > avslutte
 
 Takk for nå!
+```
+
+Spørringen utføres med følgende SQL-kode:
+```sql
+SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
+FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
+  ON Kaffe.KaffepartiId = Kaffeparti.Id AND Kaffeparti.KaffegaardNavn = Kaffegaard.Navn
+WHERE (Kaffegaard.Land='Rwanda' OR Kaffegaard.Land='Colombia')
+  AND Kaffeparti.ForedlingsmetodeNavn != 'Vasket'
 ```

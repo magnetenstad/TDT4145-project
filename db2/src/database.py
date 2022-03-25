@@ -254,9 +254,16 @@ class Database:
   
   def get_unique_coffees_per_user(self) -> pd.DataFrame:
     return pd.read_sql_query('''
-        SELECT FulltNavn, COUNT(*) AS Antall
-        FROM Kaffesmaking INNER JOIN Bruker USING (Epost)
-        WHERE Dato LIKE '2022%'
+        SELECT FulltNavn, MAX(Antall) AS Antall
+        FROM (
+          SELECT Epost, FulltNavn, 0 AS Antall
+          FROM Bruker
+          UNION
+          SELECT Epost, FulltNavn, COUNT(*) AS Antall
+          FROM Bruker INNER JOIN Kaffesmaking USING (Epost)
+          WHERE Dato LIKE '2022%'
+          GROUP BY Epost
+        )
         GROUP BY Epost
         ORDER BY Antall DESC
         ''', self.connection)
@@ -273,7 +280,7 @@ class Database:
 
   def get_floral_description(self) -> pd.DataFrame:
     return pd.read_sql_query('''
-        SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn
+        SELECT DISTINCT Kaffe.KaffebrenneriNavn, Kaffe.Navn
         FROM Kaffe LEFT OUTER JOIN Kaffesmaking
         ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
           AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
@@ -287,7 +294,7 @@ class Database:
         FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
         ON Kaffe.KaffepartiId = Kaffeparti.Id AND Kaffeparti.KaffegaardNavn = Kaffegaard.Navn
         WHERE (Kaffegaard.Land='Rwanda' OR Kaffegaard.Land='Colombia') 
-          AND Kaffeparti.ForedlingsmetodeNavn != 'vasket'
+          AND Kaffeparti.ForedlingsmetodeNavn != 'Vasket'
         ''', self.connection)
 
   def print_all(self) -> str:
