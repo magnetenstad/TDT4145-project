@@ -468,6 +468,30 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_kaffesmaking(['magneet@ntnu.no',
         'Realfagsbrenneriet', 'Indøk-kaffe',
         'Fysj og fy, dette var dårlig.', 2, '2022.03.24'])
+
+    self.insert_bruker(['kslie@ntnu.no', 
+        'mobil123', 'Karin Syversveen Lie','Norge'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Jacobsen & Svart', 'Vinterkaffe',
+        'Smakte godt.', 8, '2022.01.12'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Jacobsen & Svart', 'La Palma',
+        'Floral er den i hvertfall!', 8, '2022.03.10'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Jacobsen & Svart', 'Diamond Santos',
+        'Hadde rar ettersmak.', 3, '2022.03.18'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Realfagsbrenneriet', 'Data-kaffe',
+        'Den var fruktig, men litt bitter!', 8, '2022.03.20'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Realfagsbrenneriet', 'Kyb-kaffe',
+        'Passer kanskje ikke for alle.', 4, '2022.03.21'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Realfagsbrenneriet', 'I&IKT-kaffe',
+        'Smaker nesten som butterbeer', 9, '2022.03.22'])
+    self.insert_kaffesmaking(['kslie@ntnu.no',
+        'Realfagsbrenneriet', 'Indøk-kaffe',
+        'Not my cup of coffee.', 3, '2022.03.24'])
     
     print('\n✅ Inserted defaults.\n')
     self.verbose = True
