@@ -381,7 +381,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_dyrketAv(['Coffea arabica', 'Nombre de Dios'])
     id = self.insert_kaffeparti([2021, 72, 'Nombre Dios', 'Bærtørket'])
     self.insert_partiBestaarAv([id, 'Coffea arabica'])
-    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe', '2022.01.20',
+    self.insert_kaffe(['Jacobsen & Svart', 'Vinterkaffe 2022', '2022.01.20',
         'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.',
         600, id])
       # Kilde: Oppgavetekst
@@ -455,7 +455,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_bruker(['magneet@ntnu.no', 
         'Password123', 'Magne Erlendsønn Tenstad', 'Norge'])
     self.insert_kaffesmaking(['magneet@ntnu.no',
-        'Jacobsen & Svart', 'Vinterkaffe',
+        'Jacobsen & Svart', 'Vinterkaffe 2022',
         'Hadde en rar bismak.', 3, '2022.03.16'])
     self.insert_kaffesmaking(['magneet@ntnu.no',
         'Jacobsen & Svart', 'La Palma',
@@ -479,7 +479,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_bruker(['kslie@ntnu.no', 
         'mobil123', 'Karin Syversveen Lie','Norge'])
     self.insert_kaffesmaking(['kslie@ntnu.no',
-        'Jacobsen & Svart', 'Vinterkaffe',
+        'Jacobsen & Svart', 'Vinterkaffe 2022',
         'Smakte godt.', 8, '2022.01.12'])
     self.insert_kaffesmaking(['kslie@ntnu.no',
         'Jacobsen & Svart', 'La Palma',
@@ -503,7 +503,7 @@ intens sødme, god munnfølelse og balansert syre.'''])
     self.insert_bruker(['karoliys@ntnu.no', 
         'Passord1', 'Karoline Stabell', 'Norge'])
     self.insert_kaffesmaking(['karoliys@ntnu.no',
-        'Jacobsen & Svart', 'Vinterkaffe', 
+        'Jacobsen & Svart', 'Vinterkaffe 2022', 
         'Rund og god kaffe, litt bitter', 5, '2022.03.02'])
     self.insert_kaffesmaking(['karoliys@ntnu.no',
         'Jacobsen & Svart', 'Diamond Santos',
