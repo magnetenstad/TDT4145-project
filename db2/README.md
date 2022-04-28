@@ -1,11 +1,10 @@
-
 # TDT4145 - DB2 Gruppe 109
 
-| Etternavn  | Fornavn                | E-post                |
-| ---------- | ---------------------- | --------------------- |
-| Lie        | Karin Sofie Syversveen | kslie@stud.ntnu.no    |
-| Stabell    | Karoline Ytreeide      | karoliys@stud.ntnu.no |
-| Tenstad    | Magne Erlendsønn       | magneet@stud.ntnu.no  |
+| Etternavn | Fornavn                | E-post                |
+| --------- | ---------------------- | --------------------- |
+| Lie       | Karin Sofie Syversveen | kslie@stud.ntnu.no    |
+| Stabell   | Karoline Ytreeide      | karoliys@stud.ntnu.no |
+| Tenstad   | Magne Erlendsønn       | magneet@stud.ntnu.no  |
 
 ## Endringer i databasemodellen og antakelser
 
@@ -32,19 +31,26 @@ I tillegg ser vi oss nødt til å definere noen ytterligere antakelser.
 Programmet er skrevet med python 3.10 og er ikke testet for andre versjoner av python.
 
 Installér `pandas` og `tabulate` dersom du ikke allerede har det.
+
 ```
 pip install pandas
 pip install tabulate
 ```
+
 Gå til `src`-mappen dersom du ikke allerede er der.
+
 ```
 cd src
 ```
+
 Kjør følgende kommando for å starte applikasjonen.
+
 ```
 python main.py
 ```
+
 Kjør følgende kommando for å kjøre automatiske tester.
+
 ```
 python -m unittest test.py
 ```
@@ -52,6 +58,7 @@ python -m unittest test.py
 ### Databasefilen
 
 Databasen lagres i `database.db`. Ved oppstart av programmet opprettes denne filen dersom den ikke allerede finnes. I tillegg sjekker programmet om databasen er tom, og skriver inn standardverdier dersom den er det. Den enkleste måten å resette databasen på er altså å slette `database.db`. Du vil se følgende indikasjon ved oppstart på at databasen er resatt:
+
 ```
 ✅ Successfully built tables!
 
@@ -67,7 +74,7 @@ flowchart LR
   main(Velkommen.)
 
   logged_in(Innlogget \n Hva vil du gjøre?)
-  
+
   select(Hva vil du gjøre spørring på?)
   insert(Hva vil du sette inn?)
   exit(Avslutter applikasjonen)
@@ -102,6 +109,7 @@ flowchart LR
   insert --> |5 - Ingenting, gå tilbake | logged_in
 
 ```
+
 <b>Figur 1: Tilstandsdiagram for applikasjonen</b>
 
 Ved oppstart får brukeren mulighet til å registrere en ny bruker, logge inn med epost/passord eller logge inn som gjest. Ved registrering blir man automatisk også logget inn. Deretter blir man spurt hva man ønsker å gjøre, og får tre alternativer: skrive data, lese data eller logge ut. Dersom man er logget inn som gjest har man ikke tilgang til å skrive data. Hver gang det presenteres alternativer, velger man et alternativ ved å skrive nummeret som står foran alternativet, eller ved å skrive selve alternativet.
@@ -127,6 +135,7 @@ flowchart TD
   Kaffesmaking --> Kaffe
   Kaffegård --> Kaffebønne
 ```
+
 <b>Figur 2: Avhengigheter mellom tabellene i databasen</b>
 
 <div style="page-break-after: always;"></div>
@@ -134,13 +143,15 @@ flowchart TD
 ## Brukerhistorier
 
 ### Brukerhistorie 1
+
 Brukerhistorie 1 går ut på å notere en kaffesmaking, og krever at den aktuelle brukeren er logget inn. Vi registrerer derfor en bruker før vi notererer kaffesmakingen. Følgende viser hvordan brukerhistorie 1 er implementert.
+
 ```
-Velkommen til Kaffedatabasen 😊☕   
+Velkommen til Kaffedatabasen 😊☕
 
 Hva vil du gjøre?
         (0) Logge inn
-        (1) Logge inn som gjest    
+        (1) Logge inn som gjest
         (2) Registrere en ny bruker
         (3) Avslutte
 > registrere en ny bruker
@@ -149,10 +160,10 @@ Registrer deg med epost, passord, navn og land:
 
 <str> Epost: bruker@ntnu.no
 <str> Passord: bruker-passord
-<str> Fullt navn: Bruker Bruker                  
+<str> Fullt navn: Bruker Bruker
 <str> Land: Brukerland
 
-✅ Satt inn brukeren ['bruker@ntnu.no', 'bruker-passord', 'Bruker Bruker', 'Brukerland'] 
+✅ Satt inn brukeren ['bruker@ntnu.no', 'bruker-passord', 'Bruker Bruker', 'Brukerland']
 
 Registrert og logget inn som bruker@ntnu.no!
 
@@ -164,7 +175,7 @@ Hva vil du gjøre?
 
 Hva vil du sette inn?
         (0) Kaffe
-        (1) Kaffebrenneri        
+        (1) Kaffebrenneri
         (2) Kaffeparti
         (3) Kaffegård
         (4) Kaffesmaking
@@ -172,7 +183,7 @@ Hva vil du sette inn?
 > kaffesmaking
 
 Hvilken kaffe har du smakt?
-        (0) ('Jacobsen & Svart', 'Vinterkaffe 2022', '2022.01.20', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, '0')   
+        (0) ('Jacobsen & Svart', 'Vinterkaffe 2022', '2022.01.20', 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, '0')
         (1) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '1')
         (2) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '2')
         (3) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '3')
@@ -189,7 +200,7 @@ Fyll inn følgende verdier for kaffesmakingen.
 <Date> Smaksdato (yyyy.mm.dd):
 
 ✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe 2022',
-'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, None] 
+'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, None]
 
 Vil du sette inn noe mer?
         (0) Ja
@@ -215,14 +226,16 @@ Hva vil du gjøre?
 
 Takk for nå!
 ```
+
 Legg merke til at det ikke ble spesifisert noen smaksdato. Den blir da satt til `NULL` (`None` i python).
 
 Dersom kaffen, kaffebrenneriet, kaffepartiet eller kaffegården ikke allerede er registrert i databasen, får brukeren oppfølgingsspørsmål. Oversikt over avhengighetene er i figur 2. Det er implementert på følgende måte:
+
 ```
 Hvilken kaffe har du smakt?
-        (0) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '0')        
+        (0) ('Jacobsen & Svart', 'Diamond Santos', '2021.02.01', 'lysbrent', 'En temmelig stabil og streit kaffe.', 349.0, '0')
         (1) ('Jacobsen & Svart', 'La Palma', '2021.02.01', 'lysbrent', 'Forfriskende og delikat.', 598.0, '1')
-        (2) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '2')       
+        (2) ('Realfagsbrenneriet', 'Data-kaffe', '2021.02.01', 'mørkbrent', 'En kaffe for datateknologi-studenter.', 600.0, '2')
         (3) ('Realfagsbrenneriet', 'Kyb-kaffe', '2022.01.02', 'lysbrent', 'En kaffe for kybernetikk-studenter.', 412.0, '3')
         (4) ('Realfagsbrenneriet', 'Indøk-kaffe', '2022.02.12', 'lysbrent', 'En kaffe for indøk-studenter.', 789.0, '4')
         (5) ('Realfagsbrenneriet', 'I&IKT-kaffe', '2022.03.12', 'mørkbrent', 'En kaffe for ingeniørvitenskap-og-ikt-studenter.', 359.0, '5')
@@ -291,7 +304,7 @@ Dyrker gården kaffebønnen Coffea robusta?
 
 Hvilken foredlingsmetode er brukt?
         (0) ('Vasket', 'God kontroll på prosessen gir\nstabil kvalitet. Vasket kaffe kjennetegnes ved en frisk og ren smak\nmed markant syre.')
-        (1) ('Pulped natural', 'Kan ha mer kropp\nog lavere syre enn vasket kaffe, og en renere, mer ensartet cup\nenn bærtørket.')    
+        (1) ('Pulped natural', 'Kan ha mer kropp\nog lavere syre enn vasket kaffe, og en renere, mer ensartet cup\nenn bærtørket.')
         (2) ('Delvis vasket', 'Kan gi kaffe med\nintens sødme, god munnfølelse og balansert syre.')
         (3) Ingen av disse
 > ingen av disse
@@ -319,7 +332,7 @@ Består partiet av kaffebønnen Coffea arabica?
         (1) Nei
 > ja
 
-✅ Satt inn at kaffebønnen Coffea arabica er del av parti 6 
+✅ Satt inn at kaffebønnen Coffea arabica er del av parti 6
 
 ✅ Satt inn kaffen ['Jacobsen & Svart', 'Vinterkaffe 2022', '2022.01.20',
 'lysbrent', 'En velsmakende og kompleks kaffe for mørketiden.', 600.0, 6]
@@ -333,33 +346,37 @@ Fyll inn følgende verdier for kaffesmakingen.
 ✅ Satt inn kaffesmakingen ['bruker@ntnu.no', 'Jacobsen & Svart', 'Vinterkaffe 2022',
 'Wow - en odyssé for smaksløkene: sitrusskall, melkesjokolade, aprikos!', 10, '2022.03.24']
 ```
+
 Legg også merke til at ved spørsmål om kaffebønnene partiet består av, er det kun mulig å velge mellom bønner som dyrkes av den aktuelle gården. Og dersom ingen bønner blir valgt, blir brukeren spurt igjen. På denne måten opprettholdes en konsistent databasetilstand.
 
 <div style="page-break-after: always;"></div>
 
 ### Brukerhistorie 2 - 5
-Brukerhistorie 2 - 5 går alle ut på å gjøre spørringer på databasen. Dette krever *ikke* at man har en registrert bruker, og vi logger derfor inn som gjest.
+
+Brukerhistorie 2 - 5 går alle ut på å gjøre spørringer på databasen. Dette krever _ikke_ at man har en registrert bruker, og vi logger derfor inn som gjest.
 
 ```
-Velkommen til Kaffedatabasen 😊☕   
+Velkommen til Kaffedatabasen 😊☕
 
 Hva vil du gjøre?
         (0) Logge inn
-        (1) Logge inn som gjest    
+        (1) Logge inn som gjest
         (2) Registrere en ny bruker
         (3) Avslutte
 > logge inn som gjest
 
 Logget inn som 'guest'
 
-Hva vil du gjøre?     
-        (0) Lese data 
-        (1) Logge ut  
+Hva vil du gjøre?
+        (0) Lese data
+        (1) Logge ut
 > lese data
 ```
 
 #### Brukerhistorie 2
+
 Følgende viser hvordan brukerhistorie 2 er implementert. Spørringen fra brukerhistorie 2 finnes under alternativ 1: 'Flest unike kaffer i år'. Spørringen returnerer brukernes fulle navn og antallet kaffer de har smakt.
+
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -383,10 +400,11 @@ Resultatet ble:
 Vil du gjøre en ny spørring?
         (0) Ja
         (1) Nei
-> ja 
+> ja
 ```
 
 Spørringen utføres med følgende SQL-kode:
+
 ```sql
 SELECT FulltNavn, MAX(Antall) AS Antall
 FROM (
@@ -401,10 +419,13 @@ FROM (
 GROUP BY Epost
 ORDER BY Antall DESC
 ```
+
 Etter første leveranse har vi har valgt å endre spørringen til å inkludere brukere som har 0 kaffesmakinger. Vi trenger ikke å ta hensyn til hvorvidt en bruker har flere kaffesmakinger på samme kaffe ettersom vi ikke tillater det. Derfor blir å telle antall unike kaffer per bruker ekvivalent med å telle antall kaffesmakinger per bruker.
 
 ### Brukerhistorie 3
-Følgende viser hvordan brukerhistorie 3 er implementert. Spørringen fra brukerhistorie 3 finnes under alternativ 2: 'Mest for pengene' og returnerer en liste med kaffebrennerinavn, kaffenavn, pris og gjennomsnittsscore for hver kaffe, sortert etter for hvilken kaffe man får mest for pengene. 
+
+Følgende viser hvordan brukerhistorie 3 er implementert. Spørringen fra brukerhistorie 3 finnes under alternativ 2: 'Mest for pengene' og returnerer en liste med kaffebrennerinavn, kaffenavn, pris og gjennomsnittsscore for hver kaffe, sortert etter for hvilken kaffe man får mest for pengene.
+
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -436,18 +457,22 @@ Vil du gjøre en ny spørring?
 <div style="page-break-after: always;"></div>
 
 Spørringen utføres med følgende SQL-kode:
+
 ```sql
-SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn, Kaffe.Kilopris, AVG(Poeng) AS GjPoeng  
-FROM Kaffe INNER JOIN Kaffesmaking 
+SELECT Kaffe.KaffebrenneriNavn, Kaffe.Navn, Kaffe.Kilopris, AVG(Poeng) AS GjPoeng
+FROM Kaffe INNER JOIN Kaffesmaking
   ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
-    AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+    AND Kaffe.Navn = KaffeSmaking.KaffeNavn
 GROUP BY Kaffe.KaffebrenneriNavn, Kaffe.Navn
 ORDER BY GjPoeng/Kaffe.Kilopris DESC
 ```
+
 Etter første leveranse har vi endret sorteringen fra å være på kun på GjPoeng til å være på GjPoeng/Kilopris. På denne måten kan man se for hvilken kaffe man får mest for pengene.
 
 ### Brukerhistorie 4
-Følgende viser hvordan brukerhistorie 4 er implementert. Spørringen fra brukerhistorie 4 finnes under alternativ 3: 'Beskrevet som 'floral'' og returnerer en liste med kaffebrennerinavn og kaffenavn. 
+
+Følgende viser hvordan brukerhistorie 4 er implementert. Spørringen fra brukerhistorie 4 finnes under alternativ 3: 'Beskrevet som 'floral'' og returnerer en liste med kaffebrennerinavn og kaffenavn.
+
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -471,20 +496,24 @@ Vil du gjøre en ny spørring?
 ```
 
 Spørringen utføres med følgende SQL-kode:
+
 ```sql
 SELECT DISTINCT Kaffe.KaffebrenneriNavn, Kaffe.Navn
 FROM Kaffe LEFT OUTER JOIN Kaffesmaking
   ON Kaffe.KaffebrenneriNavn = KaffeSmaking.KaffebrenneriNavn
-  AND Kaffe.Navn = KaffeSmaking.KaffeNavn 
+  AND Kaffe.Navn = KaffeSmaking.KaffeNavn
 WHERE Kaffe.Beskrivelse LIKE '%floral%'
   OR Kaffesmaking.Smaksnotater LIKE '%floral%'
 ```
+
 Etter første leveranse har vi lagt til `DISTINCT`, slik at kaffene ikke oppgis flere ganger (dersom de er beskrevet som floral flere ganger). Antallet beskrivelser er ikke er relevant her.
 
 <div style="page-break-after: always;"></div>
 
 ### Brukerhistorie 5
+
 Følgende viser hvordan brukerhistorie 5 er implementert. Spørringen fra brukerhistorie 5 finnes under alternativ 4: 'Ikke-vasket fra Rwanda eller Colombia' og returnerer en liste over kafferbrennerinavn og kaffenavn.
+
 ```
 Hva vil du gjøre spørring på?
         (0) Alle kaffesmakinger
@@ -528,6 +557,7 @@ Takk for nå!
 <div style="page-break-after: always;"></div>
 
 Spørringen utføres med følgende SQL-kode:
+
 ```sql
 SELECT Kaffe.Navn, Kaffe.KaffebrenneriNavn
 FROM (Kaffe INNER JOIN Kaffeparti) INNER JOIN Kaffegaard
